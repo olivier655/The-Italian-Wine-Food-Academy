@@ -102,7 +102,7 @@
       <div data-show-if="zakelijk">{{ text('bedrijfsnaam', 'Bedrijfsnaam op de factuur', autocomplete='organization') }}</div>
       <div class="inline-choices">
         <label class="pill"><input type="radio" name="betaling" value="ineens" {% if values.get('betaling', 'ineens') == 'ineens' %}checked{% endif %}><span>In één keer betalen</span></label>
-        <label class="pill"><input type="radio" name="betaling" value="termijnen" {% if values.get('betaling') == 'termijnen' %}checked{% endif %}><span>In termijnen betalen</span></label>
+        <label class="pill"><input type="radio" name="betaling" value="termijnen" {% if values.get('betaling') == 'termijnen' %}checked{% endif %}><span>In vijf termijnen betalen</span></label>
       </div>
       <label class="field">
         <span>Opmerking (optioneel)</span>

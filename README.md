@@ -32,16 +32,18 @@ Productie: `gunicorn app:app`.
 
 ## Make-koppeling
 
-Maak in Make een scenario met trigger *Webhooks > Custom webhook* en zet de URL in
-`MAKE_WEBHOOK_URL`. Per aanmelding komt er één JSON binnen met deze velden:
+Het scenario staat al klaar in Make: *TWFA — Aanmelding site → Inschrijvingen + bevestiging*
+(scenario 9875320, webhook `https://hook.eu2.make.com/pbg7fedww8h8odbt67ovohrc2lpm422x`).
+Het maakt een regel in Airtable › Teacher portal TWFA › TWFA Inschrijvingen, stuurt de cursist een
+bevestiging vanaf olivier@thewineandfoodacademy.com en stuurt Olivier een seintje. Per aanmelding komt er één JSON binnen met deze velden:
 
 `bron, aangemeld_op, product_slug, product, optie_nr, optie, examen, examen_bijgeboekt,
 examenroute (werkplek|portfolio), locatie, startmoment, regio, voornaam, achternaam, email,
 telefoon, factuur (particulier|zakelijk), bedrijfsnaam, straat, postcode, plaats,
 betaling (ineens|termijnen), opmerking, prijsregels[], totaal`
 
-Map die in Make naar de inschrijvingentabel in Airtable, en laat Make ook de
-bevestigingsmail sturen. De bedanktpagina belooft die mail binnen een paar minuten.
+De bedanktpagina belooft de bevestigingsmail binnen een paar minuten, dus zet het scenario aan
+voordat de site live gaat.
 
 Werkt de webhook niet, dan krijgt de bezoeker een foutmelding met het mailadres
 en blijft het ingevulde formulier staan. Er wordt geen persoonsgegeven gelogd.
