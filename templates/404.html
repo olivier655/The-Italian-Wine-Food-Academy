@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Pagina niet gevonden · The Italian Wine & Food Academy{% endblock %}
+{% block content %}
+<section class="form-wrap">
+  <h1>Deze pagina bestaat niet (meer)</h1>
+  <p class="hero-lead">Misschien is hij verhuisd. Bekijk alle opleidingen, of plan een gratis studieadvies.</p>
+  <a class="btn btn--solid" href="{{ url_for('overzicht') }}">Alle opleidingen</a>
+  <a class="btn btn--line" href="{{ STUDIEADVIES }}">Gratis studieadvies</a>
+</section>
+{% endblock %}

@@ -1,0 +1,666 @@
+{
+ "bron": "Airtable Teacher portal TWFA, momentopname 27-09-2026",
+ "producten": [
+  {
+   "sku": "TWFA-DIPL",
+   "naam": "Opleiding Italiaanse Gastronomie",
+   "slug": "opleiding-italiaanse-gastronomie",
+   "duur": "1 studiejaar · 36 lesweken",
+   "weken": 36,
+   "prijs": 3450,
+   "soort": [
+    "Kookcursus",
+    "Wijncursus"
+   ],
+   "locatie": "Amsterdam en Zeist",
+   "status": "Gepubliceerd",
+   "kort": "Word in één jaar een complete Italiaanse gastronoom. De Opleiding Italiaanse Gastronomie is ons vlaggenschip: je leert koken én proeven als een echte Italiaan, reist door twaalf regio’s en wordt begeleid door Italiaanse topkoks en Nederlandse sommeliers. Met maandelijkse kookdagen in onze studio, twee optionele wijnreizen naar Italië en een erkend diploma op zak. Of je nu droomt van een eigen restaurant, een carrièreswitch of puur van la dolce vita: hier leer je het écht.",
+   "brochure": "https://thewineandfoodacademy.com/wp-content/uploads/2026/09/twfa-brochure-2026-2027_2-1.pdf"
+  },
+  {
+   "sku": "TWFA-KEUKEN",
+   "naam": "Italiaanse Keuken",
+   "slug": "italiaanse-keuken",
+   "duur": "15 weken",
+   "weken": 15,
+   "prijs": 1950,
+   "soort": [
+    "Kookcursus"
+   ],
+   "locatie": "Amsterdam en Zeist",
+   "status": "Gepubliceerd",
+   "kort": "Leer koken als een Italiaan. In vijftien weken neem je de technieken en signatuurgerechten van noord tot zuid onder de knie: van zijdezachte verse pasta tot een knapperige pizza napoletana uit de houtoven en de mooiste dolci. Onder begeleiding van Italiaanse koks, met maandelijkse praktijkdagen in onze kookstudio. Je sluit af met een CRKBO-erkend certificaat.",
+   "brochure": "https://thewineandfoodacademy.com/wp-content/uploads/2026/09/twfa-brochure-2026-2027_2-1.pdf"
+  },
+  {
+   "sku": "TWFA-WIJN",
+   "naam": "Italiaanse Wijn",
+   "slug": "italiaanse-wijn",
+   "duur": "15 weken",
+   "weken": 15,
+   "prijs": 1950,
+   "soort": [
+    "Wijncursus"
+   ],
+   "locatie": "Amsterdam en Zeist",
+   "status": "Gepubliceerd",
+   "kort": "Duik in de wereld van de Italiaanse wijn. Van Barolo en Brunello tot de vulkanische wijnen van de Etna: in vijftien weken leer je de streken, druiven en methodes kennen, en proef je zoals de makers het bedoeld hebben. Begeleid door ervaren sommeliers, met de Klosse-smaakmethode als kompas. Afgesloten met een CRKBO-erkend certificaat.",
+   "brochure": "https://thewineandfoodacademy.com/wp-content/uploads/2026/09/twfa-brochure-2026-2027_2-1.pdf"
+  },
+  {
+   "sku": "TWFA-WS",
+   "naam": "Italiaanse Wijn & Spijs",
+   "slug": "italiaanse-wijn-en-spijs",
+   "duur": "3 weken",
+   "weken": 3,
+   "prijs": 595,
+   "soort": [
+    "Wijn spijs"
+   ],
+   "locatie": "Amsterdam en Zeist",
+   "status": "Gepubliceerd",
+   "kort": "De regio Piemonte uit onze opleiding, als losse cursus van drie weken. Nebbiolo, Barolo en Barbaresco naast tajarin, vitello tonnato en brasato al Barolo. Een praktijkdag in Amsterdam of Zeist, erkend CRKBO-certificaat.",
+   "brochure": "https://thewineandfoodacademy.com/wp-content/uploads/2026/09/twfa-brochure-2026-2027_2-1.pdf"
+  },
+  {
+   "sku": "TWFA-WS-VEN",
+   "naam": "Wijn & Spijs Veneto",
+   "slug": "wijn-en-spijs-veneto",
+   "duur": "3 weken",
+   "weken": 3,
+   "prijs": 595,
+   "soort": [
+    "Wijn spijs"
+   ],
+   "locatie": "Amsterdam en Zeist",
+   "status": "Gepubliceerd",
+   "kort": "De regio Veneto uit onze opleiding, als losse cursus van drie weken. Combineren over een heel menu: Prosecco als aperitief, Amarone bij het hoofdgerecht en recioto bij kaas en dessert. Een praktijkdag in Amsterdam of Zeist, erkend CRKBO-certificaat.",
+   "brochure": "https://thewineandfoodacademy.com/wp-content/uploads/2026/09/twfa-brochure-2026-2027_2-1.pdf"
+  },
+  {
+   "sku": "TWFA-PASTA",
+   "naam": "Pasta Fresca",
+   "slug": "pasta-fresca",
+   "duur": "3 weken",
+   "weken": 3,
+   "prijs": 595,
+   "soort": [
+    "Kookcursus"
+   ],
+   "locatie": "Amsterdam en Zeist",
+   "status": "Gepubliceerd",
+   "kort": "De regio's Emilia-Romagna en Toscane uit onze opleiding, als losse cursus van drie weken. Verse pasta met de hand: tagliatelle, tortellini en pici, met ragu, Parmigiano en de wijnen erbij. Een praktijkdag in Amsterdam of Zeist, erkend CRKBO-certificaat.",
+   "brochure": "https://thewineandfoodacademy.com/wp-content/uploads/2026/09/twfa-brochure-2026-2027_2-1.pdf"
+  },
+  {
+   "sku": "TWFA-PASTA-ROM",
+   "naam": "Romeinse Pasta's",
+   "slug": "romeinse-pastas",
+   "duur": "3 weken",
+   "weken": 3,
+   "prijs": 595,
+   "soort": [
+    "Kookcursus"
+   ],
+   "locatie": "Amsterdam en Zeist",
+   "status": "Gepubliceerd",
+   "kort": "De regio Lazio uit onze opleiding, als losse cursus van drie weken. De vier Romeinse pasta's: cacio e pepe, gricia, amatriciana en carbonara, zoals ze in Rome gemaakt worden. Een praktijkdag in Amsterdam of Zeist, erkend CRKBO-certificaat.",
+   "brochure": "https://thewineandfoodacademy.com/wp-content/uploads/2026/09/twfa-brochure-2026-2027_2-1.pdf"
+  },
+  {
+   "sku": "TWFA-PIZZA",
+   "naam": "Pizza Napoletana",
+   "slug": "pizza-napoletana",
+   "duur": "3 weken",
+   "weken": 3,
+   "prijs": 595,
+   "soort": [
+    "Kookcursus"
+   ],
+   "locatie": "Amsterdam en Zeist",
+   "status": "Gepubliceerd",
+   "kort": "De regio Napels uit onze opleiding, als losse cursus van drie weken. Pizza napoletana uit de houtoven, San Marzano en mozzarella di bufala, met de wijnen van de Vesuvius erbij. Een praktijkdag aan de oven in Amsterdam of Zeist, erkend CRKBO-certificaat.",
+   "brochure": "https://thewineandfoodacademy.com/wp-content/uploads/2026/09/twfa-brochure-2026-2027_2-1.pdf"
+  },
+  {
+   "sku": "TWFA-WIJN-PIE",
+   "naam": "Wijn uit Piemonte",
+   "slug": "wijn-uit-piemonte",
+   "duur": "3 weken",
+   "weken": 3,
+   "prijs": 595,
+   "soort": [
+    "Wijncursus"
+   ],
+   "locatie": "Amsterdam en Zeist",
+   "status": "Gepubliceerd",
+   "kort": "De wijnen van Piemonte in drie weken: Nebbiolo, Barolo en Barbaresco, met Barbera, Dolcetto en Gavi ernaast. Een proefdag in Amsterdam of Zeist, erkend CRKBO-certificaat.",
+   "brochure": "https://thewineandfoodacademy.com/wp-content/uploads/2026/09/twfa-brochure-2026-2027_2-1.pdf"
+  },
+  {
+   "sku": "TWFA-WIJN-VEN",
+   "naam": "Wijn uit Veneto",
+   "slug": "wijn-uit-veneto",
+   "duur": "3 weken",
+   "weken": 3,
+   "prijs": 595,
+   "soort": [
+    "Wijncursus"
+   ],
+   "locatie": "Amsterdam en Zeist",
+   "status": "Gepubliceerd",
+   "kort": "De regio Veneto uit onze opleiding, als losse cursus van drie weken. Amarone en ripasso, Prosecco uit Valdobbiadene en de witte wijnen van Friuli. Een proefdag in Amsterdam of Zeist, erkend CRKBO-certificaat.",
+   "brochure": "https://thewineandfoodacademy.com/wp-content/uploads/2026/09/twfa-brochure-2026-2027_2-1.pdf"
+  },
+  {
+   "sku": "TWFA-WIJN-TOS",
+   "naam": "Wijn uit Toscane",
+   "slug": "wijn-uit-toscane",
+   "duur": "3 weken",
+   "weken": 3,
+   "prijs": 595,
+   "soort": [
+    "Wijncursus"
+   ],
+   "locatie": "Amsterdam en Zeist",
+   "status": "Gepubliceerd",
+   "kort": "De wijnen van Toscane in drie weken: Sangiovese in al zijn gedaanten, van Chianti Classico en Vino Nobile tot Brunello di Montalcino. Een proefdag in Amsterdam of Zeist, erkend CRKBO-certificaat.",
+   "brochure": "https://thewineandfoodacademy.com/wp-content/uploads/2026/09/twfa-brochure-2026-2027_2-1.pdf"
+  },
+  {
+   "sku": "TWFA-WIJN-MID",
+   "naam": "Wijn uit Midden-Italië",
+   "slug": "wijn-uit-midden-italie",
+   "duur": "3 weken",
+   "weken": 3,
+   "prijs": 595,
+   "soort": [
+    "Wijncursus"
+   ],
+   "locatie": "Amsterdam en Zeist",
+   "status": "Gepubliceerd",
+   "kort": "De wijnen van Umbrië, Lazio en Abruzzo in drie weken: Sagrantino di Montefalco, Montepulciano d'Abruzzo, Frascati en Cesanese. Een praktijkdag in Amsterdam of Zeist, erkend CRKBO-certificaat.",
+   "brochure": "https://thewineandfoodacademy.com/wp-content/uploads/2026/09/twfa-brochure-2026-2027_2-1.pdf"
+  },
+  {
+   "sku": "TWFA-WIJN-ZUID",
+   "naam": "Wijn uit Zuid-Italië",
+   "slug": "wijn-uit-zuid-italie",
+   "duur": "3 weken",
+   "weken": 3,
+   "prijs": 595,
+   "soort": [
+    "Wijncursus"
+   ],
+   "locatie": "Amsterdam en Zeist",
+   "status": "Gepubliceerd",
+   "kort": "De wijnen van Zuid-Italië in drie weken: Aglianico en Taurasi, de witte Fiano en Greco di Tufo, Primitivo uit Puglia en de vulkanische wijnen van de Etna. Een proefdag in Amsterdam of Zeist, erkend CRKBO-certificaat.",
+   "brochure": "https://thewineandfoodacademy.com/wp-content/uploads/2026/09/twfa-brochure-2026-2027_2-1.pdf"
+  },
+  {
+   "sku": "TWFA-ONDERNEMEN",
+   "naam": "Gastronomie & Ondernemerschap",
+   "slug": "gastronomie-en-ondernemerschap",
+   "duur": "6 weken",
+   "weken": 6,
+   "prijs": 595,
+   "soort": [],
+   "locatie": "Online, individueel",
+   "status": "Concept (niet live)",
+   "kort": "De ondernemersmodule uit de jaaropleiding, ook los te volgen. Zes weken individueel: je werkt één op één met je docent aan je eigen businessplan. Elk moment te starten, sluit af met een certificaat. Geen wijn- of kookkennis nodig.",
+   "brochure": null
+  }
+ ],
+ "varianten": [
+  {
+   "sku": "TWFA-WIJN-PIE-GRP-ZEI-AUG",
+   "hoofd_sku": "TWFA-WIJN-PIE",
+   "locatie": "Zeist",
+   "startdatum": "2026-10-01",
+   "prijs": 595,
+   "status": "publish"
+  },
+  {
+   "sku": "TWFA-WIJN-PIE-GRP-AUG",
+   "hoofd_sku": "TWFA-WIJN-PIE",
+   "locatie": "Amsterdam",
+   "startdatum": "2026-10-01",
+   "prijs": 595,
+   "status": "publish"
+  },
+  {
+   "sku": "TWFA-WIJN-PIE-GRP-JAN",
+   "hoofd_sku": "TWFA-WIJN-PIE",
+   "locatie": "Amsterdam",
+   "startdatum": "2027-02-04",
+   "prijs": 595,
+   "status": "publish"
+  },
+  {
+   "sku": "TWFA-WIJN-PIE-GRP-ZEI-JAN",
+   "hoofd_sku": "TWFA-WIJN-PIE",
+   "locatie": "Zeist",
+   "startdatum": "2027-02-04",
+   "prijs": 595,
+   "status": "publish"
+  },
+  {
+   "sku": "TWFA-WS-VEN-GRP-OKT",
+   "hoofd_sku": "TWFA-WS-VEN",
+   "locatie": "Amsterdam",
+   "startdatum": "2026-10-22",
+   "prijs": 595,
+   "status": "publish"
+  },
+  {
+   "sku": "TWFA-WS-VEN-GRP-ZEI-OKT",
+   "hoofd_sku": "TWFA-WS-VEN",
+   "locatie": "Zeist",
+   "startdatum": "2026-10-22",
+   "prijs": 595,
+   "status": "publish"
+  },
+  {
+   "sku": "TWFA-WS-VEN-GRP-ZEI-FEB",
+   "hoofd_sku": "TWFA-WS-VEN",
+   "locatie": "Zeist",
+   "startdatum": "2027-03-11",
+   "prijs": 595,
+   "status": "publish"
+  },
+  {
+   "sku": "TWFA-WS-VEN-GRP-FEB",
+   "hoofd_sku": "TWFA-WS-VEN",
+   "locatie": "Amsterdam",
+   "startdatum": "2027-03-11",
+   "prijs": 595,
+   "status": "publish"
+  },
+  {
+   "sku": "TWFA-WIJN-MID-GRP-ZEI-MEI",
+   "hoofd_sku": "TWFA-WIJN-MID",
+   "locatie": "Zeist",
+   "startdatum": "2027-04-22",
+   "prijs": 595,
+   "status": "publish"
+  },
+  {
+   "sku": "TWFA-WIJN-MID-GRP-NOV",
+   "hoofd_sku": "TWFA-WIJN-MID",
+   "locatie": "Amsterdam",
+   "startdatum": "2026-12-03",
+   "prijs": 595,
+   "status": "publish"
+  },
+  {
+   "sku": "TWFA-WIJN-MID-GRP-ZEI-NOV",
+   "hoofd_sku": "TWFA-WIJN-MID",
+   "locatie": "Zeist",
+   "startdatum": "2026-12-03",
+   "prijs": 595,
+   "status": "publish"
+  },
+  {
+   "sku": "TWFA-WIJN-MID-GRP-MEI",
+   "hoofd_sku": "TWFA-WIJN-MID",
+   "locatie": "Amsterdam",
+   "startdatum": "2027-04-22",
+   "prijs": 595,
+   "status": "publish"
+  },
+  {
+   "sku": "TWFA-WS-GRP",
+   "hoofd_sku": "TWFA-WS",
+   "locatie": "Amsterdam",
+   "startdatum": "2026-09-26",
+   "prijs": 595,
+   "status": "publish"
+  },
+  {
+   "sku": "TWFA-WS-GRP-ZEI-SEP",
+   "hoofd_sku": "TWFA-WS",
+   "locatie": "Zeist",
+   "startdatum": "2026-09-29",
+   "prijs": 595,
+   "status": "publish"
+  },
+  {
+   "sku": "TWFA-WS-GRP-FEB",
+   "hoofd_sku": "TWFA-WS",
+   "locatie": "Amsterdam",
+   "startdatum": "2027-02-27",
+   "prijs": 595,
+   "status": "publish"
+  },
+  {
+   "sku": "TWFA-WS-GRP-ZEI-FEB",
+   "hoofd_sku": "TWFA-WS",
+   "locatie": "Zeist",
+   "startdatum": "2027-01-28",
+   "prijs": 595,
+   "status": "publish"
+  },
+  {
+   "sku": "TWFA-PASTA-GRP-ZEI-SEP",
+   "hoofd_sku": "TWFA-PASTA",
+   "locatie": "Zeist",
+   "startdatum": "2026-11-12",
+   "prijs": 595,
+   "status": "publish"
+  },
+  {
+   "sku": "TWFA-PASTA-GRP",
+   "hoofd_sku": "TWFA-PASTA",
+   "locatie": "Amsterdam",
+   "startdatum": "2026-11-12",
+   "prijs": 595,
+   "status": "publish"
+  },
+  {
+   "sku": "TWFA-PASTA-GRP-ZEI-FEB",
+   "hoofd_sku": "TWFA-PASTA",
+   "locatie": "Zeist",
+   "startdatum": "2027-04-01",
+   "prijs": 595,
+   "status": "publish"
+  },
+  {
+   "sku": "TWFA-PASTA-GRP-FEB",
+   "hoofd_sku": "TWFA-PASTA",
+   "locatie": "Amsterdam",
+   "startdatum": "2027-04-01",
+   "prijs": 595,
+   "status": "publish"
+  },
+  {
+   "sku": "TWFA-WIJN-VEN-GRP-FEB",
+   "hoofd_sku": "TWFA-WIJN-VEN",
+   "locatie": "Amsterdam",
+   "startdatum": "2027-03-11",
+   "prijs": 595,
+   "status": "publish"
+  },
+  {
+   "sku": "TWFA-WIJN-VEN-GRP-ZEI-OKT",
+   "hoofd_sku": "TWFA-WIJN-VEN",
+   "locatie": "Zeist",
+   "startdatum": "2026-10-22",
+   "prijs": 595,
+   "status": "publish"
+  },
+  {
+   "sku": "TWFA-WIJN-VEN-GRP-OKT",
+   "hoofd_sku": "TWFA-WIJN-VEN",
+   "locatie": "Amsterdam",
+   "startdatum": "2026-10-22",
+   "prijs": 595,
+   "status": "publish"
+  },
+  {
+   "sku": "TWFA-WIJN-VEN-GRP-ZEI-FEB",
+   "hoofd_sku": "TWFA-WIJN-VEN",
+   "locatie": "Zeist",
+   "startdatum": "2027-03-11",
+   "prijs": 595,
+   "status": "publish"
+  },
+  {
+   "sku": "TWFA-PASTA-ROM-GRP-ZEI-NOV",
+   "hoofd_sku": "TWFA-PASTA-ROM",
+   "locatie": "Zeist",
+   "startdatum": "2026-12-03",
+   "prijs": 595,
+   "status": "publish"
+  },
+  {
+   "sku": "TWFA-PASTA-ROM-GRP-ZEI-MEI",
+   "hoofd_sku": "TWFA-PASTA-ROM",
+   "locatie": "Zeist",
+   "startdatum": "2027-04-22",
+   "prijs": 595,
+   "status": "publish"
+  },
+  {
+   "sku": "TWFA-PASTA-ROM-GRP-NOV",
+   "hoofd_sku": "TWFA-PASTA-ROM",
+   "locatie": "Amsterdam",
+   "startdatum": "2026-12-03",
+   "prijs": 595,
+   "status": "publish"
+  },
+  {
+   "sku": "TWFA-PASTA-ROM-GRP-MEI",
+   "hoofd_sku": "TWFA-PASTA-ROM",
+   "locatie": "Amsterdam",
+   "startdatum": "2027-04-22",
+   "prijs": 595,
+   "status": "publish"
+  },
+  {
+   "sku": "TWFA-KEUKEN-GRP-ZEI-FEB",
+   "hoofd_sku": "TWFA-KEUKEN",
+   "locatie": "Zeist",
+   "startdatum": "2027-01-30",
+   "prijs": 1950,
+   "status": "publish"
+  },
+  {
+   "sku": "TWFA-KEUKEN-GRP",
+   "hoofd_sku": "TWFA-KEUKEN",
+   "locatie": "Amsterdam",
+   "startdatum": "2026-09-26",
+   "prijs": 1950,
+   "status": "publish"
+  },
+  {
+   "sku": "TWFA-KEUKEN-GRP-ZEI-SEP",
+   "hoofd_sku": "TWFA-KEUKEN",
+   "locatie": "Zeist",
+   "startdatum": "2026-09-26",
+   "prijs": 1950,
+   "status": "publish"
+  },
+  {
+   "sku": "TWFA-KEUKEN-GRP-FEB",
+   "hoofd_sku": "TWFA-KEUKEN",
+   "locatie": "Amsterdam",
+   "startdatum": "2027-02-27",
+   "prijs": 1950,
+   "status": "publish"
+  },
+  {
+   "sku": "TWFA-WIJN-TOS-GRP-OKT",
+   "hoofd_sku": "TWFA-WIJN-TOS",
+   "locatie": "Amsterdam",
+   "startdatum": "2026-11-12",
+   "prijs": 595,
+   "status": "publish"
+  },
+  {
+   "sku": "TWFA-WIJN-TOS-GRP-ZEI-OKT",
+   "hoofd_sku": "TWFA-WIJN-TOS",
+   "locatie": "Zeist",
+   "startdatum": "2026-11-12",
+   "prijs": 595,
+   "status": "publish"
+  },
+  {
+   "sku": "TWFA-WIJN-TOS-GRP-MRT",
+   "hoofd_sku": "TWFA-WIJN-TOS",
+   "locatie": "Amsterdam",
+   "startdatum": "2027-04-01",
+   "prijs": 595,
+   "status": "publish"
+  },
+  {
+   "sku": "TWFA-WIJN-TOS-GRP-ZEI-MRT",
+   "hoofd_sku": "TWFA-WIJN-TOS",
+   "locatie": "Zeist",
+   "startdatum": "2027-04-01",
+   "prijs": 595,
+   "status": "publish"
+  },
+  {
+   "sku": "TWFA-WIJN-GRP-ZEI-SEP",
+   "hoofd_sku": "TWFA-WIJN",
+   "locatie": "Zeist",
+   "startdatum": "2026-09-26",
+   "prijs": 1950,
+   "status": "publish"
+  },
+  {
+   "sku": "TWFA-WIJN-GRP-ZEI-FEB",
+   "hoofd_sku": "TWFA-WIJN",
+   "locatie": "Zeist",
+   "startdatum": "2027-01-30",
+   "prijs": 1950,
+   "status": "publish"
+  },
+  {
+   "sku": "TWFA-WIJN-GRP-FEB",
+   "hoofd_sku": "TWFA-WIJN",
+   "locatie": "Amsterdam",
+   "startdatum": "2027-02-27",
+   "prijs": 1950,
+   "status": "publish"
+  },
+  {
+   "sku": "TWFA-WIJN-GRP",
+   "hoofd_sku": "TWFA-WIJN",
+   "locatie": "Amsterdam",
+   "startdatum": "2026-09-26",
+   "prijs": 1950,
+   "status": "publish"
+  },
+  {
+   "sku": "TWFA-DIPL-GRP",
+   "hoofd_sku": "TWFA-DIPL",
+   "locatie": "Amsterdam",
+   "startdatum": "2026-09-26",
+   "prijs": 3450,
+   "status": "publish"
+  },
+  {
+   "sku": "TWFA-DIPL-GRP-FEB",
+   "hoofd_sku": "TWFA-DIPL",
+   "locatie": "Amsterdam",
+   "startdatum": "2027-02-27",
+   "prijs": 3450,
+   "status": "publish"
+  },
+  {
+   "sku": "TWFA-DIPL-GRP-ZEI-FEB",
+   "hoofd_sku": "TWFA-DIPL",
+   "locatie": "Zeist",
+   "startdatum": "2027-01-30",
+   "prijs": 3450,
+   "status": "publish"
+  },
+  {
+   "sku": "TWFA-DIPL-GRP-ZEI-SEP",
+   "hoofd_sku": "TWFA-DIPL",
+   "locatie": "Zeist",
+   "startdatum": "2026-09-26",
+   "prijs": 3450,
+   "status": "publish"
+  },
+  {
+   "sku": "TWFA-PIZZA-GRP-MEI",
+   "hoofd_sku": "TWFA-PIZZA",
+   "locatie": "Amsterdam",
+   "startdatum": "2027-05-20",
+   "prijs": 595,
+   "status": "publish"
+  },
+  {
+   "sku": "TWFA-PIZZA-GRP-ZEI-MEI",
+   "hoofd_sku": "TWFA-PIZZA",
+   "locatie": "Zeist",
+   "startdatum": "2027-05-20",
+   "prijs": 595,
+   "status": "publish"
+  },
+  {
+   "sku": "TWFA-PIZZA-GRP-DEC",
+   "hoofd_sku": "TWFA-PIZZA",
+   "locatie": "Amsterdam",
+   "startdatum": "2027-01-14",
+   "prijs": 595,
+   "status": "publish"
+  },
+  {
+   "sku": "TWFA-PIZZA-GRP-ZEI-DEC",
+   "hoofd_sku": "TWFA-PIZZA",
+   "locatie": "Zeist",
+   "startdatum": "2027-01-14",
+   "prijs": 595,
+   "status": "publish"
+  },
+  {
+   "sku": "TWFA-WIJN-ZUID-GRP-MEI",
+   "hoofd_sku": "TWFA-WIJN-ZUID",
+   "locatie": "Amsterdam",
+   "startdatum": "2027-05-20",
+   "prijs": 595,
+   "status": "publish"
+  },
+  {
+   "sku": "TWFA-WIJN-ZUID-GRP-ZEI-MEI",
+   "hoofd_sku": "TWFA-WIJN-ZUID",
+   "locatie": "Zeist",
+   "startdatum": "2027-05-20",
+   "prijs": 595,
+   "status": "publish"
+  },
+  {
+   "sku": "TWFA-WIJN-ZUID-GRP-ZEI-DEC",
+   "hoofd_sku": "TWFA-WIJN-ZUID",
+   "locatie": "Zeist",
+   "startdatum": "2027-01-14",
+   "prijs": 595,
+   "status": "publish"
+  },
+  {
+   "sku": "TWFA-WIJN-ZUID-GRP-DEC",
+   "hoofd_sku": "TWFA-WIJN-ZUID",
+   "locatie": "Amsterdam",
+   "startdatum": "2027-01-14",
+   "prijs": 595,
+   "status": "publish"
+  },
+  {
+   "sku": "TWFA-DIPL-GRP-ZEI-MA-OKT",
+   "hoofd_sku": "TWFA-DIPL",
+   "locatie": "Zeist",
+   "startdatum": "2026-10-05",
+   "prijs": 3450,
+   "status": "draft"
+  }
+ ],
+ "docenten": [
+  {
+   "naam": "Tiziano Capasso",
+   "bio": "Geboren in Rome. Italiaanse chef, gewerkt bij Mirazur (3 sterren, Mauro Colagreco). Specialist in pizza napoletana en Italiaanse regionale keuken."
+  },
+  {
+   "naam": "Wilco van den Baar",
+   "bio": "Gepassioneerde chef-kok met carrière in sterrenrestaurants. Docent Cucina Italia — kooktechnieken, vlees, pasta."
+  },
+  {
+   "naam": "Hugo Bos",
+   "bio": "Sommelier, tot 2020 verantwoordelijk voor de wijnkaart bij De Librije (3 sterren). Ook gecertificeerd barista. Docent Sommelier Italia — wijn, wijn-spijs en koffie."
+  },
+  {
+   "naam": "Gina Botta",
+   "bio": "Geboren en opgegroeid in Italië. Expert Italiaanse wijn, importeert zelf Italiaanse wijnen en heeft een eigen podcast over inheemse Italiaanse druiven."
+  },
+  {
+   "naam": "Niels van Laatum",
+   "bio": "10+ jaar wijnambassadeur, auteur van 'Natuurwijn — een helder verhaal over troebele wijn'. Expert natuurwijn en 0.0 dranken."
+  },
+  {
+   "naam": "Olivier",
+   "bio": "Oprichter The Wine & Food Academy en Amsterdam Data Academy. Docent Gastronomie & Ondernemerschap."
+  }
+ ]
+}

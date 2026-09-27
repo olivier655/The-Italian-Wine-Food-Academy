@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Onze docenten · The Italian Wine & Food Academy{% endblock %}
+{% block description %}De docenten van The Italian Wine & Food Academy: Italiaanse koks en ervaren sommeliers en vinologen die het vak elke dag uitoefenen.{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="hero-inner">
+    <p class="eyebrow">Onze docenten</p>
+    <h1>Italiaanse topkoks en ervaren Italië-sommeliers</h1>
+    <p class="hero-lead">Allemaal mensen die het vak elke dag uitoefenen, en het kunnen overdragen. De koks houden de keuken authentiek, de wijndocenten brengen de kennis helder en gestructureerd.</p>
+  </div>
+</section>
+<section class="section">
+  <div class="people">
+    {% for d in docenten %}
+    <article class="person">
+      {% if d.foto %}<img src="{{ d.foto }}" alt="{{ d.naam }}" loading="lazy">{% else %}<span class="initials">{{ d.initialen }}</span>{% endif %}
+      <div><h3>{{ d.naam }}</h3><p>{{ d.bio }}</p></div>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+<section class="section section--creme">
+  <div class="section-head">
+    <h2>Waarom Italiaanse koks én Nederlandse sommeliers?</h2>
+    <p>Omdat keuken en wijn bij ons samen worden gegeven, leer je geen twee losse vakken maar één geheel. De koks brengen de techniek, de sommeliers en vinologen de wijnkennis, en op elke lesdag komt dat samen.</p>
+  </div>
+</section>
+<section class="cta">
+  <h2>Benieuwd wie jouw docent wordt?</h2>
+  <p>Bekijk de opleidingen, of plan een gratis en vrijblijvend studieadviesgesprek.</p>
+  <a class="btn btn--solid" href="{{ url_for('overzicht') }}">Bekijk alle opleidingen</a>
+  <a class="btn btn--ghost-dark" href="{{ STUDIEADVIES }}">Gratis studieadvies</a>
+</section>
+{% endblock %}

@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% block title %}The Italian Wine & Food Academy · Leer koken en proeven als in Italië{% endblock %}
+{% block content %}
+<section class="hero hero--image" style="--hero:url('{{ img('twfa-hero-banner.jpg') }}')">
+  <div class="hero-inner">
+    <p class="eyebrow">Dé Nederlandse opleider voor Italiaanse gastronomie</p>
+    <h1>Leer koken en proeven als in Italië</h1>
+    <p class="hero-lead">Italiaanse keuken én wijn in één opleiding, van Italiaanse koks en Nederlandse sommeliers. Online in je eigen tempo, en elke maand samen in de kookstudio.</p>
+    <div class="hero-actions">
+      <a class="btn btn--solid" href="{{ url_for('overzicht') }}">Bekijk de opleidingen</a>
+      <a class="btn btn--ghost" href="{{ STUDIEADVIES }}">Plan gratis studieadvies</a>
+    </div>
+  </div>
+</section>
+
+<ul class="trust">
+  <li>NRTO erkend</li><li>CRKBO geregistreerd</li><li>8,9 gemiddelde beoordeling</li><li>Groepen van maximaal vier</li><li>Gespreid betalen</li>
+</ul>
+
+<section class="split">
+  <div class="split-text">
+    <p class="eyebrow eyebrow--wijn">Wijn én keuken samen</p>
+    <h2>Italië begrijpen begint aan tafel</h2>
+    <div class="flag"></div>
+    <p>De rest van Nederland leert wijn en keuken apart. Wij niet. In Italië hoort wat je drinkt bij wat je eet, en dat is geen toeval maar eeuwen cultuur. Bij ons leer je ze samen: je kookt, je proeft, en aan de gezamenlijke lunch komt het bij elkaar.</p>
+  </div>
+  <img class="split-img" src="{{ img('lunch.jpg') }}" alt="Cursisten aan de gezamenlijke lunch in de kookstudio" loading="lazy">
+</section>
+
+<section class="section section--creme">
+  <div class="section-head">
+    <p class="eyebrow eyebrow--wijn">Ons aanbod</p>
+    <h2>Kies wat bij jou past</h2>
+    <div class="flag"></div>
+    <p>Van een instap van drie weken tot het volledige diploma.</p>
+  </div>
+  <div class="cards">
+    {% for slug, p in uitgelicht %}
+    <a class="card{% if loop.first %} card--dark{% endif %}" href="{{ url_for('product', slug=slug) }}">
+      <p class="card-kicker">{% if p.nlqf %}Diploma · vlaggenschip{% elif p.soort == 'opties' %}Certificaat · CRKBO{% else %}Instap · {{ p.duur }}{% endif %}</p>
+      <h3>{{ p.naam }}</h3>
+      <p class="card-price">{% if p.soort == 'opties' %}vanaf {% endif %}{{ vanaf(p)|euro }}</p>
+      <p class="card-text">{{ p.kort|truncate(170, True, '…') }}</p>
+      {% if p.starts %}<p class="card-start">Eerstvolgende start: {{ p.starts[0].label.split(' · ')[0] }}</p>{% endif %}
+      <span class="card-link">Bekijk {{ 'de opleiding' if p.nlqf else 'de cursus' }} ›</span>
+    </a>
+    {% endfor %}
+  </div>
+  <p class="center"><a class="btn btn--line" href="{{ url_for('overzicht') }}">Alle opleidingen en cursussen</a></p>
+</section>
+
+<section class="section">
+  <div class="section-head">
+    <p class="eyebrow eyebrow--wijn">Onze leermethode</p>
+    <h2>Zo leer je bij ons</h2>
+    <div class="flag"></div>
+  </div>
+  <ol class="steps">
+    <li><strong>Online in je eigen tempo</strong><span>Instructievideo's per techniek en opdrachten die je in je eigen keuken doet.</span></li>
+    <li><strong>Elke week live</strong><span>Met je docent en je groep via Google Meet: huiswerk bespreken en feedback krijgen.</span></li>
+    <li><strong>Elke maand in de kookstudio</strong><span>Samen koken en proeven in Amsterdam of Zeist, met de houtoven en een lange tafel.</span></li>
+  </ol>
+  <p class="center"><a class="btn btn--line" href="{{ url_for('leermethode') }}">Meer over de leermethode</a></p>
+</section>
+
+<section class="band" style="--band:url('{{ img('twfa-bl-hero-pizza-houtoven.jpg') }}')">
+  <div class="band-inner">
+    <p class="eyebrow">Elke maand samen</p>
+    <h2>Leren doe je met je handen, en aan tafel</h2>
+    <p>In onze kookstudio met houtoven in Amsterdam of Zeist kook je, proef je en eet je samen. Theorie wordt smaak.</p>
+    <a class="btn btn--solid" href="{{ url_for('kookstudio') }}">Bekijk de kookstudio</a>
+  </div>
+</section>
+
+{% if docenten %}
+<section class="section">
+  <div class="section-head">
+    <p class="eyebrow eyebrow--wijn">Onze docenten</p>
+    <h2>Italiaanse koks en ervaren sommeliers</h2>
+    <div class="flag"></div>
+    <p>Mensen die het vak elke dag uitoefenen, en het kunnen overdragen.</p>
+  </div>
+  <div class="faces">
+    {% for d in docenten %}
+    <figure>{% if d.foto %}<img src="{{ d.foto }}" alt="{{ d.naam }}" loading="lazy">{% else %}<span class="initials">{{ d.initialen }}</span>{% endif %}<figcaption>{{ d.naam }}</figcaption></figure>
+    {% endfor %}
+  </div>
+  <p class="center"><a class="btn btn--line" href="{{ url_for('docenten_pagina') }}">Maak kennis met het team</a></p>
+</section>
+{% endif %}
+
+<section class="section section--creme">
+  <div class="section-head">
+    <p class="eyebrow eyebrow--wijn">Cursisten</p>
+    <h2>Beoordeeld met een 8,9</h2>
+    <div class="flag"></div>
+  </div>
+  <div class="quotes">
+    <blockquote>“Spontane kleine groep, zeer enthousiaste docent. Mooie wijnen geproefd die ik zelf nooit kocht.”<cite>Marije, cursus Italiaanse Wijn</cite></blockquote>
+    <blockquote>“De cursus was leuker dan verwacht. Erg gezellig en leerzaam. Er werd heel leuk lesgegeven.”<cite>Jasper, cursus Wijn &amp; Spijs</cite></blockquote>
+    <blockquote>“Een leuke en interessante cursus waarbij de stof echt tot leven kwam. Kleine groep, leuke locatie.”<cite>Pieter, cursus Italiaanse Wijn</cite></blockquote>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head">
+    <p class="eyebrow eyebrow--wijn">Veelgestelde vragen</p>
+    <h2>Goed om te weten</h2>
+    <div class="flag"></div>
+  </div>
+  <div class="faq">
+    <details><summary>Heb ik voorkennis nodig?</summary><p>Nee. Onze opleidingen beginnen bij de basis en zijn geschikt voor liefhebbers zonder ervaring. We bouwen stap voor stap op, van techniek tot proeven.</p></details>
+    <details><summary>Hoeveel tijd kost het per week?</summary><p>Reken op vier tot acht uur per week: instructievideo's, opdrachten in je eigen keuken en de wekelijkse live les. Het meeste doe je in je eigen tempo, dus het past naast werk of gezin.</p></details>
+    <details><summary>Waar zijn de praktijkdagen?</summary><p>Eén keer per maand, op zaterdag van 10:00 tot 15:00, in onze kookstudio met houtoven in Amsterdam of Zeist. Bij je aanmelding kies je de locatie: hetzelfde programma, dezelfde docenten.</p></details>
+    <details><summary>Kan ik gespreid betalen?</summary><p>Ja, in vijf termijnen. Kies dat bij je aanmelding; de factuur komt dan in delen.</p></details>
+    <details><summary>Krijg ik een erkend diploma of certificaat?</summary><p>Ja. De volledige opleiding sluit af met een diploma, de losse onderdelen met een CRKBO-certificaat. We zijn NRTO-erkend en CRKBO-geregistreerd.</p></details>
+  </div>
+</section>
+
+<section class="cta">
+  <h2>Niet zeker welk programma bij je past?</h2>
+  <p>Plan een gratis, vrijblijvend studieadviesgesprek. We kijken samen wat past bij je doelen, je achtergrond en je agenda.</p>
+  <a class="btn btn--solid" href="{{ STUDIEADVIES }}">Plan gratis studieadvies</a>
+</section>
+{% endblock %}

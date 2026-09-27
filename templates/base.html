@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}The Italian Wine & Food Academy{% endblock %}</title>
+  <meta name="description" content="{% block description %}Italiaanse keuken én wijn leren bij The Italian Wine & Food Academy: online in je eigen tempo, elke maand samen in de kookstudio in Amsterdam of Zeist.{% endblock %}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -11,17 +12,33 @@
 </head>
 <body>
   <header class="site-header">
-    <a class="logo" href="{{ url_for('overzicht') }}">The Italian Wine &amp; Food Academy</a>
+    <a class="logo" href="{{ url_for('home') }}">The Italian Wine &amp; Food Academy</a>
+    <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Menu">
+    <label for="nav-toggle" class="nav-burger" aria-hidden="true"><span></span></label>
     <nav>
       <a href="{{ url_for('overzicht') }}">Opleidingen</a>
-      <a href="https://thewineandfoodacademy.com/studieadvies/">Studieadvies</a>
-      <a href="https://thewineandfoodacademy.com/mijn-profiel">Leeromgeving</a>
+      <a href="{{ url_for('leermethode') }}">Leermethode</a>
+      <a href="{{ url_for('kookstudio') }}">Kookstudio</a>
+      <a href="{{ url_for('docenten_pagina') }}">Docenten</a>
+      <a href="{{ WP }}/mijn-profiel">Leeromgeving</a>
+      <a class="nav-cta" href="{{ STUDIEADVIES }}">Gratis studieadvies</a>
     </nav>
   </header>
   <main>{% block content %}{% endblock %}</main>
   <footer class="site-footer">
-    <p>Alle bedragen zijn btw-vrij, want we zijn CRKBO-geregistreerd. Gespreid betalen is mogelijk.</p>
-    <p>© The Wine &amp; Food Academy B.V. · <a href="https://thewineandfoodacademy.com/algemene-voorwaarden/">Algemene voorwaarden</a> · <a href="https://thewineandfoodacademy.com/privacy-policy/">Privacy</a></p>
+    <div class="footer-inner">
+      <div>
+        <p class="footer-logo">The Italian Wine &amp; Food Academy</p>
+        <p>Italiaanse keuken én wijn, van Italiaanse koks en Nederlandse sommeliers. Praktijkdagen in Amsterdam en Zeist.</p>
+      </div>
+      <div>
+        <p><a href="{{ url_for('overzicht') }}">Alle opleidingen</a></p>
+        <p><a href="{{ url_for('leermethode') }}">Leermethode</a> · <a href="{{ url_for('kookstudio') }}">Kookstudio</a> · <a href="{{ url_for('docenten_pagina') }}">Docenten</a></p>
+        <p>Streken: <a href="/piemonte/">Piemonte</a> · <a href="/lombardije/">Lombardije</a> · <a href="/ligurie/">Ligurië</a> · <a href="/toscane/">Toscane</a></p>
+      </div>
+    </div>
+    <p class="footer-small">Alle bedragen zijn btw-vrij, want we zijn CRKBO-geregistreerd. Gespreid betalen is mogelijk.<br>
+    © The Wine &amp; Food Academy B.V. · <a href="{{ WP }}/algemene-voorwaarden/">Algemene voorwaarden</a> · <a href="{{ WP }}/privacy-policy/">Privacy</a></p>
   </footer>
   {% block scripts %}{% endblock %}
 </body>

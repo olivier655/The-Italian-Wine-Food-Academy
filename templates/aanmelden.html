@@ -11,7 +11,7 @@
 {% block content %}
 <section class="form-wrap">
   <h1>Aanmelden voor {{ product.naam }}</h1>
-  <p class="hero-lead">Na je aanmelding krijg je een bevestiging per mail, daarna de factuur.</p>
+  <p class="hero-lead">Na je aanmelding krijg je meteen een bevestiging per mail. Daarna controleren we je gegevens en sturen we de factuur.</p>
 
   {% if errors.get('algemeen') %}<p class="form-alert">{{ errors['algemeen'] }}</p>{% endif %}
 
@@ -26,7 +26,7 @@
       {% for opt in product.opties %}
       <label class="choice">
         <input type="radio" name="optie" value="{{ opt.key }}" data-price="{{ opt.prijs }}"
-               data-praktijk="{{ 1 if opt.praktijk else 0 }}" data-examen="{{ 1 if opt.examen_inbegrepen else 0 }}"
+               data-praktijk="{{ 1 if opt.praktijk else 0 }}" data-cohort="{{ 1 if opt.cohort else 0 }}" data-examen="{{ 1 if opt.examen_inbegrepen else 0 }}"
                {% if values.get('optie') == opt.key %}checked{% endif %}>
         <span class="choice-body">
           <strong>Optie {{ loop.index }}: {{ opt.naam }}</strong>
@@ -51,39 +51,56 @@
     </fieldset>
     {% endif %}
 
-    {% if product.kies_regio %}
-    <fieldset>
-      <legend>Welke regio?</legend>
-      <label class="field{% if errors.get('regio') %} field--error{% endif %}">
-        <select name="regio">
-          <option value="">Kies een regio</option>
-          {% for r in regios %}<option {% if values.get('regio') == r %}selected{% endif %}>{{ r }}</option>{% endfor %}
-        </select>
-        {{ err('regio') }}
-      </label>
-    </fieldset>
-    {% endif %}
-
+    {% if product.groep != 'los' %}
     <fieldset>
       <legend>Wanneer en waar</legend>
-      <label class="field">
-        <span>Startmoment</span>
-        <select name="startmoment">
-          {% for s in startmomenten %}<option {% if values.get('startmoment') == s %}selected{% endif %}>{{ s }}</option>{% endfor %}
-        </select>
-      </label>
-      {% if product.soort == 'opties' or product.praktijk %}
-      <div class="field{% if errors.get('locatie') %} field--error{% endif %}" data-show-if="praktijk">
-        <span>Locatie praktijkdagen</span>
-        <div class="inline-choices">
-          {% for l in locaties %}
-          <label class="pill"><input type="radio" name="locatie" value="{{ l }}" {% if values.get('locatie') == l %}checked{% endif %}><span>{{ l }}</span></label>
+      {% if product.soort == 'opties' %}
+      <p class="field-help" data-show-if="eigen-tempo">Met optie 1 start je wanneer je wilt. Na je aanmelding krijg je meteen toegang tot de leeromgeving.</p>
+      {% endif %}
+
+      <div data-show-if="praktijk">
+      {% if product.starts %}
+        <div class="field{% if errors.get('start') %} field--error{% endif %}">
+          <span>Startdatum en locatie van de praktijkdagen</span>
+          <div class="start-list">
+          {% for s in product.starts %}
+            <label class="choice choice--small"><input type="radio" name="start" value="{{ s.sku }}" {% if values.get('start') == s.sku %}checked{% endif %}><span class="choice-body"><strong>{{ s.label.split(' · ')[0] }}</strong><span>{{ s.locatie }}</span></span></label>
           {% endfor %}
+          </div>
+          {{ err('start') }}
         </div>
-        {{ err('locatie') }}
+      {% else %}
+        <p class="field-help">Er staan nog geen nieuwe startdata. We plannen je in bij de eerstvolgende groep.</p>
+        <div class="field{% if errors.get('locatie') %} field--error{% endif %}">
+          <span>Locatie praktijkdagen</span>
+          <div class="inline-choices">
+            {% for l in locaties %}
+            <label class="pill"><input type="radio" name="locatie" value="{{ l }}" {% if values.get('locatie') == l %}checked{% endif %}><span>{{ l }}</span></label>
+            {% endfor %}
+          </div>
+          {{ err('locatie') }}
+        </div>
+      {% endif %}
+      </div>
+
+      {% if product.soort == 'opties' %}
+      <div data-show-if="cohort-only">
+        {% if cohortdata %}
+        <label class="field{% if errors.get('startdatum') %} field--error{% endif %}">
+          <span>Startdatum van je groep</span>
+          <select name="startdatum">
+            <option value="">Kies een startdatum</option>
+            {% for iso, label in cohortdata %}<option value="{{ iso }}" {% if values.get('startdatum') == iso %}selected{% endif %}>{{ label }}</option>{% endfor %}
+          </select>
+          {{ err('startdatum') }}
+        </label>
+        {% else %}
+        <p class="field-help">De startdatum van de volgende groep volgt; we nemen contact met je op.</p>
+        {% endif %}
       </div>
       {% endif %}
     </fieldset>
+    {% endif %}
 
     <fieldset>
       <legend>Je gegevens</legend>
@@ -139,12 +156,14 @@
     const exam = form.querySelector('input[name="examen"]');
     const zakelijk = form.querySelector('input[name="factuur"]:checked')?.value === 'zakelijk';
     show('[data-show-if="zakelijk"]', zakelijk);
-    if (!opt) { show('[data-show-if="no-exam"]', false); return; }
+    if (!opt) { show('[data-show-if="no-exam"]', false); show('[data-show-if="cohort-only"]', false); show('[data-show-if="eigen-tempo"]', false); if (!form.querySelector('input[name="optie"]')) show('[data-show-if="praktijk"]', true); return; }
     const inclExam = opt.dataset.examen === '1';
     const praktijk = opt.dataset.praktijk === '1';
     show('[data-show-if="no-exam"]', !inclExam);
     show('[data-show-if="exam-checked"]', !inclExam && exam && exam.checked);
     show('[data-show-if="praktijk"]', praktijk);
+    show('[data-show-if="cohort-only"]', opt.dataset.cohort === '1' && !praktijk);
+    show('[data-show-if="eigen-tempo"]', opt.dataset.cohort === '0');
     let total = Number(opt.dataset.price);
     if (!inclExam && exam && exam.checked) total += addon;
     form.querySelector('.js-total').textContent = fmt(total);

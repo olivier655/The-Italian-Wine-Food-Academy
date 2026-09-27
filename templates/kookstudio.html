@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Onze kookstudio · The Italian Wine & Food Academy{% endblock %}
+{% block description %}De kookstudio van The Italian Wine & Food Academy in Amsterdam en Zeist: samen koken, pizza uit de houtoven en een lange tafel voor de gezamenlijke lunch.{% endblock %}
+{% block content %}
+<section class="hero hero--image" style="--hero:url('{{ img('image00170.jpeg') }}')">
+  <div class="hero-inner">
+    <p class="eyebrow">Onze kookstudio</p>
+    <h1>Waar theorie smaak wordt</h1>
+    <p class="hero-lead">Hier komt alles samen wat je thuis online leert: je kookt, je proeft en je eet, met je groep en je docent. Eén keer per maand, een hele dag, op een plek waar Italië even heel dichtbij is.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head">
+    <p class="eyebrow eyebrow--wijn">Sfeer</p>
+    <h2>Een dag in de studio</h2>
+    <div class="flag"></div>
+    <p>Verse pasta, pizza uit de houtoven, wijn in het glas en een tafel vol cursisten.</p>
+  </div>
+  <div class="gallery">
+    {% for f in ['image00096.jpeg','image00026.jpeg','image00095.jpeg','image00150.jpeg','image00176.jpeg','image00170.jpeg'] %}
+    <img src="{{ img(f) }}" alt="Lesdag in de kookstudio" loading="lazy">
+    {% endfor %}
+  </div>
+</section>
+
+<section class="split">
+  <div class="split-text">
+    <p class="eyebrow eyebrow--wijn">Het hart van de studio</p>
+    <h2>Onze houtoven</h2>
+    <div class="flag"></div>
+    <p>Pizza napoletana op 400 °C, gegrilde groenten, brood met een krokante korst. Recht uit de houtoven, met die Italiaanse smaak die je thuis niet voor elkaar krijgt.</p>
+  </div>
+  <img class="split-img" src="{{ img('twfa-bl-hero-pizza-houtoven.jpg') }}" alt="Pizza uit de houtoven" loading="lazy">
+</section>
+
+<section class="split split--reverse">
+  <img class="split-img" src="{{ img('lunch.jpg') }}" alt="De gezamenlijke lunch" loading="lazy">
+  <div class="split-text">
+    <p class="eyebrow eyebrow--wijn">Aan tafel</p>
+    <h2>De gezamenlijke lunch</h2>
+    <div class="flag"></div>
+    <p>Het mooiste moment van de dag: samen aan één lange tafel. De kookgroep serveert, de wijngroep schenkt, en keuken en wijn komen echt bij elkaar.</p>
+  </div>
+</section>
+
+<section class="section section--creme">
+  <div class="section-head">
+    <h2>Amsterdam of Zeist</h2>
+    <p>De praktijklessen zijn in Amsterdam of Zeist, op zaterdag van 10:00 tot 15:00. Hetzelfde programma, dezelfde docenten: jij kiest de locatie die het best uitkomt.</p>
+  </div>
+</section>
+
+<section class="cta">
+  <h2>Zelf komen ervaren?</h2>
+  <p>Benieuwd hoe een lesdag eruitziet? Plan een gratis, vrijblijvend studieadvies. We vertellen je er alles over.</p>
+  <a class="btn btn--solid" href="{{ STUDIEADVIES }}">Plan gratis studieadvies</a>
+</section>
+{% endblock %}

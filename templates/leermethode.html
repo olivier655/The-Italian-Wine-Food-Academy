@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Onze leermethode · The Italian Wine & Food Academy{% endblock %}
+{% block description %}Zo leer je bij The Italian Wine & Food Academy: welkomstpakket thuis, online in je eigen tempo, elke week live met je docent en elke maand samen in de kookstudio.{% endblock %}
+{% block content %}
+<section class="hero hero--image" style="--hero:url('{{ img('twfa-bl-hero-pizza-houtoven.jpg') }}')">
+  <div class="hero-inner">
+    <p class="eyebrow">Onze leermethode</p>
+    <h1>Zo leer je bij ons</h1>
+    <p class="hero-lead">Italiaanse gastronomie leer je niet uit een boek, maar met je handen, je neus en je smaak. Thuis leer je in je eigen tempo, en elke maand kom je samen in onze kookstudio. Keuken en wijn lopen daarbij steeds samen op, zoals het in Italië hoort.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head">
+    <p class="eyebrow eyebrow--wijn">Hoe het werkt</p>
+    <h2>Leren in vier stappen</h2>
+    <div class="flag"></div>
+  </div>
+  <ol class="steps steps--four">
+    <li><strong>Je welkomstpakket komt thuis</strong><span>Wie kookt, krijgt een eigen koksbuis, kookmaterialen en de belangrijkste ingrediënten. Wie zich op wijn richt, krijgt de proefset en de wijnen. Plus je cursusmateriaal en je inloggegevens.</span></li>
+    <li><strong>Je leert online in je eigen tempo</strong><span>In de leeromgeving staan instructievideo's per techniek en opdrachten die je in je eigen keuken doet. Elk blok begint met een korte module over de streken; daarna gaan de wijn- en keukenlessen van dat blok open.</span></li>
+    <li><strong>Elke week live met je docent en je groep</strong><span>Via Google Meet bespreek je je huiswerk, krijg je persoonlijke feedback en leer je van je medecursisten. Een vaste groep van maximaal vier mensen.</span></li>
+    <li><strong>Elke maand naar de kookstudio</strong><span>Op zaterdag van 10:00 tot 15:00 in Amsterdam of Zeist. De kookgroep kookt, de wijngroep proeft, en aan de gezamenlijke lunch komt alles samen.</span></li>
+  </ol>
+</section>
+
+<section class="split split--reverse">
+  <img class="split-img" src="{{ img('image00096.jpeg') }}" alt="Koken in de kookstudio" loading="lazy">
+  <div class="split-text">
+    <p class="eyebrow eyebrow--wijn">Onze docenten</p>
+    <h2>Italiaanse koks én Nederlandse sommeliers</h2>
+    <div class="flag"></div>
+    <p>Je leert van mensen die het vak in de praktijk uitoefenen: Italiaanse koks die de keuken authentiek houden, en Nederlandse sommeliers en vinologen die de wijnkennis helder overdragen. Op elke lesdag komt dat samen, van de techniek op je bord tot het glas ernaast.</p>
+    <p><a href="{{ url_for('docenten_pagina') }}">Maak kennis met het team ›</a></p>
+  </div>
+</section>
+
+<section class="section section--creme">
+  <div class="two-col">
+    <div>
+      <h2>Goed te combineren met werk of gezin</h2>
+      <p>Omdat je het meeste online en in je eigen tempo doet, past de opleiding naast een baan of gezin. Reken op vier tot acht uur per week. De maandelijkse lesdag is op zaterdag.</p>
+    </div>
+    <div>
+      <h2>Amsterdam of Zeist</h2>
+      <p>De praktijkdagen zijn in Amsterdam of Zeist. Bij je aanmelding kies je de locatie: hetzelfde programma, dezelfde docenten, dezelfde Italiaanse kwaliteit.</p>
+      <p><a href="{{ url_for('kookstudio') }}">Bekijk de kookstudio ›</a></p>
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <h2>Klaar om te beginnen?</h2>
+  <p>Twijfel je welk programma bij je past? Plan een gratis, vrijblijvend studieadviesgesprek.</p>
+  <a class="btn btn--solid" href="{{ STUDIEADVIES }}">Plan gratis studieadvies</a>
+  <a class="btn btn--ghost-dark" href="{{ url_for('overzicht') }}">Bekijk de opleidingen</a>
+</section>
+{% endblock %}

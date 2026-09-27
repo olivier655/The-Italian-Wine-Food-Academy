@@ -1,24 +1,33 @@
 {% extends "base.html" %}
-{% block title %}Opleidingen · The Italian Wine & Food Academy{% endblock %}
+{% block title %}Opleidingen en cursussen · The Italian Wine & Food Academy{% endblock %}
+{% block description %}Alle opleidingen en cursussen van The Italian Wine & Food Academy: de Opleiding Italiaanse Gastronomie, Italiaanse Keuken, Italiaanse Wijn en losse streekcursussen van drie weken.{% endblock %}
 {% block content %}
 <section class="hero">
   <div class="hero-inner">
     <h1>Opleidingen en cursussen</h1>
-    <p class="hero-lead">Van een losse regio in drie weken tot het volledige diploma in een studiejaar. Keuken en wijn, altijd samen.</p>
+    <p class="hero-lead">Van één streek in drie weken tot het volledige diploma in een studiejaar. Keuken en wijn, altijd samen.</p>
+    <nav class="jump">{% for key, titel, uitleg, items in groepen %}<a href="#{{ key }}">{{ titel }}</a>{% endfor %}</nav>
   </div>
 </section>
-<section class="catalog">
-  {% for slug, p in PRODUCTS.items() %}
+{% for key, titel, uitleg, items in groepen %}
+<section class="catalog" id="{{ key }}">
+  <div class="catalog-head">
+    <h2>{{ titel }}</h2>
+    <p>{{ uitleg }}</p>
+  </div>
+  {% for slug, p in items %}
   <a class="catalog-row" href="{{ url_for('product', slug=slug) }}">
     <div>
-      <h2>{{ p.naam }}</h2>
-      <p>{{ p.kort }}</p>
+      <h3>{{ p.naam }}</h3>
+      <p>{{ p.kort|truncate(200, True, '…') }}</p>
     </div>
     <div class="catalog-meta">
       <span>{{ p.duur }} · {{ p.afsluiting }}</span>
-      <strong>{% if p.soort == 'opties' %}vanaf {{ p.opties[0].prijs|euro }}{% else %}{{ p.prijs|euro }}{% endif %}</strong>
+      <strong>{% if p.soort == 'opties' %}vanaf {% endif %}{{ vanaf(p)|euro }}</strong>
+      {% if p.starts %}<span class="catalog-start">Start {{ p.starts[0].label.split(' · ')[0] }}</span>{% endif %}
     </div>
   </a>
   {% endfor %}
 </section>
+{% endfor %}
 {% endblock %}

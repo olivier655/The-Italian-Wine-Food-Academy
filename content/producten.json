@@ -1,0 +1,525 @@
+{
+ "pasta-fresca": {
+  "soort": "kook",
+  "verwachten": {
+   "lead": "Verse pasta is handwerk: deeg, tijd en techniek. In drie weken leer je de pastatradities van Emilia-Romagna en Toscane met de hand te maken.",
+   "punten": [
+    "Twee streken, één techniek: je leert het deeg en de vullingen kennen achter tagliatelle, tortellini en ravioli, en de sauzen die daarbij horen, van ragù tot burro e salvia.",
+    "Een praktijkdag koken: in onze kookstudio vouw je pasta met de hand onder begeleiding van een Italiaanse kok, en eet je samen op wat je hebt gemaakt.",
+    "Daartussen online, in je eigen tempo: instructievideo’s van de chef en kookopdrachten voor thuis."
+   ],
+   "slot": "Je sluit af met een opdracht die je docent beoordeelt. Daarna ontvang je je CRKBO-erkend certificaat Pasta Fresca."
+  },
+  "programma": {
+   "lead": "Drie weken rond Emilia-Romagna en Toscane, het derde blok van de opleiding. Verse pasta is handwerk.",
+   "punten": [
+    "De techniek: je leert de sfoglia, bloem en eidooier tot de juiste stevigheid brengen en met de hand uitrollen tot je het deeg door je vingers voelt. Daarvan maak je tagliatelle en tortellini, met de echte ragù die uren pruttelt en Parmigiano Reggiano op leeftijd. Uit Toscane komen pici en pappardelle, en de eenvoud van goede olijfolie en peper."
+   ],
+   "weken": [
+    {
+     "week": "Week 1",
+     "titel": "De sfoglia en de vormen",
+     "tekst": "Bloem, eidooier en de juiste stevigheid: kneden, rusten en met de hand uitrollen. Tagliatelle op de juiste breedte, tortellini vouwen en vullen, en pici en pappardelle uit Toscane."
+    },
+    {
+     "week": "Week 2",
+     "titel": "De sauzen en de wijnen",
+     "tekst": "Ragù alla bolognese die uren pruttelt, burro e salvia, en het emulgeren met pastawater. Parmigiano Reggiano op leeftijd, en Lambrusco, Chianti Classico en Brunello ernaast. Je kookt thuis twee sauzen."
+    },
+    {
+     "week": "Week 3",
+     "titel": "Praktijkdag",
+     "tekst": "Een zaterdag van 10:00 tot 15:00 in onze kookstudio in Amsterdam of Zeist. Je maakt sfoglia, snijdt en vouwt, kookt de sauzen af en eet samen op wat je gemaakt hebt."
+    }
+   ]
+  },
+  "inbegrepen": [
+   "Koks starterspakket met onder meer een koksbuis",
+   "Eén praktijkdag waarop je met Italiaanse koks in de kookstudio staat",
+   "Alle ingrediënten tijdens de praktijkdag",
+   "Online leeromgeving met instructievideo’s en kookopdrachten",
+   "Wekelijkse live lessen van 45 minuten met je docent en medecursisten",
+   "CRKBO-erkend certificaat Pasta Fresca bij afronding"
+  ],
+  "optioneel": "Optioneel bij te bestellen: de ingrediënten voor je kookopdrachten thuis.",
+  "leerdoelen": [
+   "Maak je verse pasta zoals tagliatelle, tortellini en ravioli met de hand",
+   "Beheers je de technieken uit Emilia-Romagna en Toscane voor deeg en vullingen",
+   "Kook je de klassieke sauzen bij deze pasta’s, van ragù tot burro e salvia",
+   "Werk je veilig en gestructureerd volgens HACCP"
+  ],
+  "docenten": [
+   "Tiziano Capasso",
+   "Wilco van den Baar"
+  ]
+ },
+ "romeinse-pastas": {
+  "soort": "kook",
+  "verwachten": {
+   "lead": "Carbonara, amatriciana, cacio e pepe en gricia: vier pasta’s, één regio, allemaal simpel op het oog en lastig om goed te doen. In drie weken leer je de techniek achter een romige saus zonder room.",
+   "punten": [
+    "Eén regio, vier klassiekers: je leert de ingrediënten en tradities van Lazio kennen, en de techniek achter elk van de vier Romeinse pasta’s.",
+    "Een praktijkdag koken: in onze kookstudio kook je alle vier de pasta’s onder begeleiding van een Italiaanse kok, en eet je samen op wat je hebt gemaakt.",
+    "Daartussen online, in je eigen tempo: instructievideo’s van de chef en kookopdrachten voor thuis."
+   ],
+   "slot": "Je sluit af met een opdracht die je docent beoordeelt. Daarna ontvang je je CRKBO-erkend certificaat Romeinse Pasta’s."
+  },
+  "programma": {
+   "lead": "Drie weken rond Lazio, het vierde blok van de opleiding. Rome heeft vier pasta’s die uit elkaar voortkomen: cacio e pepe is de basis, met guanciale wordt het gricia, met tomaat amatriciana, en met ei carbonara.",
+   "punten": [
+    "De techniek: je leert emulgeren met pastawater, op welke temperatuur het ei moet, waarom pecorino anders smelt dan parmezaan en hoe je guanciale uitbakt zonder hem te verbranden. Daarnaast truffel uit Umbrië, porchetta en arrosticini uit Abruzzo, met Frascati en Montepulciano d’Abruzzo erbij."
+   ],
+   "weken": [
+    {
+     "week": "Week 1",
+     "titel": "Cacio e pepe en gricia",
+     "tekst": "Pecorino Romano, zwarte peper en pastawater: emulgeren zonder klontering en temperatuurbeheersing. Guanciale uitbakken tot het vet loskomt, en hoe de vier Romeinse pasta’s uit elkaar voortkomen."
+    },
+    {
+     "week": "Week 2",
+     "titel": "Amatriciana, carbonara en de rest van blok 4",
+     "tekst": "Wat tomaat met gricia doet, en ei en kaas op temperatuur brengen zonder roeren en zonder room. Daarnaast truffel uit Umbrië, porchetta uit Lazio en arrosticini uit Abruzzo, met Frascati, Cesanese en Montepulciano d’Abruzzo."
+    },
+    {
+     "week": "Week 3",
+     "titel": "Praktijkdag",
+     "tekst": "Een zaterdag van 10:00 tot 15:00 in onze kookstudio in Amsterdam of Zeist. Je maakt cacio e pepe, gricia, amatriciana en carbonara op één dag en proeft het verschil direct."
+    }
+   ]
+  },
+  "inbegrepen": [
+   "Koks starterspakket met onder meer een koksbuis",
+   "Eén praktijkdag waarop je met Italiaanse koks in de kookstudio staat",
+   "Alle ingrediënten tijdens de praktijkdag",
+   "Online leeromgeving met instructievideo’s en kookopdrachten",
+   "Wekelijkse live lessen van 45 minuten met je docent en medecursisten",
+   "CRKBO-erkend certificaat Romeinse Pasta’s bij afronding"
+  ],
+  "optioneel": "Optioneel bij te bestellen: de ingrediënten voor je kookopdrachten thuis.",
+  "leerdoelen": [
+   "Kook je de vier klassieke Romeinse pasta’s: carbonara, amatriciana, cacio e pepe en gricia",
+   "Beheers je de techniek achter een romige saus zonder room",
+   "Leer je de ingrediënten en tradities van de regio Lazio kennen",
+   "Werk je veilig en gestructureerd volgens HACCP"
+  ],
+  "docenten": [
+   "Tiziano Capasso",
+   "Hugo Bos"
+  ]
+ },
+ "pizza-napoletana": {
+  "soort": "kook",
+  "verwachten": {
+   "lead": "Een goede Napolitaanse pizza begint 48 uur voor je hem bakt. In drie weken leer je het deeg, de saus en de techniek van Napels.",
+   "punten": [
+    "Eén regio, één ambacht: je leert het 48-uurs pizzadeeg kennen, de klassieke toppings zoals Margherita en Marinara, en de rol van de houtgestookte oven.",
+    "Een praktijkdag koken: in onze kookstudio bak je zelf pizza’s onder begeleiding van een Italiaanse kok, en eet je samen op wat je hebt gemaakt.",
+    "Daartussen online, in je eigen tempo: instructievideo’s van de chef en kookopdrachten voor thuis."
+   ],
+   "slot": "Je sluit af met een opdracht die je docent beoordeelt. Daarna ontvang je je CRKBO-erkend certificaat Pizza Napoletana."
+  },
+  "programma": {
+   "lead": "Drie weken rond Campanië, het vijfde blok van de opleiding. Een goede Napolitaanse pizza begint 48 uur voor je hem bakt.",
+   "punten": [
+    "De techniek: je leert waarom je deeg doet wat het doet, met hydratatie, rijptijd, temperatuur en de rol van je bloem. Daarna opbollen en met de hand uitrekken zonder de rand plat te slaan, en bakken in een houtoven op 450 graden waarin een pizza in zestig tot negentig seconden gaar is. Met San Marzano-tomaten en mozzarella di bufala, en de wijnen van de Vesuvius ernaast: Aglianico, Falanghina en Greco di Tufo."
+   ],
+   "weken": [
+    {
+     "week": "Week 1",
+     "titel": "Het deeg",
+     "tekst": "Hydratatie, rijptijd, temperatuur en de rol van je bloem: waarom 48 uur koude rijping een ander deeg oplevert dan 8 uur op kamertemperatuur. Panetti draaien, rusten en met de hand uitrekken zonder de cornicione plat te slaan."
+    },
+    {
+     "week": "Week 2",
+     "titel": "Ingrediënten, oven en wijn",
+     "tekst": "San Marzano-tomaten van de vulkaanhellingen, mozzarella di bufala en goede olijfolie, en wat de DOP-regels van Napels voorschrijven. Wat er in de houtoven op 450 graden gebeurt, en hoe je thuis zo dichtbij mogelijk komt. Aglianico, Falanghina en Greco di Tufo erbij."
+    },
+    {
+     "week": "Week 3",
+     "titel": "Praktijkdag",
+     "tekst": "Een zaterdag van 10:00 tot 15:00 in onze kookstudio in Amsterdam of Zeist. Je bakt je eigen pizza’s in de houtoven, proeft de wijnen van Campanië en eet samen op wat je gemaakt hebt."
+    }
+   ]
+  },
+  "inbegrepen": [
+   "Koks starterspakket met onder meer een koksbuis",
+   "Eén praktijkdag waarop je met Italiaanse koks in de kookstudio staat",
+   "Alle ingrediënten tijdens de praktijkdag",
+   "Online leeromgeving met instructievideo’s en kookopdrachten",
+   "Wekelijkse live lessen van 45 minuten met je docent en medecursisten",
+   "CRKBO-erkend certificaat Pizza Napoletana bij afronding"
+  ],
+  "optioneel": "Optioneel bij te bestellen: de ingrediënten voor je kookopdrachten thuis.",
+  "leerdoelen": [
+   "Beheers je het 48-uurs pizzadeeg en de technieken uit Napels",
+   "Kook je de klassieke Napolitaanse pizza’s zoals Margherita en Marinara",
+   "Weet je hoe je een pizza in een houtgestookte oven bakt",
+   "Werk je veilig en gestructureerd volgens HACCP"
+  ],
+  "docenten": [
+   "Tiziano Capasso",
+   "Wilco van den Baar"
+  ]
+ },
+ "italiaanse-wijn-en-spijs": {
+  "soort": "wijnspijs",
+  "verwachten": {
+   "lead": "Wil je begrijpen waarom sommige wijnen perfect passen bij bepaalde gerechten? En welke smaken er in zowel wijn als eten een rol spelen? Dan is deze cursus precies wat je zoekt. We nemen je stap voor stap mee in de theorie van smaak en laten je zien hoe je deze kennis direct toepast in de praktijk.",
+   "punten": [
+    "Smaaktheorie & inzicht – Je leert welke smaakcomponenten bepalend zijn in wijn en gerechten, en hoe deze elkaar beïnvloeden.",
+    "Praktische experimenten – Je voert zelf verschillende proefopdrachten uit: je bereidt een klein gerechtje, combineert dit met verschillende wijnen en ontdekt zo de effecten van zuur, zoet, vet en umami.",
+    "Creatieve eindopdracht – Aan het einde van de cursus ontwikkel je volledig zelfstandig een wijnkaart voor een fictief restaurant, gebaseerd op de smaakprincipes die je hebt geleerd."
+   ],
+   "slot": "Je docent beoordeelt je opdracht en na afronding ontvang je het CRKBO-erkend certificaat. Met deze cursus leg je een stevige basis in wijn-spijs combinaties en krijg je inzichten die je direct kunt toepassen in je eigen keuken."
+  },
+  "programma": {
+   "lead": "Drie weken rond de regio Piemonte, het eerste blok van de opleiding. Combineren als vak apart: hoe wijn en gerecht elkaar maken of breken.",
+   "punten": [
+    "De smaaktheorie: je leert welke smaakcomponenten bepalend zijn in wijn en in gerechten en hoe ze elkaar beïnvloeden: zuur, zoet, vet, umami en tannine.",
+    "Toegepast op de Piemontese tafel: Nebbiolo met stevige tannine vraagt om het vet van tajarin met veel eidooier, vitello tonnato en brasato al Barolo. Ook Barbera, Dolcetto en de witte Gavi komen langs."
+   ],
+   "weken": [
+    {
+     "week": "Week 1",
+     "titel": "De bouwstenen van smaak",
+     "tekst": "Zuur, zoet, bitter, zout, umami en vet: wat ze in een gerecht doen en wat ze in een wijn doen. Je proeft thuis vier basisoplossingen en leert je eigen drempelwaarden kennen. Live les: de Klosse-smaakmethode aan de hand van Piemontese wijn."
+    },
+    {
+     "week": "Week 2",
+     "titel": "Piemonte op tafel",
+     "tekst": "Nebbiolo naast vitello tonnato, agnolotti del plin en brasato al Barolo. Waarom tannine en vet elkaar opheffen, en waarom een jonge Barolo bij vitello tonnato misgaat. Je bouwt drie combinaties op papier en onderbouwt ze."
+    },
+    {
+     "week": "Week 3",
+     "titel": "Praktijkdag",
+     "tekst": "Een zaterdag van 10:00 tot 15:00 in Amsterdam of Zeist. Je bereidt kleine gerechten, zet er wisselende wijnen naast en proeft blind wat een verkeerde match doet. Afsluitend bespreken we je wijnkaart."
+    }
+   ]
+  },
+  "inbegrepen": [
+   "Sommelier starterspakket met kelnersmes en proefmateriaal",
+   "Eén praktijkdag in onze kookstudio in Amsterdam of Zeist, waarop je kookt én proeft",
+   "Alle wijnen en ingrediënten tijdens de praktijkdag",
+   "Online leeromgeving met instructievideo’s en opdrachten",
+   "Wekelijkse live lessen van 45 minuten met je docent en medecursisten",
+   "CRKBO-erkend certificaat Italiaanse Wijn & Spijs bij afronding"
+  ],
+  "optioneel": "Optioneel bij te bestellen: de wijnen en ingrediënten voor je opdrachten thuis.",
+  "leerdoelen": [
+   "Ben je bekend met de theorie over smaak van Peter Klosse",
+   "Kun je zelfstandig wijnen te kiezen die passen bij een bepaald gerecht",
+   "Heb je een wijnkaart ontwikkeld, passend bij een bepaalde menukaart",
+   "Pas je de basisprincipes van smaakstructuur (zuur, vet, zoet, umami) toe bij het combineren van wijn en gerecht"
+  ],
+  "docenten": [
+   "Hugo Bos",
+   "Tiziano Capasso"
+  ]
+ },
+ "wijn-en-spijs-veneto": {
+  "soort": "wijnspijs",
+  "verwachten": {
+   "lead": "Veneto is niet alleen Soave en Amarone, maar ook risotto, bacalà en polenta. In deze cursus leer je hoe wijn en gerecht uit deze regio elkaar versterken.",
+   "punten": [
+    "Eén regio, twee werelden: je leert de wijnen van Veneto kennen én de klassieke gerechten van de regio, en hoe je ze combineert volgens de Klosse-smaakmethode.",
+    "Een praktijkdag proeven en koken: in onze studio proef je wijnen uit Veneto en kook je de gerechten die erbij passen, begeleid door een sommelier en een Italiaanse kok.",
+    "Daartussen online, in je eigen tempo: instructievideo’s en opdrachten die je voorbereiden op de praktijkdag."
+   ],
+   "slot": "Je sluit af met een opdracht die je docent beoordeelt. Daarna ontvang je je CRKBO-erkend certificaat Wijn & Spijs Veneto."
+  },
+  "programma": {
+   "lead": "Drie weken rond de regio Veneto, het tweede blok van de opleiding. Dit is de rijkste regio om te leren combineren, omdat je er een compleet menu mee kunt opbouwen.",
+   "punten": [
+    "De combinaties: Prosecco uit Valdobbiadene als aperitief, Valpolicella en ripasso bij de pasta, Amarone bij een stevig hoofdgerecht en recioto bij kaas of dessert. Die laatste gang wordt bijna nooit onderwezen en is juist waar het thuis misgaat. Aan de keukenkant staat de Venetiaanse tafel: polenta, baccalà mantecato, bigoli en risotto met radicchio."
+   ],
+   "weken": [
+    {
+     "week": "Week 1",
+     "titel": "Smaak en de wijnen van Veneto",
+     "tekst": "Zuur, zoet, vet, umami en tannine, en hoe ze elkaar versterken of uitvlakken. Van Valpolicella via ripasso naar Amarone, van Prosecco tot de zoete recioto. Wat indrogen met de druif doet en wat dat aan tafel betekent."
+    },
+    {
+     "week": "Week 2",
+     "titel": "De Venetiaanse keuken en het menu",
+     "tekst": "Polenta, baccalà mantecato, bigoli in salsa en risotto met radicchio. Van aperitief tot dessert bouw je een viergangenmenu op met bijpassende wijnen, en zet je het op papier."
+    },
+    {
+     "week": "Week 3",
+     "titel": "Praktijkdag",
+     "tekst": "Een zaterdag van 10:00 tot 15:00 in onze kookstudio in Amsterdam of Zeist. Je maakt de gerechten, proeft de wijnen ernaast en presenteert je menu met onderbouwing."
+    }
+   ]
+  },
+  "inbegrepen": [
+   "Sommelier starterspakket met kelnersmes en proefmateriaal",
+   "Eén praktijkdag in onze kookstudio in Amsterdam of Zeist, waarop je kookt én proeft",
+   "Alle wijnen en ingrediënten tijdens de praktijkdag",
+   "Online leeromgeving met instructievideo’s en opdrachten",
+   "Wekelijkse live lessen van 45 minuten met je docent en medecursisten",
+   "CRKBO-erkend certificaat Wijn & Spijs Veneto bij afronding"
+  ],
+  "optioneel": "Optioneel bij te bestellen: de wijnen en ingrediënten voor je opdrachten thuis.",
+  "leerdoelen": [
+   "Weet je alles over de wijnen van Veneto, van Soave tot Amarone",
+   "Kook je de klassieke gerechten van de Veneto-keuken",
+   "Combineer je deze wijnen en gerechten volgens de Klosse-smaakmethode",
+   "Heb je de regio en haar tradities in wijn en keuken leren kennen"
+  ],
+  "docenten": [
+   "Gina Botta",
+   "Olivier"
+  ]
+ },
+ "wijn-uit-piemonte": {
+  "soort": "wijn",
+  "verwachten": {
+   "lead": "Piemonte is het land van mist en mineraal, waar de druif Nebbiolo zijn duurste gedaantes aanneemt: Barolo en Barbaresco. In drie weken duik je in deze regio, haar druiven en haar wijnen.",
+   "punten": [
+    "Eén regio, grondig verkend: je leert de belangrijkste wijnstreken van Piemonte kennen, van de Barolo- en Barbaresco-heuvels tot de Moscato d’Asti, en de druiven die er groeien.",
+    "Een praktijkdag proeven: in onze studio proef je wijnen uit Piemonte, begeleid door een ervaren sommelier, en leer je ze beoordelen volgens de Klosse-smaakmethode.",
+    "Daartussen online, in je eigen tempo: instructievideo’s en proefopdrachten die je voorbereiden op de praktijkdag."
+   ],
+   "slot": "Je sluit af met een opdracht die je docent beoordeelt. Daarna ontvang je je CRKBO-erkend certificaat Wijn uit Piemonte."
+  },
+  "programma": {
+   "lead": "Drie weken rond de wijnen van Piemonte, het eerste blok van de opleiding. Nebbiolo staat centraal.",
+   "punten": [
+    "De wijnen: je leert waarom Barolo en Barbaresco per gemeente verschillen, hoe rijping zich laat proeven en wat tannine en zuren met een wijn doen over de jaren. Daarnaast de wijnen die er dagelijks gedronken worden, Barbera en Dolcetto, plus de witte Gavi en Moscato d’Asti."
+   ],
+   "weken": [
+    {
+     "week": "Week 1",
+     "titel": "Piemonte en Nebbiolo",
+     "tekst": "Ligging, klimaat, de mist in de Langhe, bodemtypes en wijnwetgeving. De elf gemeentes van Barolo en hun stijlverschillen, van La Morra tot Serralunga, plus Barbaresco. Traditioneel versus modern, en wat een MGA is."
+    },
+    {
+     "week": "Week 2",
+     "titel": "De dagelijkse wijnen en proefkader",
+     "tekst": "Barbera, Dolcetto, Nebbiolo d’Alba en Roero, de witte Gavi en Arneis, en Moscato d’Asti. Je bouwt een eigen proefkader met zuur, tannine, alcohol en rijping als assen, en schrijft twee proefnotities."
+    },
+    {
+     "week": "Week 3",
+     "titel": "Proefdag",
+     "tekst": "Een zaterdag van 10:00 tot 15:00 in Amsterdam of Zeist. Barolo uit verschillende gemeentes en jaargangen naast Barbaresco, Barbera, Dolcetto en Gavi, met hapjes uit Piemonte."
+    }
+   ]
+  },
+  "inbegrepen": [
+   "Sommelier starterspakket met kelnersmes en proefmateriaal",
+   "Eén praktijkdag in onze studio in Amsterdam of Zeist, waarop je zes Italiaanse wijnen proeft",
+   "Online leeromgeving met instructievideo’s en proefopdrachten",
+   "Wekelijkse live lessen van 45 minuten met je sommelier en medecursisten",
+   "CRKBO-erkend certificaat Wijn uit Piemonte bij afronding"
+  ],
+  "optioneel": "Optioneel bij te bestellen: de wijnen voor je proefopdrachten thuis.",
+  "leerdoelen": [
+   "Weet je alles over de druiven en wijnen van Piemonte, zoals Nebbiolo en Barbera",
+   "Ken je het verschil tussen Barolo, Barbaresco en de andere DOCG-wijnen uit de regio",
+   "Kun je deze wijnen proeven en beoordelen op structuur en kwaliteit",
+   "Weet je welke gerechten goed passen bij de stevige rode wijnen van Piemonte"
+  ],
+  "docenten": [
+   "Gina Botta",
+   "Hugo Bos"
+  ]
+ },
+ "wijn-uit-veneto": {
+  "soort": "wijn",
+  "verwachten": {
+   "lead": "Van de kalkbodems van Soave tot de gedroogde druiven achter Amarone: Veneto is een regio van uitersten. In drie weken leer je deze wijnen kennen én proeven.",
+   "punten": [
+    "Eén regio, grondig verkend: je leert de wijnstreken van Veneto kennen, van Soave en Valpolicella tot Amarone, en de methodes appassimento en ripasso die deze wijnen hun karakter geven.",
+    "Een praktijkdag proeven: in onze studio proef je wijnen uit Veneto, begeleid door een ervaren sommelier, volgens de Klosse-smaakmethode.",
+    "Daartussen online, in je eigen tempo: instructievideo’s en proefopdrachten die je voorbereiden op de praktijkdag."
+   ],
+   "slot": "Je sluit af met een opdracht die je docent beoordeelt. Daarna ontvang je je CRKBO-erkend certificaat Wijn uit Veneto."
+  },
+  "programma": {
+   "lead": "Drie weken rond de wijnen van Veneto en Friuli, het tweede blok van de opleiding. Alles draait om indrogen.",
+   "punten": [
+    "De wijnen: bij appassimento liggen de druiven maanden tot ze half rozijn zijn, en dat geeft Amarone. Je leert het verschil met Valpolicella en met ripasso, waarbij de gewone wijn nog een keer over de gebruikte schillen gaat. Daarnaast Prosecco volgens de tankmethode en de witte wijnen van Friuli."
+   ],
+   "weken": [
+    {
+     "week": "Week 1",
+     "titel": "Veneto in kaart en appassimento",
+     "tekst": "Van het Gardameer tot de Sloveense grens: klimaat, bodem en de drie gezichten van Veneto. Corvina, Rondinella en Molinara, het indrogen op rietmatten en de stap van Valpolicella via ripasso naar Amarone en recioto."
+    },
+    {
+     "week": "Week 2",
+     "titel": "Mousserend en wit",
+     "tekst": "Prosecco uit Conegliano-Valdobbiadene, de tankmethode tegenover metodo classico, en het verschil tussen brut, extra dry en dry. Daarnaast Friulano, Ribolla Gialla en Pinot Grigio uit Collio, plus Garganega uit Soave."
+    },
+    {
+     "week": "Week 3",
+     "titel": "Proefdag",
+     "tekst": "Een zaterdag van 10:00 tot 15:00 in Amsterdam of Zeist. Zes wijnen in oplopende intensiteit, van Prosecco tot Amarone, met de Venetiaanse gerechten erbij."
+    }
+   ]
+  },
+  "inbegrepen": [
+   "Sommelier starterspakket met kelnersmes en proefmateriaal",
+   "Eén praktijkdag in onze studio in Amsterdam of Zeist, waarop je zes Italiaanse wijnen proeft",
+   "Online leeromgeving met instructievideo’s en proefopdrachten",
+   "Wekelijkse live lessen van 45 minuten met je sommelier en medecursisten",
+   "CRKBO-erkend certificaat Wijn uit Veneto bij afronding"
+  ],
+  "optioneel": "Optioneel bij te bestellen: de wijnen voor je proefopdrachten thuis.",
+  "leerdoelen": [
+   "Weet je alles over de druiven en wijnen van Veneto, van Soave tot Amarone",
+   "Begrijp je de methodes appassimento en ripasso en het effect op de wijn",
+   "Ken je de rol van Prosecco en de metodo classico-schuimwijnen uit de regio",
+   "Kun je deze wijnen proeven en op waarde beoordelen"
+  ],
+  "docenten": [
+   "Olivier"
+  ]
+ },
+ "wijn-uit-toscane": {
+  "soort": "wijn",
+  "verwachten": {
+   "lead": "Toscane is de thuisbasis van Sangiovese, de druif achter Chianti en Brunello di Montalcino. In drie weken leer je deze regio en haar wijnen doorgronden.",
+   "punten": [
+    "Eén regio, grondig verkend: van Chianti Classico tot Brunello di Montalcino en de opkomst van de Super Tuscans, je leert de stijlen en de druif Sangiovese kennen.",
+    "Een praktijkdag proeven: in onze studio proef je wijnen uit Toscane, begeleid door een ervaren sommelier, volgens de Klosse-smaakmethode.",
+    "Daartussen online, in je eigen tempo: instructievideo’s en proefopdrachten die je voorbereiden op de praktijkdag."
+   ],
+   "slot": "Je sluit af met een opdracht die je docent beoordeelt. Daarna ontvang je je CRKBO-erkend certificaat Wijn uit Toscane."
+  },
+  "programma": {
+   "lead": "Drie weken rond de wijnen van Toscane, het derde blok van de opleiding. Toscane is Sangiovese.",
+   "punten": [
+    "De wijnen: strak en kruidig in Chianti Classico, ronder in Vino Nobile, en in Montalcino als Brunello met de diepte van jaren rijping. Je leert die verschillen proeven en herleiden naar bodem, hoogte en houtgebruik. Ook de supertoscanen en de witte Vernaccia komen langs."
+   ],
+   "weken": [
+    {
+     "week": "Week 1",
+     "titel": "Toscane en Chianti Classico",
+     "tekst": "Van de kust tot de heuvels van Montalcino: hoogte, bodem en de invloed van de zee, en waarom Sangiovese zo gevoelig is voor zijn plek. De zone Chianti Classico, het Gallo Nero, en het verschil tussen annata, riserva en gran selezione."
+    },
+    {
+     "week": "Week 2",
+     "titel": "Vino Nobile, Brunello en de moderne kant",
+     "tekst": "Montepulciano en Montalcino naast elkaar: dezelfde druif, andere hoogte, andere rijpingseisen. Daarnaast de supertoscanen uit Bolgheri en de witte Vernaccia. Je schrijft twee proefnotities."
+    },
+    {
+     "week": "Week 3",
+     "titel": "Proefdag",
+     "tekst": "Een zaterdag van 10:00 tot 15:00 in Amsterdam of Zeist. Chianti Classico, Vino Nobile en Brunello naast elkaar, met een supertoscaan en een Vernaccia ter vergelijking."
+    }
+   ]
+  },
+  "inbegrepen": [
+   "Sommelier starterspakket met kelnersmes en proefmateriaal",
+   "Eén praktijkdag in onze studio in Amsterdam of Zeist, waarop je zes Italiaanse wijnen proeft",
+   "Online leeromgeving met instructievideo’s en proefopdrachten",
+   "Wekelijkse live lessen van 45 minuten met je sommelier en medecursisten",
+   "CRKBO-erkend certificaat Wijn uit Toscane bij afronding"
+  ],
+  "optioneel": "Optioneel bij te bestellen: de wijnen voor je proefopdrachten thuis.",
+  "leerdoelen": [
+   "Weet je alles over de druif Sangiovese en de wijnen van Toscane",
+   "Ken je het verschil tussen Chianti, Chianti Classico en Brunello di Montalcino",
+   "Heb je de Super Tuscans en hun ontstaan leren kennen",
+   "Kun je deze wijnen proeven en beoordelen op stijl en kwaliteit"
+  ],
+  "docenten": [
+   "Olivier"
+  ]
+ },
+ "wijn-uit-midden-italie": {
+  "soort": "wijn",
+  "programma": {
+   "lead": "Drie weken rond de wijnen van Umbrië, Lazio en Abruzzo, het vierde blok van de opleiding. Dit is het onderschatte midden van Italië.",
+   "punten": [
+    "De wijnen: Sagrantino di Montefalco met een van de hoogste tanninegehaltes ter wereld, Montepulciano d’Abruzzo en Cerasuolo, en de vulkanische witte wijnen rond Rome met de comeback van Cesanese. Je leert die verschillen proeven en herleiden naar bodem, hoogte en rijping."
+   ],
+   "weken": [
+    {
+     "week": "Week 1",
+     "titel": "Midden-Italië en Sagrantino",
+     "tekst": "Umbrië, Lazio en Abruzzo: het groene hart, de vulkanische meren rond Rome en de Apennijnen tot aan de kust. Sagrantino di Montefalco als hoofdrol: hoe Montefalco van vergeten dessertwijn naar moderne topwijn ging, en hoe je zoveel tannine in balans krijgt."
+    },
+    {
+     "week": "Week 2",
+     "titel": "Lazio en Abruzzo",
+     "tekst": "Frascati en de Castelli Romani, Malvasia en Trebbiano op vulkanische bodem, en de comeback van Cesanese. Daarnaast Montepulciano d’Abruzzo, Cerasuolo als volwaardige rosé en Trebbiano d’Abruzzo. Je schrijft twee proefnotities."
+    },
+    {
+     "week": "Week 3",
+     "titel": "Proefdag",
+     "tekst": "Een zaterdag van 10:00 tot 15:00 in Amsterdam of Zeist. Sagrantino, Montepulciano, Cerasuolo, Frascati en Cesanese naast elkaar, met truffel, porchetta en arrosticini erbij."
+    }
+   ]
+  },
+  "inbegrepen": [
+   "Sommelier starterspakket met kelnersmes en proefmateriaal",
+   "Eén praktijkdag in onze studio in Amsterdam of Zeist, waarop je zes Italiaanse wijnen proeft",
+   "Online leeromgeving met instructievideo’s en proefopdrachten",
+   "Wekelijkse live lessen van 45 minuten met je sommelier en medecursisten",
+   "CRKBO-erkend certificaat Wijn uit Midden-Italië bij afronding"
+  ],
+  "optioneel": "Optioneel bij te bestellen: de wijnen voor je proefopdrachten thuis.",
+  "leerdoelen": [
+   "Weet je alles over de druiven en wijnen van Midden Italië, zoals Montepulciano en Sangiovese",
+   "Ken je het verschil tussen Sagrantino en de andere DOCG-wijnen uit de regio",
+   "Kun je deze wijnen proeven en beoordelen op structuur en kwaliteit",
+   "Weet je welke gerechten goed passen bij de stevige rode wijnen van Midden Italië"
+  ],
+  "docenten": [
+   "Hugo Bos"
+  ]
+ },
+ "wijn-uit-zuid-italie": {
+  "soort": "wijn",
+  "verwachten": {
+   "lead": "Warme zon, vulkanische grond en druiven die nergens anders zo groeien: Zuid-Italië levert wijnen met karakter. In drie weken proef en doorgrond je de streken Puglia, Campania, Sicilië en Sardinië.",
+   "punten": [
+    "Vier streken, één regio: je leert de wijnstreken van Zuid-Italië kennen, en druiven als Primitivo, Nero d’Avola en Aglianico, en hoe het klimaat hun stijl bepaalt.",
+    "Een praktijkdag proeven: in onze studio proef je wijnen uit Zuid-Italië, begeleid door een ervaren sommelier, volgens de Klosse-smaakmethode.",
+    "Daartussen online, in je eigen tempo: instructievideo’s en proefopdrachten die je voorbereiden op de praktijkdag."
+   ],
+   "slot": "Je sluit af met een opdracht die je docent beoordeelt. Daarna ontvang je je CRKBO-erkend certificaat Wijn uit Zuid-Italië."
+  },
+  "programma": {
+   "lead": "Drie weken rond de wijnen van Zuid-Italië, het vijfde blok van de opleiding. Warme zon, vulkanische grond en druiven die je nergens anders vindt.",
+   "punten": [
+    "De wijnen: Aglianico van de Taurasi-heuvels wordt de Barolo van het zuiden genoemd: donker, tannisch en lang houdbaar. Daarnaast de witte Fiano en Greco di Tufo met een structuur die je bij weinig Italiaanse witte wijnen vindt, Primitivo en Negroamaro uit Puglia, en op Sicilië de vulkanische hellingen van de Etna met Nerello Mascalese."
+   ],
+   "weken": [
+    {
+     "week": "Week 1",
+     "titel": "Het zuiden en Campanië",
+     "tekst": "Vulkanische bodem, hitte, hoogte en zeewind, en waarom het zuiden in twintig jaar van bulk naar topwijn ging. Aglianico en Taurasi als de barolo van het zuiden, met de witte Fiano di Avellino en Greco di Tufo."
+    },
+    {
+     "week": "Week 2",
+     "titel": "Puglia en Sicilië",
+     "tekst": "Primitivo uit Manduria en Negroamaro uit Salento: rijpheid, alcohol en restsuiker, en waar de grens ligt tussen vol en plomp. Daarnaast Nerello Mascalese op de Etna met de contrade als crus, Nero d’Avola en de zoete Marsala."
+    },
+    {
+     "week": "Week 3",
+     "titel": "Proefdag",
+     "tekst": "Een zaterdag van 10:00 tot 15:00 in Amsterdam of Zeist. Van Fiano en Greco tot Taurasi, Primitivo en Etna Rosso, met orecchiette en caponata erbij."
+    }
+   ]
+  },
+  "inbegrepen": [
+   "Sommelier starterspakket met kelnersmes en proefmateriaal",
+   "Eén praktijkdag in onze studio in Amsterdam of Zeist, waarop je zes Italiaanse wijnen proeft",
+   "Online leeromgeving met instructievideo’s en proefopdrachten",
+   "Wekelijkse live lessen van 45 minuten met je sommelier en medecursisten",
+   "CRKBO-erkend certificaat Wijn uit Zuid-Italië bij afronding"
+  ],
+  "optioneel": "Optioneel bij te bestellen: de wijnen voor je proefopdrachten thuis.",
+  "leerdoelen": [
+   "Weet je alles over de druiven en wijnen van Zuid-Italië, zoals Primitivo, Nero d’Avola en Aglianico",
+   "Ken je de invloed van het warme klimaat op de stijl van deze wijnen",
+   "Heb je de belangrijkste wijnstreken van Puglia, Campania, Sicilië en Sardinië leren kennen",
+   "Kun je deze wijnen proeven en beoordelen op karakter en kwaliteit"
+  ],
+  "docenten": [
+   "Olivier"
+  ]
+ }
+}

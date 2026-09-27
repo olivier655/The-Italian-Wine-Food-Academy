@@ -1,27 +1,115 @@
 {% extends "base.html" %}
 {% from "_opties.html" import opties with context %}
+{% set c = product.content %}
 {% block title %}{{ product.naam }} · The Italian Wine & Food Academy{% endblock %}
+{% block description %}{{ product.kort|truncate(155, True, '…') }}{% endblock %}
 {% block content %}
 <section class="hero">
   <div class="hero-inner">
+    <p class="eyebrow">{% if product.nlqf %}Diploma-opleiding{% elif product.soort == 'opties' %}Certificaatprogramma{% elif product.groep == 'los' %}Losse module{% else %}Cursus van drie weken{% endif %}</p>
     <h1>{{ product.naam }}</h1>
     <p class="hero-lead">{{ product.kort }}</p>
     <ul class="facts">
       <li><span>Duur</span>{{ product.duur }}</li>
       <li><span>Afsluiting</span>{{ product.afsluiting }}</li>
-      <li><span>{% if product.soort == 'opties' %}Vanaf{% else %}Prijs{% endif %}</span>
-        {{ (product.opties[0].prijs if product.soort == 'opties' else product.prijs)|euro }}</li>
+      <li><span>{% if product.soort == 'opties' %}Vanaf{% else %}Prijs{% endif %}</span>{{ vanaf(product)|euro }}</li>
+      {% if product.starts %}<li><span>Eerstvolgende start</span>{{ product.starts[0].label.split(' · ')[0] }}</li>{% endif %}
     </ul>
+    <div class="hero-actions">
+      <a class="btn btn--solid" href="{% if product.soort == 'opties' %}#opties{% else %}{{ url_for('aanmelden', slug=slug) }}{% endif %}">{% if product.soort == 'opties' %}Kies je leeroptie{% else %}Schrijf je in{% endif %}</a>
+      {% if product.brochure %}<a class="btn btn--ghost" href="{{ product.brochure }}">Download de brochure</a>{% endif %}
+    </div>
   </div>
 </section>
 
-{% if product.soort == 'opties' %}
-  {{ opties(slug, product) }}
+{% if product.soort == 'opties' %}{{ opties(slug, product) }}{% endif %}
+
+{% if c.verwachten %}
+<section class="section prose-section">
+  <h2>Wat kun je verwachten?</h2>
+  <p class="lead">{{ c.verwachten.lead }}</p>
+  <ol class="numbered">{% for p in c.verwachten.punten %}<li>{{ p }}</li>{% endfor %}</ol>
+  {% if c.verwachten.slot %}<p>{{ c.verwachten.slot }}</p>{% endif %}
+</section>
+{% endif %}
+
+{% if c.programma %}
+<section class="section section--creme prose-section">
+  <h2>Het programma</h2>
+  <p class="lead">{{ c.programma.lead }}</p>
+  {% for p in c.programma.punten %}<p>{{ p }}</p>{% endfor %}
+  {% if c.programma.weken %}
+  <div class="weeks">
+    {% for w in c.programma.weken %}
+    <article><p class="week-nr">{{ w.week }}</p><h3>{{ w.titel }}</h3><p>{{ w.tekst }}</p></article>
+    {% endfor %}
+  </div>
+  {% endif %}
+</section>
+{% endif %}
+
+{% if c.inbegrepen or c.leerdoelen %}
+<section class="section prose-section two-col">
+  {% if c.inbegrepen %}
+  <div>
+    <h2>Wat zit erbij</h2>
+    <ul class="checks">{% for i in c.inbegrepen %}<li>{{ i }}</li>{% endfor %}</ul>
+    {% if c.optioneel %}<p class="muted">{{ c.optioneel }}</p>{% endif %}
+    <p class="muted">Btw-vrij (CRKBO-geregistreerd). Gespreid betalen in vijf termijnen is mogelijk.</p>
+  </div>
+  {% endif %}
+  {% if c.leerdoelen %}
+  <div>
+    <h2>Na deze cursus…</h2>
+    <ul class="checks">{% for i in c.leerdoelen %}<li>{{ i[:1]|lower }}{{ i[1:] }}</li>{% endfor %}</ul>
+  </div>
+  {% endif %}
+</section>
+{% endif %}
+
+{% if team %}
+<section class="section section--creme">
+  <div class="section-head"><h2>Je docenten</h2></div>
+  <div class="people people--small">
+    {% for d in team %}
+    <article class="person">
+      {% if d.foto %}<img src="{{ d.foto }}" alt="{{ d.naam }}" loading="lazy">{% else %}<span class="initials">{{ d.initialen }}</span>{% endif %}
+      <div><h3>{{ d.naam }}</h3>{% if d.bio %}<p>{{ d.bio }}</p>{% endif %}</div>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+{% if product.groep != 'los' %}
+<section class="section" id="startdata">
+  <div class="section-head"><h2>Startdata en locaties</h2>
+    <p>{% if product.soort == 'opties' %}Voor optie 3, met praktijkdagen. Optie 1 start je wanneer je wilt; bij optie 2 kies je alleen de startdatum.{% else %}De praktijkdag is op zaterdag van 10:00 tot 15:00.{% endif %}</p>
+  </div>
+  {% if product.starts %}
+  <ul class="starts">
+    {% for s in product.starts %}
+    <li><span>{{ s.label.split(' · ')[0] }}</span><span>{{ s.locatie }}</span>
+      <a class="btn btn--line btn--small" href="{{ url_for('aanmelden', slug=slug, start=s.sku, optie='met-praktijk' if product.soort == 'opties' else None) }}">Aanmelden</a></li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p>Nieuwe startdata volgen binnenkort. Meld je nu aan, dan plannen we je in bij de eerstvolgende groep.</p>
+  {% endif %}
+</section>
+{% endif %}
+
+{% if product.soort == 'enkel' %}
+<section class="cta">
+  <h2>{{ product.naam }} · {{ product.prijs|euro }}</h2>
+  <p>Alles inbegrepen, btw-vrij. Je sluit af met een {{ product.afsluiting }}.</p>
+  <a class="btn btn--solid" href="{{ url_for('aanmelden', slug=slug) }}">Schrijf je in</a>
+</section>
 {% else %}
-<section class="single">
-  <p class="option-price">{{ product.prijs|euro }}</p>
-  <p class="option-who">{{ product.kort }} Je sluit af met een {{ product.afsluiting|lower }}.</p>
-  <a class="btn btn--solid" href="{{ url_for('aanmelden', slug=slug) }}">Aanmelden</a>
+<section class="cta">
+  <h2>Twijfel je nog?</h2>
+  <p>Plan een gratis, vrijblijvend studieadviesgesprek. We kijken samen welke optie past bij je doelen en je agenda.</p>
+  <a class="btn btn--solid" href="{{ STUDIEADVIES }}">Plan gratis studieadvies</a>
 </section>
 {% endif %}
 {% endblock %}

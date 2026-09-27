@@ -1,56 +1,51 @@
 # TWFA-site in Flask
 
-Product- en aanmeldpagina's van The Italian Wine & Food Academy, zonder WordPress.
-De leeromgeving blijft op WordPress/LearnDash.
+De publieke site van The Italian Wine & Food Academy, zonder WordPress: producten, aanmelden en de belangrijkste contentpagina's. De leeromgeving blijft op WordPress/LearnDash. Draait op Render (`twfa-site`), met italianwineandfoodacademy.com als domein.
 
-## Wat erin zit
+## Pagina's
 
 | Route | Wat |
 |---|---|
-| `/opleidingen/` | Overzicht van het aanbod |
-| `/product/<slug>/` | Productpagina, met de drie opties voor Gastronomie, Keuken en Wijn |
-| `/aanmelden/<slug>/?optie=...` | Aanmeldformulier, stuurt naar Make |
-| `/aanmelden/bedankt/` | Bevestiging met prijsoverzicht |
+| `/` | Homepage |
+| `/opleidingen/` | Overzicht, per groep (opleiding, certificaten, kook, wijn, wijn & spijs) |
+| `/product/<slug>/` | Productpagina, zelfde slugs als de oude site |
+| `/aanmelden/<slug>/` | Aanmeldformulier, stuurt naar Make |
+| `/leermethode/`, `/kookstudio/`, `/docenten/` | Contentpagina's |
+| `/piemonte/`, `/lombardije/`, `/ligurie/`, `/toscane/` | Streekpagina's uit het contentplan |
+| `/healthz` | Laat zien of de gegevens live uit Airtable komen (`"bron": "airtable"`) |
 
-De slugs zijn dezelfde als op de huidige site (`/product/opleiding-italiaanse-gastronomie/` enz.),
-zodat bestaande links en Google-posities blijven werken na de overstap.
+`/product/regiocursus/` stuurt door naar het overzicht.
 
-## Prijzen en aanbod aanpassen
+## Waar wat staat
 
-Alles staat in `catalog.py`: producten, opties, kenmerken, prijzen, examen-add-on,
-startmomenten en regio's. De server rekent de prijs zelf uit; het bedrag uit de
-browser wordt nooit vertrouwd.
+- **Airtable** (base Teacher portal TWFA) is leidend voor producten, prijzen, korte beschrijvingen, status en startmomenten (tabel TWFA Producten: hoofdproducten + varianten), en voor de docenten (tabel Teachers, Brand = TWFA, On website aan). Wijzig je daar iets, dan staat het binnen vijf minuten op de site.
+  - Alleen hoofdproducten met status *Gepubliceerd* komen online.
+  - Alleen varianten met status *publish* en een startdatum vanaf vandaag worden startmomenten; de locatie komt uit de naam (Amsterdam/Zeist).
+- **`catalog.py`**: de drie leeropties van Gastronomie, Keuken en Wijn. De prijs van optie 3 is de Airtable-prijs; optie 1, 2 en de examen-add-on staan hier.
+- **`content/producten.json`**: de lange productteksten (verwachtingen, programma per week, wat erbij zit, leerdoelen, docenten).
+- **`content/streken.json`**: de streekpagina's.
+- **`data/snapshot.json`**: momentopname van Airtable. Wordt gebruikt als `AIRTABLE_TOKEN` ontbreekt of Airtable niet antwoordt, zodat de site altijd blijft werken.
 
-## Lokaal draaien
+## Omgevingsvariabelen (Render → Environment)
+
+| Naam | Waarde |
+|---|---|
+| `SECRET_KEY` | lange willekeurige tekst |
+| `MAKE_WEBHOOK_URL` | webhook van Make-scenario 9875320 |
+| `AIRTABLE_TOKEN` | personal access token, scope `data.records:read`, alleen base Teacher portal TWFA |
+
+## Lokaal draaien en testen
 
     python -m venv .venv && source .venv/bin/activate
-    pip install -r requirements.txt
-    cp .env.example .env        # vul SECRET_KEY en MAKE_WEBHOOK_URL in
+    pip install -r requirements.txt -r requirements-dev.txt
+    cp .env.example .env
     flask --app app run --debug
+    python -m pytest -q
 
 Productie: `gunicorn app:app`.
 
-## Make-koppeling
+## Aanmelding → Make
 
-Het scenario staat al klaar in Make: *TWFA — Aanmelding site → Inschrijvingen + bevestiging*
-(scenario 9875320, webhook `https://hook.eu2.make.com/pbg7fedww8h8odbt67ovohrc2lpm422x`).
-Het maakt een regel in Airtable › Teacher portal TWFA › TWFA Inschrijvingen, stuurt de cursist een
-bevestiging vanaf olivier@thewineandfoodacademy.com en stuurt Olivier een seintje. Per aanmelding komt er één JSON binnen met deze velden:
+Per aanmelding één JSON naar de webhook: `bron, aangemeld_op, product_slug, product_sku, product, optie_nr, optie, examen, examen_bijgeboekt, examenroute, variant_sku, startdatum, startmoment, locatie, voornaam, achternaam, email, telefoon, factuur, bedrijfsnaam, straat, postcode, plaats, betaling (ineens|termijnen), opmerking, prijsregels[], totaal`. De server rekent de prijs zelf uit en controleert dat het gekozen startmoment bij het product hoort.
 
-`bron, aangemeld_op, product_slug, product, optie_nr, optie, examen, examen_bijgeboekt,
-examenroute (werkplek|portfolio), locatie, startmoment, regio, voornaam, achternaam, email,
-telefoon, factuur (particulier|zakelijk), bedrijfsnaam, straat, postcode, plaats,
-betaling (ineens|termijnen), opmerking, prijsregels[], totaal`
-
-De bedanktpagina belooft de bevestigingsmail binnen een paar minuten, dus zet het scenario aan
-voordat de site live gaat.
-
-Werkt de webhook niet, dan krijgt de bezoeker een foutmelding met het mailadres
-en blijft het ingevulde formulier staan. Er wordt geen persoonsgegeven gelogd.
-
-## Nog te doen
-
-- Echte startmomenten invullen in `catalog.py` (nu alleen "Januari 2027").
-- Factuur en termijnen: nu gaat alles via Make. Online betalen (Mollie) kan later.
-- LearnDash-toegang na betaling koppelen via Make.
-- Redirects van het oude domein zodra de nieuwe site live gaat.
+Make zet de aanmelding in TWFA Inschrijvingen en stuurt de bevestiging en een seintje. Hoe dat verder moet lopen (orders, controle, Moneybird, LearnDash) staat in het plan *Orderdatabase TWFA*.
