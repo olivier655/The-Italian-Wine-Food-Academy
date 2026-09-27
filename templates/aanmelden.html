@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+{% block title %}Aanmelden · {{ product.naam }}{% endblock %}
+{% macro err(name) %}{% if errors.get(name) %}<p class="field-error">{{ errors[name] }}</p>{% endif %}{% endmacro %}
+{% macro text(name, label, type="text", autocomplete="") %}
+<label class="field{% if errors.get(name) %} field--error{% endif %}">
+  <span>{{ label }}</span>
+  <input type="{{ type }}" name="{{ name }}" value="{{ values.get(name, '') }}"{% if autocomplete %} autocomplete="{{ autocomplete }}"{% endif %}>
+  {{ err(name) }}
+</label>
+{% endmacro %}
+{% block content %}
+<section class="form-wrap">
+  <h1>Aanmelden voor {{ product.naam }}</h1>
+  <p class="hero-lead">Na je aanmelding krijg je een bevestiging per mail, daarna de factuur.</p>
+
+  {% if errors.get('algemeen') %}<p class="form-alert">{{ errors['algemeen'] }}</p>{% endif %}
+
+  <form method="post" class="signup" novalidate
+        data-addon="{{ product.examen_addon or 0 }}">
+    <input type="hidden" name="csrf" value="{{ csrf_token() }}">
+    <div class="hp" aria-hidden="true"><label>Website <input name="website" tabindex="-1" autocomplete="off"></label></div>
+
+    {% if product.soort == 'opties' %}
+    <fieldset>
+      <legend>Kies je optie</legend>
+      {% for opt in product.opties %}
+      <label class="choice">
+        <input type="radio" name="optie" value="{{ opt.key }}" data-price="{{ opt.prijs }}"
+               data-praktijk="{{ 1 if opt.praktijk else 0 }}" data-examen="{{ 1 if opt.examen_inbegrepen else 0 }}"
+               {% if values.get('optie') == opt.key %}checked{% endif %}>
+        <span class="choice-body">
+          <strong>Optie {{ loop.index }}: {{ opt.naam }}</strong>
+          <span>{{ opt.prijs|euro }}{% if opt.examen_inbegrepen %}, examen inbegrepen{% endif %}</span>
+        </span>
+      </label>
+      {% endfor %}
+      {{ err('optie') }}
+
+      <div class="exam-block" data-show-if="no-exam">
+        <label class="check">
+          <input type="checkbox" name="examen" value="ja" {% if values.get('examen') == 'ja' %}checked{% endif %}>
+          <span>Examen en {{ product.afsluiting }} bijboeken (+{{ product.examen_addon|euro }})</span>
+        </label>
+        <div class="exam-route" data-show-if="exam-checked">
+          <p class="field-help">Voor het examen laat je zien dat je genoeg praktijk hebt opgedaan. Hoe wil je dat doen?</p>
+          <label class="choice choice--small"><input type="radio" name="examenroute" value="werkplek" {% if values.get('examenroute') == 'werkplek' %}checked{% endif %}><span class="choice-body">Met een praktijkverklaring van mijn werkgever</span></label>
+          <label class="choice choice--small"><input type="radio" name="examenroute" value="portfolio" {% if values.get('examenroute') == 'portfolio' %}checked{% endif %}><span class="choice-body">Met een portfolio van mijn eigen gerechten en proefnotities</span></label>
+          {{ err('examenroute') }}
+        </div>
+      </div>
+    </fieldset>
+    {% endif %}
+
+    {% if product.kies_regio %}
+    <fieldset>
+      <legend>Welke regio?</legend>
+      <label class="field{% if errors.get('regio') %} field--error{% endif %}">
+        <select name="regio">
+          <option value="">Kies een regio</option>
+          {% for r in regios %}<option {% if values.get('regio') == r %}selected{% endif %}>{{ r }}</option>{% endfor %}
+        </select>
+        {{ err('regio') }}
+      </label>
+    </fieldset>
+    {% endif %}
+
+    <fieldset>
+      <legend>Wanneer en waar</legend>
+      <label class="field">
+        <span>Startmoment</span>
+        <select name="startmoment">
+          {% for s in startmomenten %}<option {% if values.get('startmoment') == s %}selected{% endif %}>{{ s }}</option>{% endfor %}
+        </select>
+      </label>
+      {% if product.soort == 'opties' or product.praktijk %}
+      <div class="field{% if errors.get('locatie') %} field--error{% endif %}" data-show-if="praktijk">
+        <span>Locatie praktijkdagen</span>
+        <div class="inline-choices">
+          {% for l in locaties %}
+          <label class="pill"><input type="radio" name="locatie" value="{{ l }}" {% if values.get('locatie') == l %}checked{% endif %}><span>{{ l }}</span></label>
+          {% endfor %}
+        </div>
+        {{ err('locatie') }}
+      </div>
+      {% endif %}
+    </fieldset>
+
+    <fieldset>
+      <legend>Je gegevens</legend>
+      <div class="row">{{ text('voornaam', 'Voornaam', autocomplete='given-name') }}{{ text('achternaam', 'Achternaam', autocomplete='family-name') }}</div>
+      <div class="row">{{ text('email', 'E-mailadres', 'email', 'email') }}{{ text('telefoon', 'Telefoonnummer', 'tel', 'tel') }}</div>
+      {{ text('straat', 'Straat en huisnummer', autocomplete='street-address') }}
+      <div class="row">{{ text('postcode', 'Postcode', autocomplete='postal-code') }}{{ text('plaats', 'Woonplaats', autocomplete='address-level2') }}</div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Factuur en betaling</legend>
+      <div class="inline-choices">
+        <label class="pill"><input type="radio" name="factuur" value="particulier" {% if values.get('factuur', 'particulier') == 'particulier' %}checked{% endif %}><span>Ik betaal zelf</span></label>
+        <label class="pill"><input type="radio" name="factuur" value="zakelijk" {% if values.get('factuur') == 'zakelijk' %}checked{% endif %}><span>Mijn werkgever betaalt</span></label>
+      </div>
+      <div data-show-if="zakelijk">{{ text('bedrijfsnaam', 'Bedrijfsnaam op de factuur', autocomplete='organization') }}</div>
+      <div class="inline-choices">
+        <label class="pill"><input type="radio" name="betaling" value="ineens" {% if values.get('betaling', 'ineens') == 'ineens' %}checked{% endif %}><span>In één keer betalen</span></label>
+        <label class="pill"><input type="radio" name="betaling" value="termijnen" {% if values.get('betaling') == 'termijnen' %}checked{% endif %}><span>In termijnen betalen</span></label>
+      </div>
+      <label class="field">
+        <span>Opmerking (optioneel)</span>
+        <textarea name="opmerking" rows="3">{{ values.get('opmerking', '') }}</textarea>
+      </label>
+    </fieldset>
+
+    <div class="summary">
+      <div>
+        <span>Totaal, btw-vrij</span>
+        <strong class="js-total">{% if product.soort == 'enkel' %}{{ product.prijs|euro }}{% else %}–{% endif %}</strong>
+      </div>
+      <label class="check{% if errors.get('voorwaarden') %} field--error{% endif %}">
+        <input type="checkbox" name="voorwaarden" value="ja" {% if values.get('voorwaarden') %}checked{% endif %}>
+        <span>Ik ga akkoord met de <a href="https://thewineandfoodacademy.com/algemene-voorwaarden/" target="_blank" rel="noopener">algemene voorwaarden</a>.</span>
+      </label>
+      {{ err('voorwaarden') }}
+      <button type="submit" class="btn btn--solid">Aanmelding versturen</button>
+    </div>
+  </form>
+</section>
+{% endblock %}
+{% block scripts %}
+<script>
+(function () {
+  const form = document.querySelector('.signup');
+  if (!form) return;
+  const addon = Number(form.dataset.addon || 0);
+  const fmt = n => '€' + n.toLocaleString('nl-NL');
+  const show = (sel, on) => form.querySelectorAll(sel).forEach(el => el.hidden = !on);
+
+  function update() {
+    const opt = form.querySelector('input[name="optie"]:checked');
+    const exam = form.querySelector('input[name="examen"]');
+    const zakelijk = form.querySelector('input[name="factuur"]:checked')?.value === 'zakelijk';
+    show('[data-show-if="zakelijk"]', zakelijk);
+    if (!opt) { show('[data-show-if="no-exam"]', false); return; }
+    const inclExam = opt.dataset.examen === '1';
+    const praktijk = opt.dataset.praktijk === '1';
+    show('[data-show-if="no-exam"]', !inclExam);
+    show('[data-show-if="exam-checked"]', !inclExam && exam && exam.checked);
+    show('[data-show-if="praktijk"]', praktijk);
+    let total = Number(opt.dataset.price);
+    if (!inclExam && exam && exam.checked) total += addon;
+    form.querySelector('.js-total').textContent = fmt(total);
+  }
+  form.addEventListener('change', update);
+  update();
+})();
+</script>
+{% endblock %}

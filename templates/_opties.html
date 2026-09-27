@@ -1,0 +1,35 @@
+{% macro opties(slug, product) %}
+<section class="options">
+  <div class="options-head">
+    <h2>{% if product.nlqf %}Drie wegen naar hetzelfde diploma{% else %}Drie manieren om te leren{% endif %}</h2>
+    <p>In alle drie de opties werk je met dezelfde lesstof, naar dezelfde eindtermen. Je kiest hoeveel begeleiding en praktijk je onderweg wilt. Bij optie 3 zit het examen erbij, bij optie 1 en 2 boek je het bij.</p>
+  </div>
+  <div class="option-grid">
+    {% for opt in product.opties %}
+    <article class="option{% if opt.examen_inbegrepen %} option--full{% endif %}">
+      <p class="option-nr">Optie {{ loop.index }}</p>
+      <h3>{{ opt.naam }}</h3>
+      <p class="option-who">{{ opt.voor_wie }}</p>
+      <p class="option-price">{{ opt.prijs|euro }}</p>
+      <p class="option-exam">
+        {% if opt.examen_inbegrepen %}Examen en {{ product.afsluiting }} inbegrepen
+        {% else %}Examen bij te boeken voor {{ product.examen_addon|euro }}{% endif %}
+      </p>
+      <a class="btn {% if opt.examen_inbegrepen %}btn--solid{% else %}btn--line{% endif %}"
+         href="{{ url_for('aanmelden', slug=slug, optie=opt.key) }}">Aanmelden voor optie {{ loop.index }}</a>
+      {% if opt.plus_label %}<p class="option-plus">{{ opt.plus_label }}</p>{% endif %}
+      <ul class="checks">
+        {% for k in opt.kenmerken %}<li>{{ k }}</li>{% endfor %}
+      </ul>
+    </article>
+    {% endfor %}
+  </div>
+
+  <aside class="work-route">
+    <h3>Werk je al in de horeca of wijnhandel?</h3>
+    <p>Dan maak je je praktijkmeters misschien al op je werk. Met optie 1 of 2 kun je dan ook examen doen. Je laat met een praktijkverklaring van je werkgever of een portfolio zien wat je in de praktijk hebt gedaan. Daarna doe je hetzelfde examen als iedereen: een theorietoets, een praktijkexamen in onze kookstudio en je eindopdracht.</p>
+    <p class="work-price">Examen en {{ product.afsluiting }} bij optie 1 of 2: {{ product.examen_addon|euro }}</p>
+  </aside>
+  {% if product.nlqf %}<p class="fineprint">{{ NLQF_STATUS }}</p>{% endif %}
+</section>
+{% endmacro %}

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Aanmelding ontvangen{% endblock %}
+{% block content %}
+<section class="form-wrap">
+  <h1>{% if aanmelding %}Grazie, {{ aanmelding.voornaam }}.{% else %}Grazie.{% endif %} Je aanmelding is binnen.</h1>
+  <p class="hero-lead">Je krijgt binnen een paar minuten een bevestiging per mail. Daarna sturen we je de factuur en de toegang tot de leeromgeving.</p>
+  {% if aanmelding %}
+  <div class="receipt">
+    {% for r in aanmelding.regels %}<p><span>{{ r.omschrijving }}</span><span>{{ r.bedrag|euro }}</span></p>{% endfor %}
+    <p class="receipt-total"><span>Totaal, btw-vrij</span><span>{{ aanmelding.totaal|euro }}</span></p>
+  </div>
+  {% endif %}
+  <a class="btn btn--line" href="{{ url_for('overzicht') }}">Terug naar de opleidingen</a>
+</section>
+{% endblock %}

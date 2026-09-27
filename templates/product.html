@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% from "_opties.html" import opties with context %}
+{% block title %}{{ product.naam }} · The Italian Wine & Food Academy{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="hero-inner">
+    <h1>{{ product.naam }}</h1>
+    <p class="hero-lead">{{ product.kort }}</p>
+    <ul class="facts">
+      <li><span>Duur</span>{{ product.duur }}</li>
+      <li><span>Afsluiting</span>{{ product.afsluiting }}</li>
+      <li><span>{% if product.soort == 'opties' %}Vanaf{% else %}Prijs{% endif %}</span>
+        {{ (product.opties[0].prijs if product.soort == 'opties' else product.prijs)|euro }}</li>
+    </ul>
+  </div>
+</section>
+
+{% if product.soort == 'opties' %}
+  {{ opties(slug, product) }}
+{% else %}
+<section class="single">
+  <p class="option-price">{{ product.prijs|euro }}</p>
+  <p class="option-who">{{ product.kort }} Je sluit af met een {{ product.afsluiting|lower }}.</p>
+  <a class="btn btn--solid" href="{{ url_for('aanmelden', slug=slug) }}">Aanmelden</a>
+</section>
+{% endif %}
+{% endblock %}

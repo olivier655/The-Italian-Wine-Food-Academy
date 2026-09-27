@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}The Italian Wine & Food Academy{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='twfa.css') }}">
+</head>
+<body>
+  <header class="site-header">
+    <a class="logo" href="{{ url_for('overzicht') }}">The Italian Wine &amp; Food Academy</a>
+    <nav>
+      <a href="{{ url_for('overzicht') }}">Opleidingen</a>
+      <a href="https://thewineandfoodacademy.com/studieadvies/">Studieadvies</a>
+      <a href="https://thewineandfoodacademy.com/mijn-profiel">Leeromgeving</a>
+    </nav>
+  </header>
+  <main>{% block content %}{% endblock %}</main>
+  <footer class="site-footer">
+    <p>Alle bedragen zijn btw-vrij, want we zijn CRKBO-geregistreerd. Gespreid betalen is mogelijk.</p>
+    <p>© The Wine &amp; Food Academy B.V. · <a href="https://thewineandfoodacademy.com/algemene-voorwaarden/">Algemene voorwaarden</a> · <a href="https://thewineandfoodacademy.com/privacy-policy/">Privacy</a></p>
+  </footer>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

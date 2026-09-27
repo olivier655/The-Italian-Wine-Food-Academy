@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Opleidingen · The Italian Wine & Food Academy{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="hero-inner">
+    <h1>Opleidingen en cursussen</h1>
+    <p class="hero-lead">Van een losse regio in drie weken tot het volledige diploma in een studiejaar. Keuken en wijn, altijd samen.</p>
+  </div>
+</section>
+<section class="catalog">
+  {% for slug, p in PRODUCTS.items() %}
+  <a class="catalog-row" href="{{ url_for('product', slug=slug) }}">
+    <div>
+      <h2>{{ p.naam }}</h2>
+      <p>{{ p.kort }}</p>
+    </div>
+    <div class="catalog-meta">
+      <span>{{ p.duur }} · {{ p.afsluiting }}</span>
+      <strong>{% if p.soort == 'opties' %}vanaf {{ p.opties[0].prijs|euro }}{% else %}{{ p.prijs|euro }}{% endif %}</strong>
+    </div>
+  </a>
+  {% endfor %}
+</section>
+{% endblock %}
