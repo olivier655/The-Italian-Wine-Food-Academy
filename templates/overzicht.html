@@ -17,7 +17,8 @@
   </div>
   {% for slug, p in items %}
   <a class="catalog-row" href="{{ url_for('product', slug=slug) }}">
-    <div>
+    <img class="catalog-img" src="{{ product_foto(slug) }}" alt="" loading="lazy">
+    <div class="catalog-body">
       <h3>{{ p.naam }}</h3>
       <p>{{ p.kort|truncate(200, True, '…') }}</p>
     </div>

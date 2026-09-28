@@ -4,8 +4,9 @@
 {% block title %}{{ product.naam }} · The Italian Wine & Food Academy{% endblock %}
 {% block description %}{{ product.kort|truncate(155, True, '…') }}{% endblock %}
 {% block content %}
-<section class="hero">
+<section class="hero hero--split">
   <div class="hero-inner">
+   <div class="hero-text">
     <p class="eyebrow">{% if product.nlqf %}Diploma-opleiding{% elif product.soort == 'opties' %}Certificaatprogramma{% elif product.groep == 'los' %}Losse module{% else %}Cursus van drie weken{% endif %}</p>
     <h1>{{ product.naam }}</h1>
     <p class="hero-lead">{{ product.kort }}</p>
@@ -19,6 +20,8 @@
       <a class="btn btn--solid" href="{% if product.soort == 'opties' %}#opties{% else %}{{ url_for('aanmelden', slug=slug) }}{% endif %}">{% if product.soort == 'opties' %}Kies je leeroptie{% else %}Schrijf je in{% endif %}</a>
       {% if product.brochure %}<a class="btn btn--ghost" href="{{ product.brochure }}">Download de brochure</a>{% endif %}
     </div>
+   </div>
+   <img class="hero-photo" src="{{ product_foto(slug) }}" alt="{{ product.naam }}" fetchpriority="high">
   </div>
 </section>
 

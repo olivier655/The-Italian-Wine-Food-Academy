@@ -37,6 +37,35 @@ FOTO = {
 }
 
 
+# Sfeerfoto per product en streek (mediabibliotheek WordPress, map 2026/06).
+PRODUCT_FOTO = {
+    "opleiding-italiaanse-gastronomie": "image00163.jpeg",
+    "italiaanse-keuken": "image00112.jpeg",
+    "italiaanse-wijn": "image00176.jpeg",
+    "italiaanse-wijn-en-spijs": "image00143.jpeg",
+    "wijn-en-spijs-veneto": "image00148.jpeg",
+    "pasta-fresca": "image00055.jpeg",
+    "romeinse-pastas": "image00069.jpeg",
+    "pizza-napoletana": "image00023.jpeg",
+    "wijn-uit-piemonte": "image00018.jpeg",
+    "wijn-uit-veneto": "image00020-1.jpeg",
+    "wijn-uit-toscane": "image00015.jpeg",
+    "wijn-uit-midden-italie": "image00160.jpeg",
+    "wijn-uit-zuid-italie": "image00017-2.jpeg",
+    "gastronomie-en-ondernemerschap": "image00170.jpeg",
+}
+STREEK_FOTO = {
+    "piemonte": "image00169.jpeg",
+    "lombardije": "image00147.jpeg",
+    "ligurie": "image00138.jpeg",
+    "toscane": "twfa-hero-toscane.jpg",
+}
+
+
+def product_foto(slug):
+    return img(PRODUCT_FOTO.get(slug, "image00163.jpeg"))
+
+
 def img(name):
     return f"{WP}/wp-content/uploads/2026/06/{name}"
 
@@ -53,7 +82,8 @@ def docenten():
 @app.context_processor
 def globals_for_templates():
     return {"NLQF_STATUS": NLQF_STATUS, "STUDIEADVIES": STUDIEADVIES, "WP": WP, "img": img,
-            "vanaf": vanaf, "STREKEN": STREKEN}
+            "vanaf": vanaf, "STREKEN": STREKEN,
+            "product_foto": product_foto, "STREEK_FOTO": STREEK_FOTO}
 
 
 def csrf_token():

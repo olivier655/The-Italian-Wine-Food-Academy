@@ -37,6 +37,7 @@
   <div class="cards">
     {% for slug, p in uitgelicht %}
     <a class="card{% if loop.first %} card--dark{% endif %}" href="{{ url_for('product', slug=slug) }}">
+      <img class="card-img" src="{{ product_foto(slug) }}" alt="" loading="lazy">
       <p class="card-kicker">{% if p.nlqf %}Diploma · vlaggenschip{% elif p.soort == 'opties' %}Certificaat · CRKBO{% else %}Instap · {{ p.duur }}{% endif %}</p>
       <h3>{{ p.naam }}</h3>
       <p class="card-price">{% if p.soort == 'opties' %}vanaf {% endif %}{{ vanaf(p)|euro }}</p>

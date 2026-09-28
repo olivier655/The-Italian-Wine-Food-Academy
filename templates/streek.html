@@ -2,7 +2,7 @@
 {% block title %}{{ streek.titel }} · The Italian Wine & Food Academy{% endblock %}
 {% block description %}{{ streek.beschrijving }}{% endblock %}
 {% block content %}
-<section class="hero hero--slim">
+<section class="hero hero--slim hero--image" style="--hero:url('{{ img(STREEK_FOTO[slug]) }}')">
   <div class="hero-inner">
     <p class="eyebrow">Blok {{ streek.blok }}{% if streek.week %} · week {{ streek.week }}{% endif %} van de opleiding</p>
     <h1>{{ streek.titel }}</h1>
