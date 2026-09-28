@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Gratis studieadvies · The Italian Wine & Food Academy{% endblock %}
+{% block description %}Plan een gratis, vrijblijvend studieadviesgesprek van 30 minuten. We kijken samen welke opleiding of cursus past bij je doelen, je achtergrond en je agenda.{% endblock %}
+{% block content %}
+<section class="hero hero--slim">
+  <div class="hero-inner">
+    <p class="eyebrow">Gratis en vrijblijvend</p>
+    <h1>Plan je studieadvies</h1>
+    <p class="hero-lead">Een gesprek van 30 minuten. We kijken samen welke opleiding of cursus past bij je doelen, je achtergrond en je agenda, en beantwoorden je vragen over de praktijkdagen, het examen en gespreid betalen.</p>
+  </div>
+</section>
+<section class="section">
+  <div class="calendly-inline-widget" data-url="{{ calendly }}?hide_gdpr_banner=1&primary_color=8a3b43" style="min-width:300px;height:720px;"></div>
+  <p class="center muted">Lukt het niet om een moment te kiezen? <a href="{{ calendly }}">Open de agenda in een nieuw venster</a>.</p>
+</section>
+{% endblock %}
+{% block scripts %}<script src="https://assets.calendly.com/assets/external/widget.js" async></script>{% endblock %}

@@ -2,33 +2,39 @@
 {% block title %}Opleidingen en cursussen · The Italian Wine & Food Academy{% endblock %}
 {% block description %}Alle opleidingen en cursussen van The Italian Wine & Food Academy: de Opleiding Italiaanse Gastronomie, Italiaanse Keuken, Italiaanse Wijn en losse streekcursussen van drie weken.{% endblock %}
 {% block content %}
-<section class="hero">
+<section class="hero hero--image hero--slim" style="--hero:url('{{ img('image00163.jpeg') }}')">
   <div class="hero-inner">
+    <p class="eyebrow">Ons aanbod</p>
     <h1>Opleidingen en cursussen</h1>
     <p class="hero-lead">Van één streek in drie weken tot het volledige diploma in een studiejaar. Keuken en wijn, altijd samen.</p>
     <nav class="jump">{% for key, titel, uitleg, items in groepen %}<a href="#{{ key }}">{{ titel }}</a>{% endfor %}</nav>
   </div>
 </section>
 {% for key, titel, uitleg, items in groepen %}
-<section class="catalog" id="{{ key }}">
-  <div class="catalog-head">
+<section class="section{% if loop.index is even %} section--creme{% endif %} catalog-group" id="{{ key }}">
+  <div class="section-head">
     <h2>{{ titel }}</h2>
+    <div class="flag"></div>
     <p>{{ uitleg }}</p>
   </div>
-  {% for slug, p in items %}
-  <a class="catalog-row" href="{{ url_for('product', slug=slug) }}">
-    <img class="catalog-img" src="{{ product_foto(slug) }}" alt="" loading="lazy">
-    <div class="catalog-body">
+  <div class="cards cards--catalog{% if items|length == 1 %} cards--one{% endif %}">
+    {% for slug, p in items %}
+    <a class="card{% if p.nlqf %} card--dark{% endif %}" href="{{ url_for('product', slug=slug) }}">
+      <img class="card-img" src="{{ product_foto(slug) }}" alt="{{ p.naam }}" loading="lazy">
+      <p class="card-kicker">{{ p.duur }} · {{ p.afsluiting }}</p>
       <h3>{{ p.naam }}</h3>
-      <p>{{ p.kort|truncate(200, True, '…') }}</p>
-    </div>
-    <div class="catalog-meta">
-      <span>{{ p.duur }} · {{ p.afsluiting }}</span>
-      <strong>{% if p.soort == 'opties' %}vanaf {% endif %}{{ vanaf(p)|euro }}</strong>
-      {% if p.starts %}<span class="catalog-start">Start {{ p.starts[0].label.split(' · ')[0] }}</span>{% endif %}
-    </div>
-  </a>
-  {% endfor %}
+      <p class="card-price">{% if p.soort == 'opties' %}vanaf {% endif %}{{ vanaf(p)|euro }}</p>
+      <p class="card-text">{{ p.kort|truncate(150, True, '…') }}</p>
+      {% if p.starts %}<p class="card-start">Eerstvolgende start: {{ p.starts[0].label.split(' · ')[0] }}</p>{% endif %}
+      <span class="card-link">Bekijk {{ 'de opleiding' if p.soort == 'opties' else 'de cursus' }} ›</span>
+    </a>
+    {% endfor %}
+  </div>
 </section>
 {% endfor %}
+<section class="cta">
+  <h2>Twijfel je welke opleiding bij je past?</h2>
+  <p>Plan een gratis, vrijblijvend studieadviesgesprek. We kijken samen wat past bij je doelen en je agenda.</p>
+  <a class="btn btn--solid" href="{{ STUDIEADVIES }}">Plan gratis studieadvies</a>
+</section>
 {% endblock %}

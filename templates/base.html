@@ -8,11 +8,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="{{ LOGO }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='twfa.css') }}">
 </head>
 <body>
   <header class="site-header">
-    <a class="logo" href="{{ url_for('home') }}">The Italian Wine &amp; Food Academy</a>
+    <a class="logo" href="{{ url_for('home') }}"><img src="{{ LOGO }}" alt="The Italian Wine &amp; Food Academy" width="170" height="68"></a>
     <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Menu">
     <label for="nav-toggle" class="nav-burger" aria-hidden="true"><span></span></label>
     <nav>
@@ -28,7 +29,7 @@
   <footer class="site-footer">
     <div class="footer-inner">
       <div>
-        <p class="footer-logo">The Italian Wine &amp; Food Academy</p>
+        <p class="footer-logo"><img src="{{ LOGO }}" alt="The Italian Wine &amp; Food Academy" width="190" height="76"></p>
         <p>Italiaanse keuken én wijn, van Italiaanse koks en Nederlandse sommeliers. Praktijkdagen in Amsterdam en Zeist.</p>
       </div>
       <div>

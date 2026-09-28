@@ -326,3 +326,11 @@ legend{font-family:var(--serif);font-size:22px;color:var(--groen);margin-bottom:
   .catalog-body{min-width:0;flex:1 1 60%}
   .catalog-meta{flex-basis:100%}
 }
+
+/* logo */
+.logo img{height:64px;width:auto;display:block;margin:-10px 0}
+.footer-logo img{height:76px;width:auto;display:block;background:var(--creme);border-radius:12px;padding:4px 10px}
+.cards--catalog{grid-template-columns:repeat(3,1fr)}
+.cards--one{grid-template-columns:minmax(0,420px);justify-content:center}
+@media (max-width:980px){.cards--catalog{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:760px){.cards--catalog{grid-template-columns:1fr}.logo img{height:52px}}

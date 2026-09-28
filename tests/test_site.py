@@ -41,7 +41,7 @@ BASE = dict(voornaam="Test", achternaam="Persoon", email="t@x.nl", telefoon="061
 
 
 def test_pages(c):
-    urls = ["/", "/opleidingen/", "/leermethode/", "/kookstudio/", "/docenten/", "/piemonte/",
+    urls = ["/", "/opleidingen/", "/leermethode/", "/studieadvies/", "/kookstudio/", "/docenten/", "/piemonte/",
             "/lombardije/", "/ligurie/", "/toscane/", "/aanmelden/bedankt/", "/static/twfa.css", "/healthz"]
     urls += [f"/product/{s}/" for s in products()] + [f"/aanmelden/{s}/" for s in products()]
     for u in urls:

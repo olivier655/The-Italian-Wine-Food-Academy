@@ -20,7 +20,8 @@ app.jinja_env.filters["euro"] = euro
 
 MAKE_WEBHOOK_URL = os.environ.get("MAKE_WEBHOOK_URL", "")
 WP = "https://thewineandfoodacademy.com"
-STUDIEADVIES = f"{WP}/studieadvies/"
+STUDIEADVIES = "/studieadvies/"
+CALENDLY = "https://calendly.com/olivier-thewineandfoodacademy/30min"
 STREKEN = json.loads((Path(__file__).parent / "content" / "streken.json").read_text(encoding="utf-8"))
 
 # Portretten van de docenten staan (nog) in de mediabibliotheek van WordPress.
@@ -83,7 +84,7 @@ def docenten():
 def globals_for_templates():
     return {"NLQF_STATUS": NLQF_STATUS, "STUDIEADVIES": STUDIEADVIES, "WP": WP, "img": img,
             "vanaf": vanaf, "STREKEN": STREKEN,
-            "product_foto": product_foto, "STREEK_FOTO": STREEK_FOTO}
+            "product_foto": product_foto, "LOGO": img("The_Italian_Wine_and_Food_Academy_logo-scaled.png"), "STREEK_FOTO": STREEK_FOTO}
 
 
 def csrf_token():
@@ -113,6 +114,11 @@ def overzicht():
 @app.route("/leermethode/")
 def leermethode():
     return render_template("leermethode.html")
+
+
+@app.route("/studieadvies/")
+def studieadvies():
+    return render_template("studieadvies.html", calendly=CALENDLY)
 
 
 @app.route("/kookstudio/")
