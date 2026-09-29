@@ -9,6 +9,7 @@ from dotenv import load_dotenv
 from flask import Flask, abort, redirect, render_template, request, session, url_for
 
 import airtable
+import inschrijving
 from catalog import (LOCATIES, NLQF_STATUS, calculate, cohort_dates, euro, get_option,
                      grouped, products, vanaf)
 
@@ -19,6 +20,7 @@ app.secret_key = os.environ.get("SECRET_KEY") or secrets.token_hex(32)
 app.jinja_env.filters["euro"] = euro
 
 MAKE_WEBHOOK_URL = os.environ.get("MAKE_WEBHOOK_URL", "")
+MAKE_FOLLOWUP_URL = os.environ.get("MAKE_FOLLOWUP_URL", "")
 WP = "https://thewineandfoodacademy.com"
 STUDIEADVIES = "/studieadvies/"
 CALENDLY = "https://calendly.com/olivier-thewineandfoodacademy/30min"
@@ -165,6 +167,43 @@ def _form_context(slug, product, values, errors):
                 locaties=LOCATIES, cohortdata=cohort_dates(product) if product["soort"] == "opties" else [])
 
 
+def _naar_make(url, payload):
+    try:
+        requests.post(url, json=payload, timeout=10).raise_for_status()
+        return True
+    except requests.RequestException:
+        app.logger.exception("Make-webhook faalde")
+        return False
+
+
+def verwerk(payload):
+    """Aanmelding vastleggen. Geeft False als hij nergens terechtkwam.
+
+    1. Direct: inschrijving in Airtable + mails vanuit de site (zonder Make).
+    2. Lukt Airtable niet, of is direct nog niet ingesteld: de oude Make-route,
+       die zelf het record aanmaakt en de mails stuurt.
+    MAKE_FOLLOWUP_URL (optioneel) krijgt na een directe verwerking een seintje
+    met het record-ID, voor vervolgstappen als Pipedrive of LearnDash.
+    """
+    if inschrijving.direct_ready():
+        try:
+            record_id = inschrijving.schrijf_airtable(payload)
+        except requests.RequestException:
+            app.logger.exception("Airtable-inschrijving faalde; val terug op Make")
+        else:
+            try:
+                inschrijving.verstuur_mails(payload, record_id)
+            except Exception:  # record staat er; een mislukte mail mag de aanmelding niet blokkeren
+                app.logger.exception("Mail voor %s niet verstuurd", record_id)
+            if MAKE_FOLLOWUP_URL:
+                _naar_make(MAKE_FOLLOWUP_URL, {**payload, "airtable_record_id": record_id})
+            return True
+    if MAKE_WEBHOOK_URL:
+        return _naar_make(MAKE_WEBHOOK_URL, payload)
+    app.logger.error("Aanmelding niet verwerkt: geen Airtable/SMTP-instellingen en geen MAKE_WEBHOOK_URL")
+    return False
+
+
 @app.route("/aanmelden/<slug>/", methods=["GET", "POST"])
 def aanmelden(slug):
     product = products().get(slug) or abort(404)
@@ -274,19 +313,12 @@ def aanmelden(slug):
         "totaal": total,
     }
 
-    if MAKE_WEBHOOK_URL:
-        try:
-            r = requests.post(MAKE_WEBHOOK_URL, json=payload, timeout=10)
-            r.raise_for_status()
-        except requests.RequestException:
-            app.logger.exception("Make-webhook faalde")
-            errors["algemeen"] = (
-                "Je aanmelding is niet verstuurd door een storing. Probeer het over een "
-                "paar minuten opnieuw of mail naar info@thewineandfoodacademy.com."
-            )
-            return render_template("aanmelden.html", **_form_context(slug, product, values, errors)), 502
-    else:
-        app.logger.warning("MAKE_WEBHOOK_URL ontbreekt; aanmelding voor %s niet doorgestuurd", slug)
+    if not verwerk(payload):
+        errors["algemeen"] = (
+            "Je aanmelding is niet verstuurd door een storing. Probeer het over een "
+            "paar minuten opnieuw of mail naar info@thewineandfoodacademy.com."
+        )
+        return render_template("aanmelden.html", **_form_context(slug, product, values, errors)), 502
 
     session["laatste_aanmelding"] = {"voornaam": payload["voornaam"], "regels": payload["prijsregels"],
                                      "totaal": total, "startmoment": startmoment}

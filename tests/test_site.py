@@ -20,7 +20,8 @@ class OK:
 
 @pytest.fixture(autouse=True)
 def setup(monkeypatch):
-    monkeypatch.delenv("AIRTABLE_TOKEN", raising=False)
+    for k in ("AIRTABLE_TOKEN", "AIRTABLE_WRITE_TOKEN", "SMTP_HOST", "SMTP_USER", "SMTP_PASSWORD", "MAIL_FROM"):
+        monkeypatch.delenv(k, raising=False)
     monkeypatch.setattr(A, "MAKE_WEBHOOK_URL", "https://example.invalid/hook")
     airtable.reset_cache()
     yield
@@ -141,3 +142,65 @@ def test_airtable_live_and_fallback(monkeypatch):
         p = products()
     assert airtable.bron() == "airtable"
     assert p["pasta-fresca"]["prijs"] == 650 and p["pasta-fresca"]["starts"][0]["locatie"] == "Zeist"
+
+
+class AT:
+    def __init__(self, status=200):
+        self.status = status
+    def raise_for_status(self):
+        if self.status >= 400:
+            raise requests.HTTPError(str(self.status))
+    def json(self):
+        return {"records": [{"id": "recTEST1234567890"}]}
+
+
+def direct_env(monkeypatch):
+    for k, v in dict(AIRTABLE_WRITE_TOKEN="w", SMTP_HOST="smtp.x", SMTP_USER="o@x.nl",
+                     SMTP_PASSWORD="p", MAIL_FROM="TWFA <o@x.nl>").items():
+        monkeypatch.setenv(k, v)
+
+
+def test_direct_airtable_and_mail(c, monkeypatch):
+    direct_env(monkeypatch)
+    calls, mails = [], []
+
+    class SMTP:
+        def __init__(self, *a, **k): pass
+        def __enter__(self): return self
+        def __exit__(self, *a): pass
+        def starttls(self): pass
+        def login(self, u, p): pass
+        def send_message(self, m): mails.append(m)
+
+    def fake_post(url, json, timeout, **k):
+        calls.append((url, json))
+        return AT()
+
+    slug = "italiaanse-keuken"
+    start = products()[slug]["starts"][0]["sku"]
+    with mock.patch("inschrijving.requests.post", side_effect=fake_post), mock.patch("inschrijving.smtplib.SMTP", SMTP):
+        r = c.post(f"/aanmelden/{slug}/", data=dict(BASE, csrf=token(c, slug), optie="met-praktijk", start=start))
+    assert r.status_code == 302
+    assert len(calls) == 1 and "api.airtable.com" in calls[0][0]  # geen Make
+    f = calls[0][1]["records"][0]["fields"]
+    assert f["fld0Pu2GkiYoHLLn1"] == "Test" and f["fldiyyoRjGDT7DsWN"] == ["Italiaanse Keuken"]
+    assert f["fldAq1LB0aGgTpQj1"] == "Vijf termijnen" and f["fldnPsJekI64Qiu9q"] == "Aangemeld"
+    assert f["fldePDecZZL7Ewnqe"] in ("Amsterdam", "Zeist") and f["fldfzvJMyX5602sui"] > 0
+    assert [m["To"] for m in mails] == ["t@x.nl", "o@x.nl"]
+    body = mails[0].get_body(("html",)).get_content()
+    assert "Beste Test" in body and "italianwineandfoodacademy.com" in body and "**" not in body
+    assert "recTEST1234567890" in mails[1].get_body(("html",)).get_content()
+
+
+def test_direct_falls_back_to_make(c, monkeypatch):
+    direct_env(monkeypatch)
+    calls = []
+
+    def fake_post(url, json, timeout, **k):
+        calls.append(url)
+        return AT(422) if "airtable" in url else OK()
+
+    start = products()["pasta-fresca"]["starts"][0]["sku"]
+    with mock.patch("app.requests.post", side_effect=fake_post):
+        r = c.post("/aanmelden/pasta-fresca/", data=dict(BASE, csrf=token(c, "pasta-fresca"), start=start))
+    assert r.status_code == 302 and calls[-1] == "https://example.invalid/hook"
