@@ -187,6 +187,6 @@ def verstuur_mails(p, record_id):
     ]
     with smtplib.SMTP(os.environ["SMTP_HOST"], port, timeout=15) as s:
         s.starttls()
-        s.login(os.environ["SMTP_USER"], os.environ["SMTP_PASSWORD"])
+        s.login(os.environ["SMTP_USER"], os.environ["SMTP_PASSWORD"].replace(" ", ""))
         for m in berichten:
             s.send_message(m)
