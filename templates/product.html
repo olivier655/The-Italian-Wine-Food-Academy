@@ -20,7 +20,7 @@
     </ul>
     <div class="hero-actions">
       <a class="btn btn--solid" href="{% if product.soort == 'opties' %}#opties{% else %}{{ url_for('aanmelden', slug=slug) }}{% endif %}">{% if product.soort == 'opties' %}Kies je leeroptie{% else %}Schrijf je in{% endif %}</a>
-      {% if product.brochure %}<a class="btn btn--ghost" href="{{ product.brochure }}">Download de brochure</a>{% endif %}
+      <a class="btn btn--ghost" href="{{ url_for('download', slug='opleidingsbrochure') }}">Download de brochure</a>
     </div>
    </div>
    <img class="hero-photo" src="{{ product_foto(slug) }}" alt="{{ product.naam }}" fetchpriority="high">

@@ -6,6 +6,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 import requests
+
+import leads
 from dotenv import load_dotenv
 from flask import Flask, abort, redirect, render_template, request, session, url_for
 
@@ -22,6 +24,7 @@ app.jinja_env.filters["euro"] = euro
 
 MAKE_WEBHOOK_URL = os.environ.get("MAKE_WEBHOOK_URL", "")
 MAKE_FOLLOWUP_URL = os.environ.get("MAKE_FOLLOWUP_URL", "")
+
 WP = "https://thewineandfoodacademy.com"
 STUDIEADVIES = "/studieadvies/"
 CALENDLY = "https://calendly.com/olivier-thewineandfoodacademy/30min"
@@ -31,7 +34,7 @@ JURIDISCH = json.loads((CONTENT / "juridisch.json").read_text(encoding="utf-8"))
 FAQ = json.loads((CONTENT / "faq.json").read_text(encoding="utf-8"))
 SITE = os.environ.get("SITE_URL", "https://italianwineandfoodacademy.com").rstrip("/")
 GTM_ID = os.environ.get("GTM_ID", "GTM-NZ5XSCC")
-GA_ID = os.environ.get("GA_ID", "G-47RZH4K81R")  # alleen gebruikt als GTM_ID leeg is
+GA_ID = os.environ.get("GA_ID", "G-N1JD18XQ5T")  # alleen gebruikt als GTM_ID leeg is
 ADS_ID = os.environ.get("ADS_ID", "AW-11208459250")
 CONTACT = {"telefoon": "085 080 6445", "tel": "+31850806445", "email": "klantenservice@thewineandfoodacademy.com",
            "adres": "Steynlaan 44, 3701 EH Zeist"}
@@ -186,7 +189,15 @@ def docenten_pagina():
 
 @app.route("/<any(%s):slug>/" % ", ".join(f'"{k}"' for k in STREKEN))
 def streek(slug):
-    return render_template("streek.html", slug=slug, streek=STREKEN[slug])
+    s = STREKEN[slug]
+    regio = s.get("streek")
+    if regio:
+        wijnen = [(k, w) for k, w in STREKEN.items() if w.get("streek") == regio and k != slug]
+        crumbs = [("Streken", "/streken/"), (STREKEN[regio]["naam"], f"/{regio}/"), (s["naam"], None)]
+    else:
+        wijnen = [(k, w) for k, w in STREKEN.items() if w.get("streek") == slug]
+        crumbs = [("Streken", "/streken/"), (s["naam"], None)]
+    return render_template("streek.html", slug=slug, streek=s, regio=regio, wijnen=wijnen, crumbs=crumbs)
 
 
 BLOKKEN = {1: "Het noordwesten", 2: "Het noordoosten", 3: "Het midden", 4: "Rond Rome", 5: "Het zuiden en de eilanden"}
@@ -195,7 +206,9 @@ BLOKKEN = {1: "Het noordwesten", 2: "Het noordoosten", 3: "Het midden", 4: "Rond
 @app.route("/streken/")
 def streken():
     blokken = [(n, BLOKKEN[n], [(k, s) for k, s in STREKEN.items() if s.get("blok") == n]) for n in BLOKKEN]
-    artikelen = [(k, s) for k, s in STREKEN.items() if not s.get("blok")]
+    artikelen = [(r, STREKEN[r], [(k, s) for k, s in STREKEN.items() if s.get("streek") == r])
+                 for r in STREKEN if STREKEN[r].get("blok")]
+    artikelen = [a for a in artikelen if a[2]]
     return render_template("streken.html", blokken=blokken, artikelen=artikelen)
 
 
@@ -222,6 +235,77 @@ def faq():
     return render_template("faq.html", faq=FAQ)
 
 
+@app.route("/nieuwsbrief/", methods=["GET", "POST"])
+def nieuwsbrief():
+    if request.method == "GET":
+        return render_template("nieuwsbrief.html", values={}, errors={}, verstuurd=request.args.get("verstuurd"))
+    f = request.form
+    values, errors = f.to_dict(), {}
+    if f.get("csrf") != session.get("csrf"):
+        abort(400)
+    if f.get("website"):
+        return redirect(url_for("nieuwsbrief", verstuurd=1))
+    email = f.get("email", "").strip()
+    if not email or "@" not in email or "." not in email.split("@")[-1]:
+        errors["email"] = "Vul een geldig e-mailadres in."
+    if not errors:
+        try:
+            leads.lead(email, f.get("voornaam", "").strip(), "Nieuwsbrief", tag="nieuwsbrief-website")
+            return redirect(url_for("nieuwsbrief", verstuurd=1))
+        except Exception:
+            app.logger.exception("Nieuwsbriefaanmelding niet verwerkt")
+            errors["algemeen"] = f"Aanmelden lukte niet door een storing. Probeer het later nog eens of mail {CONTACT['email']}."
+    return render_template("nieuwsbrief.html", values=values, errors=errors, verstuurd=None), 422
+
+
+DOWNLOADS = {
+    "opleidingsbrochure": {
+        "titel": "Download de brochure 2026-2027",
+        "kort": "Opleidingsbrochure",
+        "lead": "Alles over de Opleiding Italiaanse Gastronomie en de losse cursussen op een rij: programma per blok, docenten, praktijkdagen in de kookstudio, startdata en prijzen.",
+        "punten": ["Het programma van 36 weken, blok voor blok", "Wie je docenten zijn, van Italiaanse koks tot Nederlandse sommeliers",
+                   "Startdata, praktijkdagen en wat een lesweek je kost aan tijd", "Prijzen, termijnen en scholingsbudget"],
+        "bestand": "downloads/twfa-brochure-2026-2027.pdf", "tag": "download-brochure",
+        "beschrijving": "Download gratis de brochure van The Italian Wine & Food Academy: programma, docenten, startdata en prijzen van de Opleiding Italiaanse Gastronomie.",
+    },
+    "proefkit": {
+        "titel": "Gratis proefkit: zo proef je wijn als een sommelier",
+        "kort": "Proefkit",
+        "lead": "Het materiaal dat onze cursisten in de eerste les gebruiken: het smaakwiel, een proefformulier voor acht wijnen en de drie stappen van kijken, ruiken en proeven. Print het uit en open een fles.",
+        "punten": ["Het smaakwiel: van rood fruit tot aards, zo benoem je wat je ruikt", "Proefformulier om acht wijnen naast elkaar te beoordelen",
+                   "Wijnproeven in drie stappen: kijken, ruiken, proeven", "Hoe smaak werkt, en waarom wijn smaakt zoals hij smaakt"],
+        "bestand": "downloads/twfa-proefkit.pdf", "tag": "download-proefkit",
+        "beschrijving": "Download gratis de proefkit van The Italian Wine & Food Academy: smaakwiel, proefformulier en wijnproeven in drie stappen.",
+    },
+}
+
+
+@app.route("/download/<any(%s):slug>/" % ", ".join(f'"{k}"' for k in DOWNLOADS), methods=["GET", "POST"])
+def download(slug):
+    d = DOWNLOADS[slug]
+    if request.method == "GET":
+        return render_template("download.html", slug=slug, d=d, values={}, errors={}, verstuurd=request.args.get("verstuurd"))
+    f = request.form
+    values, errors = f.to_dict(), {}
+    if f.get("csrf") != session.get("csrf"):
+        abort(400)
+    if f.get("website"):
+        return redirect(url_for("download", slug=slug, verstuurd=1))
+    email = f.get("email", "").strip()
+    if not f.get("naam", "").strip():
+        errors["naam"] = "Vul je naam in."
+    if not email or "@" not in email or "." not in email.split("@")[-1]:
+        errors["email"] = "Vul een geldig e-mailadres in."
+    if not errors:
+        try:
+            leads.lead(email, f.get("naam", "").strip(), f"Download {d['kort']}", tag=d["tag"])
+            return redirect(url_for("download", slug=slug, verstuurd=1))
+        except Exception:
+            app.logger.exception("Download-aanmelding niet verwerkt")
+            errors["algemeen"] = f"Er ging iets mis. Probeer het later nog eens of mail {CONTACT['email']}."
+    return render_template("download.html", slug=slug, d=d, values=values, errors=errors, verstuurd=None), 422
+
+
 @app.route("/contact/", methods=["GET", "POST"])
 def contact():
     if request.method == "GET":
@@ -241,6 +325,11 @@ def contact():
         try:
             inschrijving.verstuur_contact(f.get("naam", "").strip(), f.get("email", "").strip(),
                                           f.get("telefoon", "").strip(), f.get("vraag", "").strip())
+            try:
+                leads.lead(f.get("email", "").strip(), f.get("naam", "").strip(), "Contactformulier",
+                           tag="contactformulier", telefoon=f.get("telefoon", "").strip(), notitie=f.get("vraag", "").strip())
+            except Exception:
+                app.logger.exception("Contact niet naar ActiveCampaign/Pipedrive")
             return redirect(url_for("contact", verstuurd=1))
         except Exception:
             app.logger.exception("Contactformulier niet verstuurd")
@@ -250,14 +339,14 @@ def contact():
 
 @app.route("/robots.txt")
 def robots():
-    body = f"User-agent: *\nDisallow: /aanmelden/\nSitemap: {SITE}/sitemap.xml\n"
+    body = f"User-agent: *\nDisallow: /aanmelden/\nDisallow: /static/downloads/\nSitemap: {SITE}/sitemap.xml\n"
     return body, 200, {"Content-Type": "text/plain; charset=utf-8"}
 
 
 @app.route("/sitemap.xml")
 def sitemap():
     paden = ["/", "/opleidingen/", "/streken/", "/leermethode/", "/kookstudio/", "/docenten/", "/studieadvies/", "/faq/", "/contact/"]
-    paden += [f"/{s}/" for s in STREKEN] + [f"/product/{s}/" for s in products()]
+    paden += ["/nieuwsbrief/"] + [f"/download/{k}/" for k in DOWNLOADS] + [f"/{s}/" for s in STREKEN] + [f"/product/{s}/" for s in products()]
     paden += [f"/{s}/" for s in JURIDISCH]
     urls = "".join(f"<url><loc>{SITE}{p}</loc></url>" for p in paden)
     xml = f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{urls}</urlset>'

@@ -27,10 +27,13 @@
 {% endfor %}
 {% if artikelen %}
 <section class="section">
-  <div class="section-head"><p class="eyebrow eyebrow--wijn">Verdieping</p><h2>Meer over Italiaanse wijn</h2><div class="flag"></div></div>
+  <div class="section-head"><p class="eyebrow eyebrow--wijn">Verdieping</p><h2>De wijnen, per streek</h2><div class="flag"></div></div>
+  {% for rkey, r, items in artikelen %}
+  <h3 class="group-head"><a href="/{{ rkey }}/">{{ r.naam }}</a></h3>
   <div class="cards cards--catalog">
-    {% for key, s in artikelen %}<a class="card" href="/{{ key }}/"><img class="card-img" src="{{ streek_foto(key) }}" alt="" loading="lazy"><h3>{{ s.titel }}</h3><span class="card-link">Lees meer ›</span></a>{% endfor %}
+    {% for key, s in items %}<a class="card" href="/{{ key }}/"><img class="card-img" src="{{ streek_foto(key) }}" alt="{{ s.naam }}" loading="lazy"><p class="card-kicker">{% if s.week %}Week {{ s.week }}{% else %}Wijn{% endif %}</p><h3>{{ s.naam }}</h3>{% set t = s.titel.split(': ', 1)[-1] %}<p class="card-text">{{ t[:1]|upper }}{{ t[1:] }}</p><span class="card-link">Lees meer ›</span></a>{% endfor %}
   </div>
+  {% endfor %}
 </section>
 {% endif %}
 <section class="cta">

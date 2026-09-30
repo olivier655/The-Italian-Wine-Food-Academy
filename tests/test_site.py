@@ -251,3 +251,67 @@ def test_alle_fotos_lokaal(c):
     assert len(gezien) > 25
     for src in gezien:
         assert c.get(src).status_code == 200, src
+
+
+def _fake_api(monkeypatch):
+    import leads
+    calls = []
+
+    class R:
+        def __init__(self, data): self.data = data; self.content = b"x"
+        def raise_for_status(self): pass
+        def json(self): return self.data
+
+    def fake(method, url, **kw):
+        calls.append((method, url, kw.get("json"), kw.get("params")))
+        if url.endswith("/contact/sync"): return R({"contact": {"id": "42"}})
+        if url.endswith("/tags") and method == "GET": return R({"tags": [{"id": "7", "tag": kw["params"]["search"]}]})
+        if "persons/search" in url: return R({"data": {"items": []}})
+        if url.endswith("/persons"): return R({"data": {"id": 11}})
+        if url.endswith("/deals") and method == "GET": return R({"data": []})
+        if url.endswith("/deals"): return R({"data": {"id": 99}})
+        return R({"data": {}})
+
+    monkeypatch.setattr(leads, "AC_API_URL", "https://x.api-us1.com")
+    monkeypatch.setattr(leads, "AC_API_KEY", "test")
+    monkeypatch.setattr(leads, "PD_API_TOKEN", "test")
+    monkeypatch.setattr(leads.requests, "request", fake)
+    return calls
+
+
+def test_nieuwsbrief_naar_activecampaign_en_pipedrive(monkeypatch):
+    import app as site
+    calls = _fake_api(monkeypatch)
+    c = site.app.test_client()
+    assert c.get("/nieuwsbrief/").status_code == 200
+    with c.session_transaction() as s:
+        s["csrf"] = "t"
+    r = c.post("/nieuwsbrief/", data={"csrf": "t", "email": "a@b.nl", "voornaam": "Ann"})
+    assert r.status_code == 302 and "verstuurd=1" in r.headers["Location"]
+    assert calls[0][2] == {"contact": {"email": "a@b.nl", "firstName": "Ann"}}
+    assert calls[1][2] == {"contactList": {"list": "5", "contact": "42", "status": 1}}
+    deal = [c for c in calls if c[0] == "POST" and c[1].endswith("/deals")][0][2]
+    assert deal["pipeline_id"] == 15 and deal["stage_id"] == 94 and deal["person_id"] == 11
+    assert c.post("/nieuwsbrief/", data={"csrf": "t", "email": "fout"}).status_code == 422
+
+
+def test_downloads(monkeypatch):
+    import app as site
+    calls = _fake_api(monkeypatch)
+    c = site.app.test_client()
+    for slug in ("opleidingsbrochure", "proefkit"):
+        assert c.get(f"/download/{slug}/").status_code == 200
+    with c.session_transaction() as s:
+        s["csrf"] = "t"
+    r = c.post("/download/proefkit/", data={"csrf": "t", "email": "a@b.nl", "naam": "Ann de Vries"}, follow_redirects=True)
+    assert b"twfa-proefkit.pdf" in r.data
+    assert {"contactTag": {"contact": "42", "tag": "7"}} in [x[2] for x in calls]
+    assert c.get("/static/downloads/twfa-proefkit.pdf").status_code == 200
+
+
+def test_wijnartikelen_en_kruimelpad():
+    import app as site
+    c = site.app.test_client()
+    t = c.get("/barbera-dasti/").get_data(as_text=True)
+    assert "BreadcrumbList" in t and 'href="/piemonte/"' in t and 'class="kort"' in t
+    assert 'href="/barbera-dasti/"' in c.get("/piemonte/").get_data(as_text=True)

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Nieuwsbrief · The Italian Wine & Food Academy{% endblock %}
+{% block description %}Meld je aan voor de nieuwsbrief van The Italian Wine & Food Academy: nieuwe cursusdata, gratis clinics en verhalen over Italiaanse wijn en keuken.{% endblock %}
+{% block head %}{% if verstuurd %}<script>{% if GTM_ID %}dataLayer.push({event: 'sign_up', method: 'nieuwsbrief'});{% else %}gtag('event', 'sign_up', {method: 'nieuwsbrief'});{% endif %}</script>{% endif %}{% endblock %}
+{% macro err(name) %}{% if errors.get(name) %}<p class="field-error">{{ errors[name] }}</p>{% endif %}{% endmacro %}
+{% block content %}
+<section class="hero hero--slim">
+  <div class="hero-inner">
+    <p class="eyebrow">Nieuwsbrief</p>
+    <h1>Italië in je inbox</h1>
+    <p class="hero-lead">Nieuwe cursusdata, gratis clinics en elke keer een verhaal over een streek, een wijn of een gerecht. Hooguit twee keer per maand, en je meldt je met één klik weer af.</p>
+  </div>
+</section>
+<section class="section">
+  <div class="contact-grid">
+    <div class="contact-info">
+      <h2>Wat je krijgt</h2>
+      <ul class="checks">
+        <li>Als eerste de nieuwe startdata van cursussen en de opleiding</li>
+        <li>Uitnodigingen voor gratis clinics en proeverijen</li>
+        <li>Een streek, een wijn of een gerecht uitgelicht, met de achtergrond erbij</li>
+      </ul>
+      <p class="muted">Liever eerst rondkijken? Lees over <a href="{{ url_for('streken') }}">de streken van Italië</a> of bekijk <a href="{{ url_for('overzicht') }}">alle cursussen</a>.</p>
+    </div>
+    <div class="form-card">
+      {% if verstuurd %}
+      <h2>Je bent aangemeld</h2>
+      <p>De eerstvolgende nieuwsbrief komt naar je toe. Niets ontvangen? Kijk even in je map met reclame of spam.</p>
+      {% else %}
+      <h2>Meld je aan</h2>
+      {% if errors.get('algemeen') %}<p class="form-alert">{{ errors['algemeen'] }}</p>{% endif %}
+      <form method="post" novalidate>
+        <input type="hidden" name="csrf" value="{{ csrf_token() }}">
+        <div class="hp" aria-hidden="true"><label>Website <input name="website" tabindex="-1" autocomplete="off"></label></div>
+        <label class="field"><span>Voornaam (optioneel)</span><input name="voornaam" autocomplete="given-name" value="{{ values.get('voornaam','') }}"></label>
+        <label class="field{% if errors.get('email') %} field--error{% endif %}"><span>E-mailadres</span><input type="email" name="email" autocomplete="email" value="{{ values.get('email','') }}">{{ err('email') }}</label>
+        <p class="fineprint">Je kunt je altijd afmelden via de link onderaan elke mail. Zie onze <a href="/privacy-policy/">privacyverklaring</a>.</p>
+        <button class="btn btn--solid" type="submit">Aanmelden</button>
+      </form>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}

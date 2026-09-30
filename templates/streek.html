@@ -2,22 +2,43 @@
 {% block title %}{{ streek.titel }} · The Italian Wine & Food Academy{% endblock %}
 {% block description %}{{ streek.beschrijving }}{% endblock %}
 {% block og_image %}{{ abs_url(streek_foto(slug)) }}{% endblock %}
-{% block head %}<script type="application/ld+json">{{ {"@context": "https://schema.org", "@type": "Article", "headline": streek.titel, "description": streek.beschrijving, "image": abs_url(streek_foto(slug)), "inLanguage": "nl", "publisher": {"@type": "Organization", "name": "The Italian Wine & Food Academy"}, "mainEntityOfPage": canonical}|tojson }}</script>{% endblock %}
+{% block head %}<script type="application/ld+json">{{ {"@context": "https://schema.org", "@type": "Article", "headline": streek.titel, "description": streek.beschrijving, "image": abs_url(streek_foto(slug)), "inLanguage": "nl", "author": {"@type": "Organization", "name": "The Italian Wine & Food Academy", "url": SITE + "/"}, "publisher": {"@type": "Organization", "name": "The Italian Wine & Food Academy", "logo": {"@type": "ImageObject", "url": abs_url(LOGO)}}, "mainEntityOfPage": canonical}|tojson }}</script>
+{% set ns = namespace(items=[{"@type": "ListItem", "position": 1, "name": "Home", "item": SITE + "/"}]) %}{% for naam, url in crumbs %}{% set ns.items = ns.items + [{"@type": "ListItem", "position": loop.index + 1, "name": naam, "item": (SITE + url) if url else canonical}] %}{% endfor %}
+<script type="application/ld+json">{{ {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": ns.items}|tojson }}</script>{% endblock %}
 {% block content %}
 <section class="hero hero--slim hero--image" style="--hero:url('{{ streek_foto(slug) }}')">
   <div class="hero-inner">
-    <p class="eyebrow">{% if streek.blok %}Blok {{ streek.blok }}{% if streek.week %} · week {{ streek.week }}{% endif %} van de opleiding{% else %}Achtergrond{% endif %}</p>
+    <p class="eyebrow">{% if streek.blok %}Blok {{ streek.blok }}{% if streek.week %} · week {{ streek.week }}{% endif %} van de opleiding{% elif regio %}Wijn uit {{ STREKEN[regio].naam }}{% if streek.week %} · week {{ streek.week }} van de opleiding{% endif %}{% else %}Achtergrond{% endif %}</p>
     <h1>{{ streek.titel }}</h1>
   </div>
 </section>
+<nav class="crumbs" aria-label="Kruimelpad"><a href="/">Home</a>{% for naam, url in crumbs %} <span aria-hidden="true">›</span> {% if url %}<a href="{{ url }}">{{ naam }}</a>{% else %}<span aria-current="page">{{ naam }}</span>{% endif %}{% endfor %}</nav>
 <article class="article">
   {{ streek.html|safe }}
 </article>
+{% if wijnen %}
+<section class="section section--creme">
+  <div class="section-head"><p class="eyebrow eyebrow--wijn">{% if regio %}Meer uit {{ STREKEN[regio].naam }}{% else %}Verdieping{% endif %}</p><h2>{% if regio %}Andere wijnen uit {{ STREKEN[regio].naam }}{% else %}Wijnen uit {{ streek.naam }}{% endif %}</h2><div class="flag"></div></div>
+  <div class="cards cards--catalog">
+    {% for key, w in wijnen %}
+    <a class="card" href="/{{ key }}/">
+      <img class="card-img" src="{{ streek_foto(key) }}" alt="{{ w.naam }}" loading="lazy">
+      <p class="card-kicker">{% if w.week %}Week {{ w.week }}{% else %}Wijn{% endif %}</p>
+      <h3>{{ w.naam }}</h3>
+      {% set t = w.titel.split(': ', 1)[-1] %}<p class="card-text">{{ t[:1]|upper }}{{ t[1:] }}</p>
+      <span class="card-link">Lees meer ›</span>
+    </a>
+    {% endfor %}
+  </div>
+  {% if regio %}<p class="section-more"><a href="/{{ regio }}/">Alles over {{ STREKEN[regio].naam }}: keuken, wijn en streek ›</a></p>{% endif %}
+</section>
+{% endif %}
 <section class="cta">
   <h2>Leer het zelf, van keuken tot glas</h2>
-  <p>{% if streek.blok %}{{ streek.naam }} is een van de streken in de Opleiding Italiaanse Gastronomie{% else %}In de Opleiding Italiaanse Gastronomie reis je in een jaar door alle Italiaanse streken{% endif %}: keuken en wijn als één geheel, met elke maand een praktijkdag in de kookstudio.</p>
+  <p>{% if streek.blok %}{{ streek.naam }} is een van de streken in de Opleiding Italiaanse Gastronomie{% elif regio and streek.week %}{{ streek.naam }} proef je in week {{ streek.week }} van de Opleiding Italiaanse Gastronomie, naast de gerechten uit {{ STREKEN[regio].naam }}{% else %}In de Opleiding Italiaanse Gastronomie reis je in een jaar door alle Italiaanse streken{% endif %}: keuken en wijn als één geheel, met elke maand een praktijkdag in de kookstudio.</p>
   <a class="btn btn--solid" href="{{ url_for('product', slug='opleiding-italiaanse-gastronomie') }}">Bekijk de opleiding</a>
   <a class="btn btn--ghost-dark" href="{{ STUDIEADVIES }}">Gratis studieadvies</a>
+  <p class="cta-small">Zelf aan de slag? <a href="{{ url_for('download', slug='proefkit') }}">Download gratis de proefkit</a> met smaakwiel en proefformulier.</p>
 </section>
 <nav class="streek-nav">
   <a href="{{ url_for('streken') }}"><strong>Alle streken</strong></a>

@@ -37,6 +37,10 @@ De publieke site van The Italian Wine & Food Academy, zonder WordPress: producte
 | `SMTP_USER` / `SMTP_PASSWORD` | Google-account + app-wachtwoord |
 | `MAIL_FROM` / `MAIL_NOTIFY` | afzender van de bevestiging / wie de melding krijgt |
 | `MAKE_WEBHOOK_URL` | reserve: webhook van Make-scenario 9875320 |
+| `AC_API_URL` / `AC_API_KEY` | ActiveCampaign, Settings > Developer: nieuwsbriefaanmelding (/nieuwsbrief/ en footer) |
+| `AC_LIST_ID` | nieuwsbrieflijst, standaard 5 ("The Wine and Food Academy - newsletter") |
+| `PIPEDRIVE_API_TOKEN` | Pipedrive › Persoonlijke voorkeuren › API: elke aanmelding (nieuwsbrief, download, contact) wordt een deal |
+| `PIPEDRIVE_PIPELINE_ID` / `PIPEDRIVE_STAGE_ID` | standaard pipeline 15, fase 94 (SQL, de eerste fase) |
 | `MAKE_FOLLOWUP_URL` | optioneel: seintje met record-ID na directe verwerking |
 
 ## Lokaal draaien en testen

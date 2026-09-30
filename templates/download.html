@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}{{ d.titel }} · The Italian Wine & Food Academy{% endblock %}
+{% block description %}{{ d.beschrijving }}{% endblock %}
+{% block head %}{% if verstuurd %}<script>{% if GTM_ID %}dataLayer.push({event: 'generate_lead', lead_source: {{ ('download-' ~ slug)|tojson }}});{% else %}gtag('event', 'generate_lead', {lead_source: {{ ('download-' ~ slug)|tojson }}});{% endif %}</script>{% endif %}{% endblock %}
+{% macro err(name) %}{% if errors.get(name) %}<p class="field-error">{{ errors[name] }}</p>{% endif %}{% endmacro %}
+{% block content %}
+<section class="hero hero--slim">
+  <div class="hero-inner">
+    <p class="eyebrow">Gratis download</p>
+    <h1>{{ d.titel }}</h1>
+    <p class="hero-lead">{{ d.lead }}</p>
+  </div>
+</section>
+<section class="section">
+  <div class="contact-grid">
+    <div class="contact-info">
+      <h2>Wat je krijgt</h2>
+      <ul class="checks">{% for p in d.punten %}<li>{{ p }}</li>{% endfor %}</ul>
+      <p class="muted">Liever meteen iemand spreken? <a href="{{ STUDIEADVIES }}">Plan een gratis studieadvies</a>.</p>
+    </div>
+    <div class="form-card">
+      {% if verstuurd %}
+      <h2>Veel plezier ermee</h2>
+      <p>Je download staat klaar. Je ontvangt voortaan ook onze nieuwsbrief; afmelden kan met één klik.</p>
+      <a class="btn btn--solid" href="{{ url_for('static', filename=d.bestand) }}" download>Download de pdf</a>
+      {% else %}
+      <h2>Ontvang de {{ d.kort|lower }}</h2>
+      {% if errors.get('algemeen') %}<p class="form-alert">{{ errors['algemeen'] }}</p>{% endif %}
+      <form method="post" novalidate>
+        <input type="hidden" name="csrf" value="{{ csrf_token() }}">
+        <div class="hp" aria-hidden="true"><label>Website <input name="website" tabindex="-1" autocomplete="off"></label></div>
+        <label class="field{% if errors.get('naam') %} field--error{% endif %}"><span>Naam</span><input name="naam" autocomplete="name" value="{{ values.get('naam','') }}">{{ err('naam') }}</label>
+        <label class="field{% if errors.get('email') %} field--error{% endif %}"><span>E-mailadres</span><input type="email" name="email" autocomplete="email" value="{{ values.get('email','') }}">{{ err('email') }}</label>
+        <p class="fineprint">Met je aanmelding ontvang je ook onze nieuwsbrief. Afmelden kan altijd. Zie onze <a href="/privacy-policy/">privacyverklaring</a>.</p>
+        <button class="btn btn--solid" type="submit">Download gratis</button>
+      </form>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}
