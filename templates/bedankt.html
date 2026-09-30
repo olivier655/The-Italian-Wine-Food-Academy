@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Aanmelding ontvangen{% endblock %}
+{% block robots %}<meta name="robots" content="noindex">{% endblock %}
+{% block head %}{% if aanmelding %}<script>{% if GTM_ID %}dataLayer.push({event: 'generate_lead', value: {{ aanmelding.totaal|tojson }}, currency: 'EUR', product: {{ (aanmelding.product or '')|tojson }}});{% else %}gtag('event', 'generate_lead', {value: {{ aanmelding.totaal|tojson }}, currency: 'EUR'});{% endif %}</script>{% endif %}{% endblock %}
 {% block content %}
 <section class="form-wrap">
   <h1>{% if aanmelding %}Grazie, {{ aanmelding.voornaam }}.{% else %}Grazie.{% endif %} Je aanmelding is binnen.</h1>

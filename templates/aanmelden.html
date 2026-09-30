@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block title %}Aanmelden · {{ product.naam }}{% endblock %}
+{% block robots %}<meta name="robots" content="noindex">{% endblock %}
 {% macro err(name) %}{% if errors.get(name) %}<p class="field-error">{{ errors[name] }}</p>{% endif %}{% endmacro %}
 {% macro text(name, label, type="text", autocomplete="") %}
 <label class="field{% if errors.get(name) %} field--error{% endif %}">
@@ -61,7 +62,8 @@
       <div data-show-if="praktijk">
       {% if product.starts %}
         <div class="field{% if errors.get('start') %} field--error{% endif %}">
-          <span>Startdatum en locatie van de praktijkdagen</span>
+          <span>{% if product.soort == 'opties' %}Startdatum en locatie van de praktijkdagen{% else %}Startdatum en locatie{% endif %}</span>
+          {% if product.soort != 'opties' %}<p class="field-help">De cursus duurt {{ product.duur or 'drie weken' }} en begint op de datum hieronder. De praktijkdag in de kookstudio is op zaterdag van 10:00 tot 15:00, op de locatie die je kiest.</p>{% endif %}
           <div class="start-list">
           {% for s in product.starts %}
             <label class="choice choice--small"><input type="radio" name="start" value="{{ s.sku }}" {% if values.get('start') == s.sku %}checked{% endif %}><span class="choice-body"><strong>{{ s.label.split(' · ')[0] }}</strong><span>{{ s.locatie }}</span></span></label>
@@ -134,7 +136,7 @@
       </div>
       <label class="check{% if errors.get('voorwaarden') %} field--error{% endif %}">
         <input type="checkbox" name="voorwaarden" value="ja" {% if values.get('voorwaarden') %}checked{% endif %}>
-        <span>Ik ga akkoord met de <a href="https://thewineandfoodacademy.com/algemene-voorwaarden/" target="_blank" rel="noopener">algemene voorwaarden</a>.</span>
+        <span>Ik ga akkoord met de <a href="/algemene-voorwaarden/" target="_blank" rel="noopener">algemene voorwaarden</a>.</span>
       </label>
       {{ err('voorwaarden') }}
       <button type="submit" class="btn btn--solid">Aanmelding versturen</button>

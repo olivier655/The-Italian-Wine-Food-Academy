@@ -5,13 +5,62 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}The Italian Wine & Food Academy{% endblock %}</title>
   <meta name="description" content="{% block description %}Italiaanse keuken én wijn leren bij The Italian Wine & Food Academy: online in je eigen tempo, elke maand samen in de kookstudio in Amsterdam of Zeist.{% endblock %}">
+  <link rel="canonical" href="{{ canonical }}">
+  {% block robots %}{% endblock %}
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="The Italian Wine & Food Academy">
+  <meta property="og:locale" content="nl_NL">
+  <meta property="og:url" content="{{ canonical }}">
+  <meta property="og:title" content="{{ self.title()|striptags }}">
+  <meta property="og:description" content="{{ self.description()|striptags }}">
+  <meta property="og:image" content="{% block og_image %}{{ abs_url(img('image00163.jpeg')) }}{% endblock %}">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Google Consent Mode v2: standaard alles uit, tot de bezoeker kiest -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+      ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied',
+      analytics_storage: 'denied', functionality_storage: 'granted', security_storage: 'granted',
+      wait_for_update: 500
+    });
+    gtag('set', 'ads_data_redaction', true);
+    (function(){
+      try {
+        var m = document.cookie.match(/(?:^|; )twfa_consent=([^;]+)/);
+        if (m) {
+          var c = JSON.parse(decodeURIComponent(m[1]));
+          gtag('consent', 'update', {
+            analytics_storage: c.stat ? 'granted' : 'denied',
+            ad_storage: c.mkt ? 'granted' : 'denied',
+            ad_user_data: c.mkt ? 'granted' : 'denied',
+            ad_personalization: c.mkt ? 'granted' : 'denied'
+          });
+          window.twfaConsent = c;
+        }
+      } catch (e) {}
+    })();
+  </script>
+  {% if GTM_ID %}
+  <!-- Google Tag Manager (tags beheer je in GTM; Consent Mode hierboven geldt voor alle Google-tags) -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','{{ GTM_ID }}');</script>
+  {% elif GA_ID %}
+  <!-- Zonder Tag Manager: GA4 en Google Ads direct -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id={{ GA_ID }}"></script>
+  <script>gtag('js', new Date()); gtag('config', '{{ GA_ID }}');{% if ADS_ID %} gtag('config', '{{ ADS_ID }}');{% endif %}</script>
+  {% endif %}
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="icon" href="{{ LOGO }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='twfa.css') }}">
+  <script type="application/ld+json">{{ {"@context": "https://schema.org", "@type": "EducationalOrganization", "name": "The Italian Wine & Food Academy", "url": SITE + "/", "logo": abs_url(LOGO), "email": CONTACT.email, "telephone": CONTACT.tel, "address": {"@type": "PostalAddress", "streetAddress": "Steynlaan 44", "postalCode": "3701 EH", "addressLocality": "Zeist", "addressCountry": "NL"}}|tojson }}</script>
+  {% block head %}{% endblock %}
 </head>
 <body>
+  {% if GTM_ID %}<noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ GTM_ID }}" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>{% endif %}
   <header class="site-header">
     <a class="logo" href="{{ url_for('home') }}"><img src="{{ LOGO }}" alt="The Italian Wine &amp; Food Academy" width="170" height="68"></a>
     <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Menu">
@@ -35,12 +84,61 @@
       <div>
         <p><a href="{{ url_for('overzicht') }}">Alle opleidingen</a></p>
         <p><a href="{{ url_for('leermethode') }}">Leermethode</a> · <a href="{{ url_for('kookstudio') }}">Kookstudio</a> · <a href="{{ url_for('docenten_pagina') }}">Docenten</a></p>
-        <p>Streken: <a href="/piemonte/">Piemonte</a> · <a href="/lombardije/">Lombardije</a> · <a href="/ligurie/">Ligurië</a> · <a href="/toscane/">Toscane</a></p>
+        <p><a href="{{ url_for('faq') }}">Veelgestelde vragen</a> · <a href="{{ url_for('contact') }}">Contact</a></p>
+        <p><a href="/streken/">De streken van Italië</a>: <a href="/piemonte/">Piemonte</a> · <a href="/veneto/">Veneto</a> · <a href="/toscane/">Toscane</a> · <a href="/lazio/">Lazio</a> · <a href="/sicilie/">Sicilië</a></p>
       </div>
     </div>
-    <p class="footer-small">Alle bedragen zijn btw-vrij, want we zijn CRKBO-geregistreerd. Gespreid betalen is mogelijk.<br>
-    © The Wine &amp; Food Academy B.V. · <a href="{{ WP }}/algemene-voorwaarden/">Algemene voorwaarden</a> · <a href="{{ WP }}/privacy-policy/">Privacy</a></p>
+    <p class="footer-small">Alle bedragen zijn btw-vrij, want we zijn CRKBO-geregistreerd. We zijn lid van de NRTO. Gespreid betalen is mogelijk.<br>
+    © The Wine &amp; Food Academy B.V. · <a href="/algemene-voorwaarden/">Algemene voorwaarden</a> · <a href="/privacy-policy/">Privacy</a> · <a href="/klachtenprocedure/">Klachtenprocedure</a> · <a href="/gedragscode-nrto/">Gedragscode NRTO</a> · <button type="button" class="linkbutton" data-cookie-open>Cookie-instellingen</button></p>
   </footer>
+
+  <div class="cookie" id="cookie" role="dialog" aria-labelledby="cookie-titel" hidden>
+    <h2 id="cookie-titel">Cookies</h2>
+    <p>We gebruiken noodzakelijke cookies om de site te laten werken. Met jouw toestemming meten we ook het bezoek en tonen we relevantere advertenties. Lees meer in onze <a href="/privacy-policy/">privacyverklaring</a>.</p>
+    <div class="cookie-keuzes" data-cookie-details hidden>
+      <label><input type="checkbox" checked disabled> <span>Noodzakelijk<small>Nodig om de site en het aanmeldformulier te laten werken.</small></span></label>
+      <label><input type="checkbox" data-cookie="stat"> <span>Statistieken<small>Google Analytics: hoe bezoekers de site gebruiken.</small></span></label>
+      <label><input type="checkbox" data-cookie="mkt"> <span>Marketing<small>Google Ads: advertenties meten en afstemmen.</small></span></label>
+    </div>
+    <div class="cookie-knoppen">
+      <button type="button" class="btn btn--solid" data-cookie-all>Alles accepteren</button>
+      <button type="button" class="btn btn--line" data-cookie-none>Alleen noodzakelijk</button>
+      <button type="button" class="btn btn--line" data-cookie-settings>Instellingen</button>
+      <button type="button" class="btn btn--line" data-cookie-save hidden>Keuze opslaan</button>
+    </div>
+  </div>
+  <script>
+  (function(){
+    var box = document.getElementById('cookie');
+    var details = box.querySelector('[data-cookie-details]');
+    var save = box.querySelector('[data-cookie-save]');
+    function kies(stat, mkt){
+      var c = {stat: !!stat, mkt: !!mkt, v: 1, t: Date.now()};
+      document.cookie = 'twfa_consent=' + encodeURIComponent(JSON.stringify(c)) + '; max-age=' + (60*60*24*365) + '; path=/; SameSite=Lax; Secure';
+      gtag('consent', 'update', {
+        analytics_storage: stat ? 'granted' : 'denied',
+        ad_storage: mkt ? 'granted' : 'denied', ad_user_data: mkt ? 'granted' : 'denied', ad_personalization: mkt ? 'granted' : 'denied'
+      });
+      dataLayer.push({event: 'twfa_consent_update', consent_statistics: !!stat, consent_marketing: !!mkt});
+      window.twfaConsent = c;
+      box.hidden = true;
+    }
+    function open(showDetails){
+      var c = window.twfaConsent || {};
+      box.querySelector('[data-cookie=stat]').checked = !!c.stat;
+      box.querySelector('[data-cookie=mkt]').checked = !!c.mkt;
+      details.hidden = !showDetails; save.hidden = !showDetails;
+      box.querySelector('[data-cookie-settings]').hidden = !!showDetails;
+      box.hidden = false;
+    }
+    box.querySelector('[data-cookie-all]').onclick = function(){ kies(true, true); };
+    box.querySelector('[data-cookie-none]').onclick = function(){ kies(false, false); };
+    box.querySelector('[data-cookie-settings]').onclick = function(){ open(true); };
+    save.onclick = function(){ kies(box.querySelector('[data-cookie=stat]').checked, box.querySelector('[data-cookie=mkt]').checked); };
+    document.querySelectorAll('[data-cookie-open]').forEach(function(b){ b.onclick = function(){ open(true); }; });
+    if (!window.twfaConsent) open(false);
+  })();
+  </script>
   {% block scripts %}{% endblock %}
 </body>
 </html>

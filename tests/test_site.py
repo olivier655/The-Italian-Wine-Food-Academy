@@ -146,12 +146,16 @@ def test_airtable_live_and_fallback(monkeypatch):
 
 class AT:
     def __init__(self, status=200):
-        self.status = status
+        self.status = self.status_code = status
     def raise_for_status(self):
         if self.status >= 400:
             raise requests.HTTPError(str(self.status))
     def json(self):
         return {"records": [{"id": "recTEST1234567890"}]}
+    @property
+    def ok(self):
+        return self.status < 400
+    text = "fout"
 
 
 def direct_env(monkeypatch):
@@ -204,3 +208,46 @@ def test_direct_falls_back_to_make(c, monkeypatch):
     with mock.patch("app.requests.post", side_effect=fake_post):
         r = c.post("/aanmelden/pasta-fresca/", data=dict(BASE, csrf=token(c, "pasta-fresca"), start=start))
     assert r.status_code == 302 and calls[-1] == "https://example.invalid/hook"
+
+
+def test_juridisch_faq_contact_seo(c, monkeypatch):
+    for u in ["/algemene-voorwaarden/", "/privacy-policy/", "/klachtenprocedure/", "/gedragscode-nrto/", "/faq/", "/contact/"]:
+        r = c.get(u)
+        assert r.status_code == 200, u
+        h = r.data.decode()
+        assert 'rel="canonical" href="https://italianwineandfoodacademy.com' + u in h
+        assert "GTM-NZ5XSCC" in h and "gtag/js" not in h and "gtag('consent', 'default'" in h and 'id="cookie"' in h
+    for oud, nieuw in [("/inschrijf-voorwaarden/", "/algemene-voorwaarden/"), ("/faqs/", "/faq/")]:
+        r = c.get(oud)
+        assert r.status_code == 301 and r.headers["Location"].endswith(nieuw)
+    assert "FAQPage" in c.get("/faq/").data.decode()
+    assert '"@type": "Course"' in c.get("/product/pasta-fresca/").data.decode()
+    sm = c.get("/sitemap.xml").data.decode()
+    assert "/product/pasta-fresca/" in sm and "/algemene-voorwaarden/" in sm and "/aanmelden/" not in sm
+    assert "Sitemap:" in c.get("/robots.txt").data.decode()
+    assert 'name="robots" content="noindex"' in c.get("/aanmelden/pasta-fresca/").data.decode()
+
+    # contactformulier
+    h = c.get("/contact/").data.decode()
+    csrf = re.search(r'name="csrf" value="([^"]+)"', h).group(1)
+    assert c.post("/contact/", data={"csrf": csrf, "naam": ""}).status_code == 422
+    sent = []
+    monkeypatch.setattr(A.inschrijving, "verstuur_contact", lambda *a: sent.append(a))
+    r = c.post("/contact/", data={"csrf": csrf, "naam": "Test", "email": "t@x.nl", "vraag": "Hallo"})
+    assert r.status_code == 302 and sent and sent[0][0] == "Test"
+    assert "je vraag is binnen" in c.get("/contact/?verstuurd=1").data.decode()
+
+
+def test_alle_fotos_lokaal(c):
+    """Elke foto op de site komt uit static/img en bestaat echt."""
+    paginas = ["/", "/opleidingen/", "/kookstudio/", "/docenten/", "/leermethode/", "/streken/"] + [f"/{k}/" for k in A.STREKEN]
+    paginas += [f"/product/{s}/" for s in products()]
+    gezien = set()
+    for u in paginas:
+        h = c.get(u).data.decode()
+        assert not re.search(r"""(?:<img[^>]+src="|url\(')https?://[^"']*wp-content""", h), u
+        for src in re.findall(r"""(?:src="|url\(')(/static/img/[^"']+)""", h):
+            gezien.add(src)
+    assert len(gezien) > 25
+    for src in gezien:
+        assert c.get(src).status_code == 200, src

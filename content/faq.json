@@ -1,0 +1,26 @@
+[
+  {"sectie": "Aanmelden en betalen", "vragen": [
+    {"v": "Hoe meld ik me aan?", "a": "Kies op de pagina van je opleiding of cursus de knop om je aan te melden. Je kiest je leeroptie, je startdatum en de locatie van de praktijkdagen en vult je gegevens in. Je krijgt meteen een bevestiging per mail. Daarna kijken we je aanmelding na en sturen we je de factuur en de toegang tot de leeromgeving."},
+    {"v": "Kan ik in termijnen betalen?", "a": "Ja, in vijf termijnen. Kies dat bij je aanmelding; de factuur komt dan in delen."},
+    {"v": "Mijn werkgever betaalt. Hoe werkt dat?", "a": "Kies bij je aanmelding voor ‘Mijn werkgever betaalt’ en vul de bedrijfsnaam in. De factuur komt dan op naam van het bedrijf. Wil je werkgever de SLIM-regeling gebruiken? Dat loopt via de werkgever; we denken graag mee."},
+    {"v": "Waarom zijn de prijzen zonder btw?", "a": "We zijn CRKBO-geregistreerd. Daardoor zijn onze opleidingen en cursussen vrijgesteld van btw. De prijs die je ziet, is de prijs die je betaalt."},
+    {"v": "Kan ik mijn inschrijving annuleren?", "a": "Voor annuleren gelden onze <a href=\"/algemene-voorwaarden/\">algemene voorwaarden</a>: de NRTO-voorwaarden voor particulier onderwijs. Daarin staat per termijn wat annuleren kost. Twijfel je? Neem <a href=\"/contact/\">contact</a> met ons op."},
+    {"v": "Kan ik mijn inschrijving wijzigen?", "a": "Dat hangt van de situatie af; vaak kan het. Neem <a href=\"/contact/\">contact</a> met ons op, dan kijken we samen."},
+    {"v": "Ik heb me aangemeld, maar nog niets ontvangen.", "a": "Je krijgt direct na je aanmelding een bevestiging per mail. Kijk ook even in je spammap. Niets gevonden? Neem dan <a href=\"/contact/\">contact</a> met ons op."}
+  ]},
+  {"sectie": "De opleiding", "vragen": [
+    {"v": "Heb ik voorkennis nodig?", "a": "Nee. Onze opleidingen beginnen bij de basis en zijn geschikt voor liefhebbers zonder ervaring. We bouwen stap voor stap op, van techniek tot proeven."},
+    {"v": "Hoeveel tijd kost het per week?", "a": "Reken op vier tot acht uur per week: instructievideo's, opdrachten in je eigen keuken en de wekelijkse live les. Het meeste doe je in je eigen tempo, dus het past naast werk of gezin."},
+    {"v": "Waar en wanneer zijn de praktijkdagen?", "a": "Op zaterdag van 10:00 tot 15:00, in onze kookstudio met houtoven in Amsterdam of Zeist. Bij je aanmelding kies je de locatie: hetzelfde programma, dezelfde docenten."},
+    {"v": "Krijg ik een diploma of certificaat?", "a": "Ja. De volledige Opleiding Italiaanse Gastronomie sluit af met een diploma, de andere opleidingen en cursussen met een CRKBO-certificaat. We zijn NRTO-erkend en CRKBO-geregistreerd."},
+    {"v": "Welke opleiding past bij mij?", "a": "Plan een <a href=\"/studieadvies/\">gratis studieadvies</a>. In een gesprek van dertig minuten kijken we samen wat past bij je doelen en je agenda."}
+  ]},
+  {"sectie": "De leeromgeving", "vragen": [
+    {"v": "Hoe krijg ik toegang tot de leeromgeving?", "a": "Zodra we je aanmelding hebben nagekeken, krijg je een mail om je wachtwoord in te stellen. Gebruik het e-mailadres waarmee je je hebt aangemeld. Geen mail gehad? Kijk in je spammap of neem <a href=\"/contact/\">contact</a> met ons op."},
+    {"v": "Waar log ik in?", "a": "Via <a href=\"https://thewineandfoodacademy.com/mijn-profiel/\">Leeromgeving</a>, bovenaan elke pagina. Wachtwoord vergeten? Kies daar ‘wachtwoord vergeten’, dan krijg je een link per mail."},
+    {"v": "Hoe lang heb ik toegang?", "a": "Tot een jaar na je inschrijving. In die tijd kun je al het lesmateriaal opnieuw bekijken."}
+  ]},
+  {"sectie": "Privacy", "vragen": [
+    {"v": "Wat doen jullie met mijn gegevens?", "a": "We gebruiken je gegevens alleen voor je opleiding, je factuur en, als je dat wilt, onze nieuwsbrief. Lees er alles over in onze <a href=\"/privacy-policy/\">privacyverklaring</a>."}
+  ]}
+]

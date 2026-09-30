@@ -1,10 +1,12 @@
 {% extends "base.html" %}
 {% block title %}{{ streek.titel }} · The Italian Wine & Food Academy{% endblock %}
 {% block description %}{{ streek.beschrijving }}{% endblock %}
+{% block og_image %}{{ abs_url(streek_foto(slug)) }}{% endblock %}
+{% block head %}<script type="application/ld+json">{{ {"@context": "https://schema.org", "@type": "Article", "headline": streek.titel, "description": streek.beschrijving, "image": abs_url(streek_foto(slug)), "inLanguage": "nl", "publisher": {"@type": "Organization", "name": "The Italian Wine & Food Academy"}, "mainEntityOfPage": canonical}|tojson }}</script>{% endblock %}
 {% block content %}
-<section class="hero hero--slim hero--image" style="--hero:url('{{ img(STREEK_FOTO[slug]) }}')">
+<section class="hero hero--slim hero--image" style="--hero:url('{{ streek_foto(slug) }}')">
   <div class="hero-inner">
-    <p class="eyebrow">Blok {{ streek.blok }}{% if streek.week %} · week {{ streek.week }}{% endif %} van de opleiding</p>
+    <p class="eyebrow">{% if streek.blok %}Blok {{ streek.blok }}{% if streek.week %} · week {{ streek.week }}{% endif %} van de opleiding{% else %}Achtergrond{% endif %}</p>
     <h1>{{ streek.titel }}</h1>
   </div>
 </section>
@@ -13,11 +15,12 @@
 </article>
 <section class="cta">
   <h2>Leer het zelf, van keuken tot glas</h2>
-  <p>{{ streek.naam }} is een van de streken in de Opleiding Italiaanse Gastronomie: keuken en wijn als één geheel, met elke maand een praktijkdag in de kookstudio.</p>
+  <p>{% if streek.blok %}{{ streek.naam }} is een van de streken in de Opleiding Italiaanse Gastronomie{% else %}In de Opleiding Italiaanse Gastronomie reis je in een jaar door alle Italiaanse streken{% endif %}: keuken en wijn als één geheel, met elke maand een praktijkdag in de kookstudio.</p>
   <a class="btn btn--solid" href="{{ url_for('product', slug='opleiding-italiaanse-gastronomie') }}">Bekijk de opleiding</a>
   <a class="btn btn--ghost-dark" href="{{ STUDIEADVIES }}">Gratis studieadvies</a>
 </section>
 <nav class="streek-nav">
-  {% for key, s in STREKEN.items() if key != slug %}<a href="/{{ key }}/">{{ s.naam }}</a>{% endfor %}
+  <a href="{{ url_for('streken') }}"><strong>Alle streken</strong></a>
+  {% for key, s in STREKEN.items() if key != slug and s.blok %}<a href="/{{ key }}/">{{ s.naam }}</a>{% endfor %}
 </nav>
 {% endblock %}

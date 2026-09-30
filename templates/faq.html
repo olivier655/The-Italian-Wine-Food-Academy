@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Veelgestelde vragen · The Italian Wine & Food Academy{% endblock %}
+{% block description %}Antwoorden op veelgestelde vragen over aanmelden, betalen, de praktijkdagen, het diploma en de leeromgeving van The Italian Wine & Food Academy.{% endblock %}
+{% block head %}
+<script type="application/ld+json">{{ {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": faq_schema(faq)}|tojson }}</script>
+{% endblock %}
+{% block content %}
+<section class="hero hero--slim">
+  <div class="hero-inner">
+    <p class="eyebrow">Klantenservice</p>
+    <h1>Veelgestelde vragen</h1>
+    <p class="hero-lead">Staat je vraag er niet tussen? <a class="link-light" href="{{ url_for('contact') }}">Neem contact met ons op</a>.</p>
+  </div>
+</section>
+{% for blok in faq %}
+<section class="section{% if loop.index is even %} section--creme{% endif %}">
+  <div class="section-head"><h2>{{ blok.sectie }}</h2><div class="flag"></div></div>
+  <div class="faq">
+    {% for q in blok.vragen %}<details><summary>{{ q.v }}</summary><p>{{ q.a|safe }}</p></details>{% endfor %}
+  </div>
+</section>
+{% endfor %}
+<section class="cta">
+  <h2>Liever even overleggen?</h2>
+  <p>Plan een gratis, vrijblijvend studieadviesgesprek van dertig minuten.</p>
+  <a class="btn btn--solid" href="{{ STUDIEADVIES }}">Plan gratis studieadvies</a>
+</section>
+{% endblock %}

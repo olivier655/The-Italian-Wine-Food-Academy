@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}{{ pagina.titel }} · The Italian Wine & Food Academy{% endblock %}
+{% block description %}{{ pagina.beschrijving }}{% endblock %}
+{% block content %}
+<section class="hero hero--slim">
+  <div class="hero-inner">
+    <p class="eyebrow">Goed geregeld</p>
+    <h1>{{ pagina.titel }}</h1>
+  </div>
+</section>
+<article class="article article--legal">
+  {{ pagina.html|safe }}
+  <p class="fineprint">Laatst bijgewerkt: {{ pagina.gewijzigd }}</p>
+</article>
+{% endblock %}

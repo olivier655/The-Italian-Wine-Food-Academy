@@ -106,6 +106,8 @@ def schrijf_airtable(p):
         json={"records": [{"fields": airtable_fields(p)}], "typecast": True},
         timeout=10,
     )
+    if not r.ok:
+        log.error("Airtable weigerde de inschrijving (%s): %s", r.status_code, r.text[:500])
     r.raise_for_status()
     return r.json()["records"][0]["id"]
 
@@ -129,14 +131,15 @@ HANDTEKENING = (
 
 def bevestiging_html(p):
     rij = '<tr><td style="color:#5d5d5d;width:40%">{}</td><td>{}</td></tr>'
-    rijen = "".join([
-        rij.format("Opleiding", f"<strong>{_e(p['product'])}</strong>"),
-        rij.format("Leeroptie", _e(p.get("optie"))),
-        rij.format("Examen", "Ja" if p["examen"] else "Nee"),
-        rij.format("Start", _e(p["startmoment"])),
-        rij.format("Praktijkdagen", _e(p.get("locatie"))),
-        rij.format("Betaling", "In vijf termijnen" if p["betaling"] == "termijnen" else "In één keer"),
-    ])
+    opleiding = bool(p.get("optie"))  # lange opleiding met leeropties, anders een losse cursus
+    regels = [rij.format("Opleiding" if opleiding else "Cursus", f"<strong>{_e(p['product'])}</strong>")]
+    if opleiding:
+        regels += [rij.format("Leeroptie", _e(p.get("optie"))), rij.format("Examen", "Ja" if p["examen"] else "Nee")]
+    regels += [rij.format("Start", _e(p["startmoment"]))]
+    if p.get("locatie"):
+        regels += [rij.format("Praktijkdag" if not opleiding else "Praktijkdagen", _e(p["locatie"]))]
+    regels += [rij.format("Betaling", "In vijf termijnen" if p["betaling"] == "termijnen" else "In één keer")]
+    rijen = "".join(regels)
     totaal = (f'<tr><td style="border-top:2px solid #1F3F2A"><strong>Totaal, btw-vrij</strong></td>'
               f'<td style="border-top:2px solid #1F3F2A"><strong>{_eur(p["totaal"])}</strong></td></tr>')
     return (
@@ -190,3 +193,19 @@ def verstuur_mails(p, record_id):
         s.login(os.environ["SMTP_USER"], os.environ["SMTP_PASSWORD"].replace(" ", ""))
         for m in berichten:
             s.send_message(m)
+
+
+def verstuur_contact(naam, email, telefoon, vraag):
+    """Vraag uit het contactformulier naar MAIL_NOTIFY, met de afzender als Reply-To."""
+    body = (
+        '<div style="font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.6">'
+        f"<p>Nieuwe vraag via het contactformulier.</p><p><strong>{_e(naam)}</strong><br>{_e(email)}"
+        f"{' · ' + _e(telefoon) if telefoon else ''}</p><p>{_e(vraag).replace(chr(10), '<br>')}</p></div>"
+    )
+    notify = os.environ.get("MAIL_NOTIFY") or os.environ["SMTP_USER"]
+    m = _bericht(notify, f"Vraag via de site: {naam}", body, reply_to=email)
+    port = int(os.environ.get("SMTP_PORT", "587"))
+    with smtplib.SMTP(os.environ["SMTP_HOST"], port, timeout=15) as s:
+        s.starttls()
+        s.login(os.environ["SMTP_USER"], os.environ["SMTP_PASSWORD"].replace(" ", ""))
+        s.send_message(m)

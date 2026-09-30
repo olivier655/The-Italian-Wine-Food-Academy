@@ -1,5 +1,6 @@
 import json
 import os
+import re
 import secrets
 from datetime import datetime, timezone
 from pathlib import Path
@@ -24,7 +25,16 @@ MAKE_FOLLOWUP_URL = os.environ.get("MAKE_FOLLOWUP_URL", "")
 WP = "https://thewineandfoodacademy.com"
 STUDIEADVIES = "/studieadvies/"
 CALENDLY = "https://calendly.com/olivier-thewineandfoodacademy/30min"
-STREKEN = json.loads((Path(__file__).parent / "content" / "streken.json").read_text(encoding="utf-8"))
+CONTENT = Path(__file__).parent / "content"
+STREKEN = json.loads((CONTENT / "streken.json").read_text(encoding="utf-8"))
+JURIDISCH = json.loads((CONTENT / "juridisch.json").read_text(encoding="utf-8"))
+FAQ = json.loads((CONTENT / "faq.json").read_text(encoding="utf-8"))
+SITE = os.environ.get("SITE_URL", "https://italianwineandfoodacademy.com").rstrip("/")
+GTM_ID = os.environ.get("GTM_ID", "GTM-NZ5XSCC")
+GA_ID = os.environ.get("GA_ID", "G-47RZH4K81R")  # alleen gebruikt als GTM_ID leeg is
+ADS_ID = os.environ.get("ADS_ID", "AW-11208459250")
+CONTACT = {"telefoon": "085 080 6445", "tel": "+31850806445", "email": "klantenservice@thewineandfoodacademy.com",
+           "adres": "Steynlaan 44, 3701 EH Zeist"}
 
 # Portretten van de docenten staan (nog) in de mediabibliotheek van WordPress.
 FOTO = {
@@ -65,12 +75,27 @@ STREEK_FOTO = {
 }
 
 
+_STREEK_RESERVE = ["image00176.jpeg", "image00143.jpeg", "image00148.jpeg", "image00160.jpeg", "image00015.jpeg",
+                   "image00018.jpeg", "image00020-1.jpeg", "image00017-2.jpeg", "image00163.jpeg", "image00170.jpeg"]
+
+
+def streek_foto(slug):
+    if slug in STREEK_FOTO:
+        return img(STREEK_FOTO[slug])
+    return img(_STREEK_RESERVE[list(STREKEN).index(slug) % len(_STREEK_RESERVE)])
+
+
 def product_foto(slug):
     return img(PRODUCT_FOTO.get(slug, "image00163.jpeg"))
 
 
 def img(name):
-    return f"{WP}/wp-content/uploads/2026/06/{name}"
+    """Foto uit static/img (WebP, verkleind). Namen blijven die uit de oude mediabibliotheek."""
+    return "/static/img/" + re.sub(r"\.(jpe?g|png)$", "", name) + ".webp"
+
+
+def abs_url(path):
+    return path if path.startswith("http") else SITE + path
 
 
 def docenten():
@@ -82,11 +107,37 @@ def docenten():
     return out
 
 
+def faq_schema(faq):
+    return [{"@type": "Question", "name": q["v"],
+             "acceptedAnswer": {"@type": "Answer", "text": re.sub(r"<[^>]+>", "", q["a"])}}
+            for blok in faq for q in blok["vragen"]]
+
+
+def course_schema(slug, product):
+    """Schema.org Course, zodat Google prijs en startdata kan tonen."""
+    org = {"@type": "Organization", "name": "The Italian Wine & Food Academy", "sameAs": SITE}
+    prijs = vanaf(product)
+    data = {"@context": "https://schema.org", "@type": "Course", "name": product["naam"],
+            "description": re.sub(r"\s+", " ", product.get("kort") or "")[:500], "provider": org,
+            "url": f"{SITE}/product/{slug}/", "image": abs_url(product_foto(slug)),
+            "offers": {"@type": "Offer", "price": prijs, "priceCurrency": "EUR", "category": "Paid",
+                       "availability": "https://schema.org/InStock", "url": f"{SITE}/aanmelden/{slug}/"}}
+    if product.get("starts"):
+        data["hasCourseInstance"] = [{
+            "@type": "CourseInstance", "courseMode": "Blended", "startDate": s["datum"],
+            "location": {"@type": "Place", "name": f"Kookstudio {s['locatie']}",
+                         "address": {"@type": "PostalAddress", "addressLocality": s["locatie"], "addressCountry": "NL"}},
+            "offers": {"@type": "Offer", "price": prijs, "priceCurrency": "EUR", "category": "Paid"}}
+            for s in product["starts"][:10]]
+    return data
+
+
 @app.context_processor
 def globals_for_templates():
     return {"NLQF_STATUS": NLQF_STATUS, "STUDIEADVIES": STUDIEADVIES, "WP": WP, "img": img,
-            "vanaf": vanaf, "STREKEN": STREKEN,
-            "product_foto": product_foto, "LOGO": img("The_Italian_Wine_and_Food_Academy_logo-scaled.png"), "STREEK_FOTO": STREEK_FOTO}
+            "vanaf": vanaf, "abs_url": abs_url, "STREKEN": STREKEN, "faq_schema": faq_schema, "course_schema": course_schema,
+            "product_foto": product_foto, "streek_foto": streek_foto, "SITE": SITE, "GTM_ID": GTM_ID, "GA_ID": GA_ID, "ADS_ID": ADS_ID, "CONTACT": CONTACT,
+            "canonical": SITE + request.path, "LOGO": img("The_Italian_Wine_and_Food_Academy_logo-scaled.png"), "STREEK_FOTO": STREEK_FOTO}
 
 
 def csrf_token():
@@ -133,9 +184,84 @@ def docenten_pagina():
     return render_template("docenten.html", docenten=docenten())
 
 
-@app.route("/<any(piemonte, lombardije, ligurie, toscane):slug>/")
+@app.route("/<any(%s):slug>/" % ", ".join(f'"{k}"' for k in STREKEN))
 def streek(slug):
     return render_template("streek.html", slug=slug, streek=STREKEN[slug])
+
+
+BLOKKEN = {1: "Het noordwesten", 2: "Het noordoosten", 3: "Het midden", 4: "Rond Rome", 5: "Het zuiden en de eilanden"}
+
+
+@app.route("/streken/")
+def streken():
+    blokken = [(n, BLOKKEN[n], [(k, s) for k, s in STREKEN.items() if s.get("blok") == n]) for n in BLOKKEN]
+    artikelen = [(k, s) for k, s in STREKEN.items() if not s.get("blok")]
+    return render_template("streken.html", blokken=blokken, artikelen=artikelen)
+
+
+@app.route('/<any("algemene-voorwaarden", "privacy-policy", "klachtenprocedure", "gedragscode-nrto"):slug>/')
+def juridisch(slug):
+    return render_template("pagina.html", pagina=JURIDISCH[slug])
+
+
+# Oude WordPress-adressen die op de nieuwe site een ander adres hebben.
+OUD_NAAR_NIEUW = {
+    "inschrijf-voorwaarden": "/algemene-voorwaarden/",
+    "algemene-voorwaarden-consumenten-voor-particulier-onderwijs-en-opleidingen": "/algemene-voorwaarden/",
+    "faqs": "/faq/",
+}
+
+
+@app.route('/<any("inschrijf-voorwaarden", "algemene-voorwaarden-consumenten-voor-particulier-onderwijs-en-opleidingen", "faqs"):oud>/')
+def oud_adres(oud):
+    return redirect(OUD_NAAR_NIEUW[oud], code=301)
+
+
+@app.route("/faq/")
+def faq():
+    return render_template("faq.html", faq=FAQ)
+
+
+@app.route("/contact/", methods=["GET", "POST"])
+def contact():
+    if request.method == "GET":
+        return render_template("contact.html", values={}, errors={}, verstuurd=request.args.get("verstuurd"))
+    f = request.form
+    values, errors = f.to_dict(), {}
+    if f.get("csrf") != session.get("csrf"):
+        abort(400)
+    if f.get("website"):
+        return redirect(url_for("contact", verstuurd=1))
+    for field, message in [("naam", "Vul je naam in."), ("email", "Vul je e-mailadres in."), ("vraag", "Schrijf je vraag.")]:
+        if not f.get(field, "").strip():
+            errors[field] = message
+    if f.get("email") and "@" not in f.get("email", ""):
+        errors["email"] = "Dit e-mailadres klopt niet."
+    if not errors:
+        try:
+            inschrijving.verstuur_contact(f.get("naam", "").strip(), f.get("email", "").strip(),
+                                          f.get("telefoon", "").strip(), f.get("vraag", "").strip())
+            return redirect(url_for("contact", verstuurd=1))
+        except Exception:
+            app.logger.exception("Contactformulier niet verstuurd")
+            errors["algemeen"] = f"Je bericht is niet verstuurd door een storing. Mail ons op {CONTACT['email']}."
+    return render_template("contact.html", values=values, errors=errors, verstuurd=None), 422
+
+
+@app.route("/robots.txt")
+def robots():
+    body = f"User-agent: *\nDisallow: /aanmelden/\nSitemap: {SITE}/sitemap.xml\n"
+    return body, 200, {"Content-Type": "text/plain; charset=utf-8"}
+
+
+@app.route("/sitemap.xml")
+def sitemap():
+    paden = ["/", "/opleidingen/", "/streken/", "/leermethode/", "/kookstudio/", "/docenten/", "/studieadvies/", "/faq/", "/contact/"]
+    paden += [f"/{s}/" for s in STREKEN] + [f"/product/{s}/" for s in products()]
+    paden += [f"/{s}/" for s in JURIDISCH]
+    urls = "".join(f"<url><loc>{SITE}{p}</loc></url>" for p in paden)
+    xml = f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{urls}</urlset>'
+    return xml, 200, {"Content-Type": "application/xml; charset=utf-8"}
 
 
 @app.route("/product/regiocursus/")
@@ -320,7 +446,7 @@ def aanmelden(slug):
         )
         return render_template("aanmelden.html", **_form_context(slug, product, values, errors)), 502
 
-    session["laatste_aanmelding"] = {"voornaam": payload["voornaam"], "regels": payload["prijsregels"],
+    session["laatste_aanmelding"] = {"voornaam": payload["voornaam"], "regels": payload["prijsregels"], "product": payload["product"],
                                      "totaal": total, "startmoment": startmoment}
     return redirect(url_for("bedankt"))
 

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}De streken van Italië: keuken en wijn per regio · The Italian Wine & Food Academy{% endblock %}
+{% block description %}Van Piemonte tot Sicilië: per streek de wijnen, de gerechten en de techniek die je leert in de Opleiding Italiaanse Gastronomie.{% endblock %}
+{% block content %}
+<section class="hero hero--slim hero--image" style="--hero:url('{{ img('image00163.jpeg') }}')">
+  <div class="hero-inner">
+    <p class="eyebrow">Keuken en wijn per regio</p>
+    <h1>De streken van Italië</h1>
+    <p class="hero-lead">In vijf blokken reis je door Italië, van het noordwesten tot de eilanden. Per streek: twee wijnen, drie gerechten en één inzicht dat je meeneemt.</p>
+  </div>
+</section>
+{% for nr, titel, items in blokken %}
+<section class="section{% if loop.index is even %} section--creme{% endif %}">
+  <div class="section-head"><p class="eyebrow eyebrow--wijn">Blok {{ nr }}</p><h2>{{ titel }}</h2><div class="flag"></div></div>
+  <div class="cards cards--catalog">
+    {% for key, s in items %}
+    <a class="card" href="/{{ key }}/">
+      <img class="card-img" src="{{ streek_foto(key) }}" alt="{{ s.naam }}" loading="lazy">
+      <p class="card-kicker">{% if s.week %}Week {{ s.week }}{% else %}Blok {{ nr }}{% endif %}</p>
+      <h3>{{ s.naam }}</h3>
+      {% set t = s.titel.split(': ', 1)[-1] %}<p class="card-text">{{ t[:1]|upper }}{{ t[1:] }}</p>
+      <span class="card-link">Lees meer ›</span>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+{% endfor %}
+{% if artikelen %}
+<section class="section">
+  <div class="section-head"><p class="eyebrow eyebrow--wijn">Verdieping</p><h2>Meer over Italiaanse wijn</h2><div class="flag"></div></div>
+  <div class="cards cards--catalog">
+    {% for key, s in artikelen %}<a class="card" href="/{{ key }}/"><img class="card-img" src="{{ streek_foto(key) }}" alt="" loading="lazy"><h3>{{ s.titel }}</h3><span class="card-link">Lees meer ›</span></a>{% endfor %}
+  </div>
+</section>
+{% endif %}
+<section class="cta">
+  <h2>Alle streken, in één opleiding</h2>
+  <p>De Opleiding Italiaanse Gastronomie neemt je in een jaar mee door heel Italië, met elke maand een praktijkdag in de kookstudio.</p>
+  <a class="btn btn--solid" href="{{ url_for('product', slug='opleiding-italiaanse-gastronomie') }}">Bekijk de opleiding</a>
+</section>
+{% endblock %}

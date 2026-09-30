@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Contact · The Italian Wine & Food Academy{% endblock %}
+{% block description %}Neem contact op met The Italian Wine & Food Academy: bel, mail of stel je vraag via het formulier. Of plan direct een gratis studieadvies.{% endblock %}
+{% macro err(name) %}{% if errors.get(name) %}<p class="field-error">{{ errors[name] }}</p>{% endif %}{% endmacro %}
+{% block content %}
+<section class="hero hero--slim">
+  <div class="hero-inner">
+    <p class="eyebrow">Contact</p>
+    <h1>We helpen je graag</h1>
+    <p class="hero-lead">Een vraag over een opleiding, je aanmelding of de leeromgeving? Bel, mail of stuur je vraag hieronder.</p>
+  </div>
+</section>
+<section class="section">
+  <div class="contact-grid">
+    <div class="contact-info">
+      <h2>Direct contact</h2>
+      <p><strong>Telefoon</strong><br><a href="tel:{{ CONTACT.tel }}">{{ CONTACT.telefoon }}</a></p>
+      <p><strong>E-mail</strong><br><a href="mailto:{{ CONTACT.email }}">{{ CONTACT.email }}</a><br><span class="muted">We reageren binnen 24 uur op werkdagen.</span></p>
+      <p><strong>Postadres</strong><br>{{ CONTACT.adres }}</p>
+      <p><strong>Kookstudio's</strong><br>Amsterdam: Science Park 301<br>Zeist: Steynlaan 44<br><a href="{{ url_for('kookstudio') }}">Meer over de kookstudio</a></p>
+      <div class="contact-advies">
+        <h3>Twijfel je welke opleiding past?</h3>
+        <p>Plan een gratis studieadvies van dertig minuten.</p>
+        <a class="btn btn--solid" href="{{ STUDIEADVIES }}">Plan gratis studieadvies</a>
+      </div>
+      <p class="muted">Veel antwoorden staan al bij de <a href="{{ url_for('faq') }}">veelgestelde vragen</a>.</p>
+    </div>
+    <div class="form-card">
+      {% if verstuurd %}
+      <h2>Bedankt, je vraag is binnen</h2>
+      <p>We reageren binnen 24 uur op werkdagen, per mail of telefonisch.</p>
+      {% else %}
+      <h2>Stel je vraag</h2>
+      {% if errors.get('algemeen') %}<p class="form-alert">{{ errors['algemeen'] }}</p>{% endif %}
+      <form method="post" novalidate>
+        <input type="hidden" name="csrf" value="{{ csrf_token() }}">
+        <div class="hp" aria-hidden="true"><label>Website <input name="website" tabindex="-1" autocomplete="off"></label></div>
+        <label class="field{% if errors.get('naam') %} field--error{% endif %}"><span>Naam</span><input name="naam" autocomplete="name" value="{{ values.get('naam','') }}">{{ err('naam') }}</label>
+        <label class="field{% if errors.get('email') %} field--error{% endif %}"><span>E-mailadres</span><input type="email" name="email" autocomplete="email" value="{{ values.get('email','') }}">{{ err('email') }}</label>
+        <label class="field"><span>Telefoonnummer (optioneel)</span><input type="tel" name="telefoon" autocomplete="tel" value="{{ values.get('telefoon','') }}"></label>
+        <label class="field{% if errors.get('vraag') %} field--error{% endif %}"><span>Je vraag</span><textarea name="vraag" rows="5">{{ values.get('vraag','') }}</textarea>{{ err('vraag') }}</label>
+        <p class="fineprint">We gebruiken je gegevens alleen om je vraag te beantwoorden. Zie onze <a href="/privacy-policy/">privacyverklaring</a>.</p>
+        <button class="btn btn--solid" type="submit">Verstuur je vraag</button>
+      </form>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}

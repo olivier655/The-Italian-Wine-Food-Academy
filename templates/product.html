@@ -3,6 +3,8 @@
 {% set c = product.content %}
 {% block title %}{{ product.naam }} · The Italian Wine & Food Academy{% endblock %}
 {% block description %}{{ product.kort|truncate(155, True, '…') }}{% endblock %}
+{% block og_image %}{{ abs_url(product_foto(slug)) }}{% endblock %}
+{% block head %}<script type="application/ld+json">{{ course_schema(slug, product)|tojson }}</script>{% endblock %}
 {% block content %}
 <section class="hero hero--split">
   <div class="hero-inner">
