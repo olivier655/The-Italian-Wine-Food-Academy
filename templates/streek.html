@@ -15,6 +15,12 @@
 <nav class="crumbs" aria-label="Kruimelpad"><a href="/">Home</a>{% for naam, url in crumbs %} <span aria-hidden="true">›</span> {% if url %}<a href="{{ url }}">{{ naam }}</a>{% else %}<span aria-current="page">{{ naam }}</span>{% endif %}{% endfor %}</nav>
 <article class="article">
   {{ streek.html|safe }}
+  {% if streek.begrippen %}
+  <aside class="begrippen">
+    <p>Begrippen op deze pagina</p>
+    <p>{% for b in streek.begrippen %}<a href="/kennisbank/{{ b }}/">{{ KENNIS[b].naam }}</a>{% if not loop.last %} · {% endif %}{% endfor %}</p>
+  </aside>
+  {% endif %}
 </article>
 {% if wijnen %}
 <section class="section section--creme">

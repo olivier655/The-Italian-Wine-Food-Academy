@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Kennisbank: de begrippen achter Italiaanse wijn · The Italian Wine & Food Academy{% endblock %}
+{% block description %}Tannine, zuur, DOC en DOCG, serveertemperatuur en wijn-spijs — de begrippen die op elke wijnpagina terugkomen, hier één keer goed uitgelegd.{% endblock %}
+{% block content %}
+<section class="hero hero--slim hero--image" style="--hero:url('{{ img('image00176.jpeg') }}')">
+  <div class="hero-inner">
+    <p class="eyebrow">Kennisbank</p>
+    <h1>De begrippen achter het glas</h1>
+    <p class="hero-lead">Een handvol woorden komt op bijna elke wijnpagina terug. Hier staan ze één keer goed uitgelegd, met de wijnen erbij waar je ze tegenkomt.</p>
+  </div>
+</section>
+<nav class="crumbs" aria-label="Kruimelpad"><a href="/">Home</a> <span aria-hidden="true">›</span> <span aria-current="page">Kennisbank</span></nav>
+<section class="section">
+  <div class="cards cards--catalog">
+    {% for sleutel, b, wijnen in items %}
+    <a class="card card--tekst" href="/kennisbank/{{ sleutel }}/">
+      <p class="card-kicker">{% if wijnen %}{{ wijnen|length }} wijn{{ 'en' if wijnen|length > 1 }}{% else %}Begrip{% endif %}</p>
+      <h3>{{ b.naam }}</h3>
+      {% set t = b.titel.split(': ', 1)[-1] %}<p class="card-text">{{ t[:1]|upper }}{{ t[1:] }}</p>
+      <span class="card-link">Lees meer ›</span>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+<section class="cta">
+  <h2>Van begrip naar glas</h2>
+  <p>In de Opleiding Italiaanse Gastronomie leer je deze begrippen niet uit een boek, maar aan tafel: elke week twee wijnen naast de gerechten uit dezelfde streek.</p>
+  <a class="btn btn--solid" href="{{ url_for('product', slug='opleiding-italiaanse-gastronomie') }}">Bekijk de opleiding</a>
+  <p class="cta-small">Zelf aan de slag? <a href="{{ url_for('download', slug='proefkit') }}">Download gratis de proefkit</a> met smaakwiel en proefformulier.</p>
+</section>
+{% endblock %}

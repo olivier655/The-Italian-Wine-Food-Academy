@@ -86,6 +86,7 @@
         <p><a href="{{ url_for('leermethode') }}">Leermethode</a> · <a href="{{ url_for('kookstudio') }}">Kookstudio</a> · <a href="{{ url_for('docenten_pagina') }}">Docenten</a></p>
         <p><a href="{{ url_for('faq') }}">Veelgestelde vragen</a> · <a href="{{ url_for('contact') }}">Contact</a></p>
         <p><a href="{{ url_for('wijnproefpakketten') }}">Wijnproefpakketten</a> · <a href="{{ url_for('event_pagina') }}">Proefworkshops 16 januari</a></p>
+        <p><a href="/kennisbank/">Kennisbank</a>: <a href="/kennisbank/wijnproeven/">wijnproeven</a> · <a href="/kennisbank/tannine/">tannine</a> · <a href="/kennisbank/wijn-en-spijs/">wijn en spijs</a></p>
         <p><a href="/streken/">De streken van Italië</a>: <a href="/piemonte/">Piemonte</a> · <a href="/veneto/">Veneto</a> · <a href="/toscane/">Toscane</a> · <a href="/lazio/">Lazio</a> · <a href="/sicilie/">Sicilië</a></p>
       </div>
       {% if request.endpoint != 'nieuwsbrief' %}<form class="footer-news" method="post" action="{{ url_for('nieuwsbrief') }}">

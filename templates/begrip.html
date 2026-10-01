@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}{{ begrip.titel }} · The Italian Wine & Food Academy{% endblock %}
+{% block description %}{{ begrip.beschrijving }}{% endblock %}
+{% block head %}<script type="application/ld+json">{{ {"@context": "https://schema.org", "@type": "Article", "headline": begrip.titel, "description": begrip.beschrijving, "inLanguage": "nl", "author": {"@type": "Organization", "name": "The Italian Wine & Food Academy", "url": SITE + "/"}, "publisher": {"@type": "Organization", "name": "The Italian Wine & Food Academy", "logo": {"@type": "ImageObject", "url": abs_url(LOGO)}}, "mainEntityOfPage": canonical}|tojson }}</script>
+{% set ns = namespace(items=[{"@type": "ListItem", "position": 1, "name": "Home", "item": SITE + "/"}]) %}{% for naam, url in crumbs %}{% set ns.items = ns.items + [{"@type": "ListItem", "position": loop.index + 1, "name": naam, "item": (SITE + url) if url else canonical}] %}{% endfor %}
+<script type="application/ld+json">{{ {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": ns.items}|tojson }}</script>{% endblock %}
+{% block content %}
+<section class="hero hero--slim">
+  <div class="hero-inner">
+    <p class="eyebrow">Kennisbank</p>
+    <h1>{{ begrip.titel }}</h1>
+  </div>
+</section>
+<nav class="crumbs" aria-label="Kruimelpad"><a href="/">Home</a>{% for naam, url in crumbs %} <span aria-hidden="true">›</span> {% if url %}<a href="{{ url }}">{{ naam }}</a>{% else %}<span aria-current="page">{{ naam }}</span>{% endif %}{% endfor %}</nav>
+<article class="article">
+  {{ begrip.html|safe }}
+</article>
+{% if wijnen %}
+<section class="section section--creme">
+  <div class="section-head"><p class="eyebrow eyebrow--wijn">Waar je het tegenkomt</p><h2>Wijnen waarbij {{ begrip.naam|lower }} het verschil maakt</h2><div class="flag"></div></div>
+  <div class="cards cards--catalog">
+    {% for key, w in wijnen %}
+    <a class="card" href="/{{ key }}/">
+      <img class="card-img" src="{{ streek_foto(key) }}" alt="{{ w.naam }}" loading="lazy">
+      <p class="card-kicker">{% if w.week %}Week {{ w.week }}{% else %}Wijn{% endif %}</p>
+      <h3>{{ w.naam }}</h3>
+      {% set t = w.titel.split(': ', 1)[-1] %}<p class="card-text">{{ t[:1]|upper }}{{ t[1:] }}</p>
+      <span class="card-link">Lees meer ›</span>
+    </a>
+    {% endfor %}
+  </div>
+  <p class="section-more"><a href="/kennisbank/">Alle begrippen in de kennisbank ›</a></p>
+</section>
+{% endif %}
+<section class="cta">
+  <h2>Leer het proeven, niet lezen</h2>
+  <p>In de Opleiding Italiaanse Gastronomie zet je elke week twee wijnen naast de gerechten uit dezelfde streek — zo wordt een begrip als dit iets dat je herkent in plaats van onthoudt.</p>
+  <a class="btn btn--solid" href="{{ url_for('product', slug='opleiding-italiaanse-gastronomie') }}">Bekijk de opleiding</a>
+  <a class="btn btn--ghost-dark" href="{{ STUDIEADVIES }}">Gratis studieadvies</a>
+</section>
+{% endblock %}
