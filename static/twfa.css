@@ -388,3 +388,8 @@ legend{font-family:var(--serif);font-size:22px;color:var(--groen);margin-bottom:
 .cta-small{margin:18px 0 0 !important;font-size:15px}.cta-small a{color:var(--goud)}
 
 .article .kaart-download{margin:-14px 0 30px}
+
+.article .begrippen{border-top:1px solid var(--creme-lijn);margin:34px 0 0;padding-top:16px}
+.article .begrippen>p:first-child{margin:0 0 4px;text-transform:uppercase;letter-spacing:.1em;font-size:12px;font-weight:700;color:var(--wijn)}
+.article .begrippen>p:last-child{margin:0;font-size:15px}
+.card--tekst{padding-top:26px}
