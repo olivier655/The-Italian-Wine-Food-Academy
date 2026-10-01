@@ -43,6 +43,7 @@ STREKEN = json.loads((CONTENT / "streken.json").read_text(encoding="utf-8"))
 JURIDISCH = json.loads((CONTENT / "juridisch.json").read_text(encoding="utf-8"))
 FAQ = json.loads((CONTENT / "faq.json").read_text(encoding="utf-8"))
 WINKEL = json.loads((CONTENT / "winkel.json").read_text(encoding="utf-8"))
+KENNIS = json.loads((CONTENT / "kennisbank.json").read_text(encoding="utf-8"))
 PAKKETTEN = WINKEL["pakketten"]
 EVENT = WINKEL["event"]
 SITE = os.environ.get("SITE_URL", "https://italianwineandfoodacademy.com").rstrip("/")
@@ -153,7 +154,7 @@ def globals_for_templates():
     return {"NLQF_STATUS": NLQF_STATUS, "STUDIEADVIES": STUDIEADVIES, "WP": WP, "img": img,
             "vanaf": vanaf, "abs_url": abs_url, "STREKEN": STREKEN, "faq_schema": faq_schema, "course_schema": course_schema,
             "product_foto": product_foto, "streek_foto": streek_foto, "SITE": SITE, "GTM_ID": GTM_ID, "GA_ID": GA_ID, "ADS_ID": ADS_ID, "CONTACT": CONTACT,
-            "canonical": SITE + request.path, "LOGO": img("The_Italian_Wine_and_Food_Academy_logo-scaled.png"), "STREEK_FOTO": STREEK_FOTO}
+            "KENNIS": KENNIS, "canonical": SITE + request.path, "LOGO": img("The_Italian_Wine_and_Food_Academy_logo-scaled.png"), "STREEK_FOTO": STREEK_FOTO}
 
 
 def csrf_token():
@@ -213,6 +214,25 @@ def streek(slug):
     return render_template("streek.html", slug=slug, streek=s, regio=regio, wijnen=wijnen, crumbs=crumbs)
 
 
+@app.route("/kennisbank/")
+def kennisbank():
+    items = [(k, b, wijnen_bij_begrip(k)) for k, b in KENNIS.items()]
+    return render_template("kennisbank.html", items=items)
+
+
+def wijnen_bij_begrip(sleutel):
+    """Wijnartikelen die naar dit begrip verwijzen — afgeleid, nooit handmatig bijgehouden."""
+    return [(k, w) for k, w in STREKEN.items() if sleutel in (w.get("begrippen") or [])]
+
+
+@app.route("/kennisbank/<any(%s):slug>/" % ", ".join(f'"{k}"' for k in KENNIS))
+def begrip(slug):
+    b = KENNIS[slug]
+    crumbs = [("Kennisbank", "/kennisbank/"), (b["naam"], None)]
+    return render_template("begrip.html", slug=slug, begrip=b,
+                           wijnen=wijnen_bij_begrip(slug), crumbs=crumbs)
+
+
 BLOKKEN = {1: "Het noordwesten", 2: "Het noordoosten", 3: "Het midden", 4: "Rond Rome", 5: "Het zuiden en de eilanden"}
 
 
@@ -242,6 +262,7 @@ OUD_NAAR_NIEUW = {
     "my-account": "/",
     "shop": "/wijnproefpakketten/",
     "edu-dex-xml-files": "/springest.xml",
+    "wijnproeven": "/kennisbank/wijnproeven/",
 }
 
 
@@ -375,6 +396,7 @@ def sitemap():
     paden = ["/", "/opleidingen/", "/streken/", "/leermethode/", "/kookstudio/", "/docenten/", "/studieadvies/", "/faq/", "/contact/"]
     paden += ["/wijnproefpakketten/", f"/{EVENT['slug']}/"] + [f"/product/{k}/" for k in PAKKETTEN]
     paden += ["/nieuwsbrief/"] + [f"/download/{k}/" for k in DOWNLOADS] + [f"/{s}/" for s in STREKEN] + [f"/product/{s}/" for s in products()]
+    paden += ["/kennisbank/"] + [f"/kennisbank/{k}/" for k in KENNIS]
     paden += [f"/{s}/" for s in JURIDISCH]
     urls = "".join(f"<url><loc>{SITE}{p}</loc></url>" for p in paden)
     xml = f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{urls}</urlset>'
