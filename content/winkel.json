@@ -1,0 +1,251 @@
+{
+ "pakketten": {
+  "wijnproefpakket-blok-1-het-noordwesten-6-flessen": {
+   "sku": "TWFA-WIJNPAKKET-B1",
+   "naam": "Wijnproefpakket blok 1: het noordwesten",
+   "kort": "Zes flessen bij blok 1, met per wijn een proefkaart.",
+   "prijs": 125,
+   "flessen": 6,
+   "blok": 1,
+   "streken": [
+    "piemonte",
+    "lombardije",
+    "ligurie"
+   ],
+   "wijnen": [
+    {
+     "naam": "Barolo",
+     "slug": "barolo"
+    },
+    {
+     "naam": "Barbera d’Asti",
+     "slug": "barbera-dasti"
+    },
+    {
+     "naam": "Franciacorta",
+     "slug": "franciacorta"
+    },
+    {
+     "naam": "Valtellina Superiore",
+     "slug": "valtellina-superiore"
+    },
+    {
+     "naam": "Pigato",
+     "slug": "pigato"
+    },
+    {
+     "naam": "Rossese di Dolceacqua",
+     "slug": "rossese-di-dolceacqua"
+    }
+   ]
+  },
+  "wijnproefpakket-blok-2-het-noordoosten-6-flessen": {
+   "sku": "TWFA-WIJNPAKKET-B2",
+   "naam": "Wijnproefpakket blok 2: het noordoosten",
+   "kort": "Zes flessen bij blok 2, met per wijn een proefkaart.",
+   "prijs": 125,
+   "flessen": 6,
+   "blok": 2,
+   "streken": [
+    "veneto",
+    "friuli-venezia-giulia",
+    "trentino-alto-adige"
+   ],
+   "wijnen": [
+    {
+     "naam": "Amarone della Valpolicella",
+     "slug": "amarone-della-valpolicella"
+    },
+    {
+     "naam": "Soave Classico",
+     "slug": "soave-classico"
+    },
+    {
+     "naam": "Friuli Aquileia Pinot Grigio Superiore",
+     "slug": "friuli-aquileia-pinot-grigio-superiore"
+    },
+    {
+     "naam": "Pinot Grigio ramato",
+     "slug": "pinot-grigio-ramato"
+    },
+    {
+     "naam": "Alto Adige Gewürztraminer",
+     "slug": "alto-adige-gewurztraminer"
+    },
+    {
+     "naam": "Alto Adige Lagrein",
+     "slug": null
+    }
+   ]
+  },
+  "wijnproefpakket-blok-3-het-midden-6-flessen": {
+   "sku": "TWFA-WIJNPAKKET-B3",
+   "naam": "Wijnproefpakket blok 3: het midden",
+   "kort": "Zes flessen bij blok 3, met per wijn een proefkaart.",
+   "prijs": 125,
+   "flessen": 6,
+   "blok": 3,
+   "streken": [
+    "emilia-romagna",
+    "toscane",
+    "marche"
+   ],
+   "wijnen": [
+    {
+     "naam": "Lambrusco di Sorbara",
+     "slug": null
+    },
+    {
+     "naam": "Romagna Sangiovese",
+     "slug": null
+    },
+    {
+     "naam": "Chianti Classico",
+     "slug": null
+    },
+    {
+     "naam": "Brunello di Montalcino",
+     "slug": null
+    },
+    {
+     "naam": "Verdicchio dei Castelli di Jesi",
+     "slug": null
+    },
+    {
+     "naam": "Conero Riserva",
+     "slug": null
+    }
+   ]
+  },
+  "wijnproefpakket-blok-4-rond-rome-6-flessen": {
+   "sku": "TWFA-WIJNPAKKET-B4",
+   "naam": "Wijnproefpakket blok 4: rond Rome",
+   "kort": "Zes flessen bij blok 4, met per wijn een proefkaart.",
+   "prijs": 125,
+   "flessen": 6,
+   "blok": 4,
+   "streken": [
+    "umbrie",
+    "lazio",
+    "abruzzo"
+   ],
+   "wijnen": [
+    {
+     "naam": "Montefalco Sagrantino",
+     "slug": null
+    },
+    {
+     "naam": "Orvieto Classico",
+     "slug": null
+    },
+    {
+     "naam": "Frascati Superiore",
+     "slug": null
+    },
+    {
+     "naam": "Cesanese del Piglio",
+     "slug": null
+    },
+    {
+     "naam": "Montepulciano d’Abruzzo Colline Teramane",
+     "slug": null
+    },
+    {
+     "naam": "Cerasuolo d’Abruzzo",
+     "slug": null
+    }
+   ]
+  },
+  "wijnproefpakket-blok-5-het-zuiden-en-de-eilanden-6-flessen": {
+   "sku": "TWFA-WIJNPAKKET-B5",
+   "naam": "Wijnproefpakket blok 5: het zuiden en de eilanden",
+   "kort": "Zes flessen bij blok 5, met per wijn een proefkaart.",
+   "prijs": 125,
+   "flessen": 6,
+   "blok": 5,
+   "streken": [
+    "campanie",
+    "puglia",
+    "sicilie",
+    "sardinie"
+   ],
+   "wijnen": [
+    {
+     "naam": "Fiano di Avellino",
+     "slug": null
+    },
+    {
+     "naam": "Taurasi",
+     "slug": null
+    },
+    {
+     "naam": "Salice Salentino",
+     "slug": null
+    },
+    {
+     "naam": "Primitivo di Manduria",
+     "slug": null
+    },
+    {
+     "naam": "Cannonau di Sardegna",
+     "slug": null
+    },
+    {
+     "naam": "Etna Rosso",
+     "slug": null
+    }
+   ]
+  },
+  "wijnproefpakket-italiaanse-wijn-30-flessen": {
+   "sku": "TWFA-WIJNPAKKET",
+   "naam": "Wijnproefpakket Italiaanse Wijn: 30 flessen",
+   "kort": "Alle dertig wijnen van de opleiding: zes per blok, twee per lesweek, per blok thuisbezorgd.",
+   "prijs": 595,
+   "flessen": 30,
+   "blok": null,
+   "streken": [],
+   "wijnen": []
+  }
+ },
+ "event": {
+  "slug": "proefworkshops-science-park",
+  "sku": "TWFA-EVENT-2027-01",
+  "naam": "Proefworkshops op Science Park",
+  "datum": "2027-01-16",
+  "plaats": "Science Park, Amsterdam",
+  "tickets": [
+   {
+    "key": "een",
+    "naam": "Eén workshop",
+    "prijs": 39,
+    "rondes": 1
+   },
+   {
+    "key": "beide",
+    "naam": "Ochtend én middag",
+    "prijs": 69,
+    "rondes": 2
+   }
+  ],
+  "workshops": [
+   {
+    "key": "keuken",
+    "naam": "Keukenworkshop"
+   },
+   {
+    "key": "wijn",
+    "naam": "Wijnworkshop"
+   }
+  ],
+  "rondes": [
+   {
+    "key": "ochtend",
+    "naam": "Ochtendronde"
+   },
+   {
+    "key": "middag",
+    "naam": "Middagronde"
+   }
+  ]
+ }
+}

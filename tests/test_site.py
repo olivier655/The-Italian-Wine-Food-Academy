@@ -315,3 +315,46 @@ def test_wijnartikelen_en_kruimelpad():
     t = c.get("/barbera-dasti/").get_data(as_text=True)
     assert "BreadcrumbList" in t and 'href="/piemonte/"' in t and 'class="kort"' in t
     assert 'href="/barbera-dasti/"' in c.get("/piemonte/").get_data(as_text=True)
+
+
+def test_springest_feed_valideert():
+    from pathlib import Path
+    from lxml import etree
+    import app as site
+    import springest
+    xml = site.app.test_client().get("/springest.xml").data
+    schema = etree.XMLSchema(etree.parse(str(Path(__file__).parent / "springest_product_2_6.xsd")))
+    doc = etree.fromstring(xml)
+    assert schema.validate(doc), schema.error_log
+    for d in doc.iter("Description"):
+        assert springest.woorden(d.text) >= 150
+
+
+def test_winkel_event_feedback(monkeypatch):
+    import app as site
+    calls = _fake_api(monkeypatch)
+    sent = []
+    monkeypatch.setattr(site.inschrijving, "direct_ready", lambda: True)
+    monkeypatch.setattr(site.inschrijving, "schrijf_airtable", lambda p: sent.append(p) or "rec1")
+    monkeypatch.setattr(site.inschrijving, "verstuur_mails", lambda p, r: None)
+    c = site.app.test_client()
+    for u in ["/wijnproefpakketten/", "/product/wijnproefpakket-blok-1-het-noordwesten-6-flessen/",
+              "/product/wijnproefpakket-italiaanse-wijn-30-flessen/", "/proefworkshops-science-park/",
+              "/bestellen/proefworkshops-science-park/", "/feedback/"]:
+        assert c.get(u).status_code == 200, u
+    for oud, nieuw in [("/cart/", "/wijnproefpakketten/"), ("/the-wine-food-academy-event/", "/proefworkshops-science-park/"),
+                       ("/edu-dex-xml-files/", "/springest.xml")]:
+        r = c.get(oud)
+        assert r.status_code == 301 and r.headers["Location"].endswith(nieuw)
+    with c.session_transaction() as s:
+        s["csrf"] = "t"
+    gegevens = dict(csrf="t", voornaam="Ann", achternaam="Test", email="a@b.nl", telefoon="06", straat="X 1",
+                    postcode="1000AA", plaats="A", voorwaarden="ja", aantal="2")
+    r = c.post("/bestellen/wijnproefpakket-blok-1-het-noordwesten-6-flessen/", data=gegevens)
+    assert r.status_code == 422  # geen 18+
+    r = c.post("/bestellen/wijnproefpakket-blok-1-het-noordwesten-6-flessen/", data={**gegevens, "leeftijd": "ja"})
+    assert r.status_code == 302 and sent[-1]["totaal"] == 250 and sent[-1]["soort"] == "bestelling"
+    r = c.post("/bestellen/proefworkshops-science-park/", data={**gegevens, "ticket": "beide",
+               "workshop_ochtend": "wijn", "workshop_middag": "keuken"})
+    assert r.status_code == 302 and sent[-1]["totaal"] == 138 and "Ochtend: Wijnworkshop" in sent[-1]["startmoment"]
+    assert any(x[1].endswith("/deals") and x[0] == "POST" for x in calls)

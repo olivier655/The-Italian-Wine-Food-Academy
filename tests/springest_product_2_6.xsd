@@ -1,0 +1,569 @@
+<?xml version="1.0" encoding="UTF-8" ?><!-- Some notes for program.xsd. All xml values need to be lowercase letters. -->
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="Products">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Product" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:all>
+              <xs:element type="xs:string" name="ID" minOccurs="1"/>
+              <xs:element type="xs:string" name="Description" minOccurs="1"/> <!--Description needs a minimum of 150 words. Please use only basic html text; <p>, <b>, <strong>, <h2>, <em>, <i>, <ul>, <ol>, <li>, <br>-->
+              <xs:element type="xs:string" name="Name" minOccurs="1"/>
+              <xs:element name="Images">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element type="xs:anyURI" name="ImageUrl" maxOccurs="1" minOccurs="0"> <!-- Escaped characters are not allowed, uncoded URL is required -->
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element type="xs:anyURI" name="VideoEmbed"> <!--include any YouTube or Vimeo URL -->
+              </xs:element>
+              <xs:element type="xs:string" name="Language" minOccurs="1"/>
+              <xs:element type="xs:decimal" name="Price" minOccurs="1">  
+              <!-- <Price> is always without vat so. We always expect a value for the vatamount except when exempted. If price is 0 we see it as a free course -->
+              </xs:element>
+              <xs:element name="VatIncluded" minOccurs="1">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:enumeration value="no" />
+                    <xs:enumeration value="exempt" >
+                      <!--If value = "no" VatAmount must be bigger than 0. If value = "exempt" then VatAmount = 0-->
+                    </xs:enumeration>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="VatAmount" type="xs:decimal" minOccurs="1"/>
+              <xs:element name="PriceExemptAmount" type="xs:decimal" minOccurs="0"> 
+              <!--Optional field that shows the total VAT free price. This field usually has the same value as 'price' or it is 'price' with a surpluss for administrative fees-->
+              </xs:element>
+              <xs:element name="PricePeriod" minOccurs="1">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:enumeration value="all"/>
+                    <xs:enumeration value="yearly"/>
+                    <xs:enumeration value="monthly"/>
+                    <xs:enumeration value="daily" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="PriceAgreement" minOccurs="0"> <!-- only relevant when you have producttype 'incompany' in the feed. Then set to yes to make sure we always show that prices can be is open for discussion -->
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:enumeration value="true"/>
+                    <xs:enumeration value="false"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="AdditionalCosts">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="AdditionalCost" maxOccurs="unbounded" minOccurs="0">
+                      <xs:complexType>
+                        <xs:all>
+                          <xs:element name="Type">
+                            <xs:simpleType>
+                              <xs:restriction base="xs:string">
+                                <xs:enumeration value="examination"/>
+                                <xs:enumeration value="excursions"/>
+                                <xs:enumeration value="lunch"/>
+                                <xs:enumeration value="dinner"/>
+                                <xs:enumeration value="registration fee"/>
+                                <xs:enumeration value="study material"/>
+                                <xs:enumeration value="visa/permit"/>
+                                <xs:enumeration value="coaching" />
+                                <xs:enumeration value="accommodation" />
+                                <xs:enumeration value="arrangement"/>
+                                <xs:enumeration value="second accommodation"/>
+                                <xs:enumeration value="other"/><!-- only use value 'other' in conjuction with TypeOther(below) to specify own costtype, -->
+                              </xs:restriction>
+                            </xs:simpleType>
+                          </xs:element>
+                          <xs:element name="TypeOther" minOccurs="0">   <!-- only use TypeOther when Type has value 'other'-->
+                            <xs:simpleType>
+                              <xs:restriction base="xs:string">
+                                <xs:maxLength value="250"/>
+                              </xs:restriction>
+                            </xs:simpleType>
+                          </xs:element>
+                          <xs:element name="Price" type="xs:decimal"/>
+                          <xs:element name="VatIncluded">
+                            <xs:simpleType>
+                              <xs:restriction base="xs:string">
+                                <xs:enumeration value="no" />
+                                <xs:enumeration value="exempt" />
+                              </xs:restriction>
+                            </xs:simpleType>
+                          </xs:element>
+                          <xs:element name="VatAmount" type="xs:decimal"/>
+                          <xs:element name="PriceExemptAmount" type="xs:decimal" minOccurs="0"/><!-- can be used to provide an alternative price for this additional cost that is VAT exempt --> 
+                          <xs:element name="VATExemptAmount" type="xs:decimal" minOccurs="0"/> <!-- The vat amount corresponding with the PriceExemptAmount of this additional cost. Usually it is 0 but it can also be low vat -->
+                          <xs:element name="Mandatory">
+                            <xs:simpleType>
+                              <xs:restriction base="xs:string">
+                                <xs:enumeration value="true"/>
+                                <xs:enumeration value="false"/>
+                              </xs:restriction>
+                            </xs:simpleType>
+                          </xs:element>
+                        </xs:all>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="PriceComplete" minOccurs="1">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:enumeration value="true"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="PriceInfo" minOccurs="0"> 
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="250"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="Trainers" minOccurs="0">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Trainer" minOccurs="0" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:string" name="Email"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="CourseType" minOccurs="0"> <!-- in most cases using 'course' for all products is good enough since we at a later stage added a higher level, the 'ProductType' -->
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:enumeration value="course" />
+                    <xs:enumeration value="educational program" />
+                    <xs:enumeration value="seminar" />
+                    <xs:enumeration value="training" />
+                    <xs:enumeration value="workshop" />
+                    <xs:enumeration value="video" />
+                    <xs:enumeration value="book" />
+                    <xs:enumeration value="event" />
+                    <xs:enumeration value="webinar" />
+                    <xs:enumeration value="test" />
+                    <xs:enumeration value="coaching" />
+                    <xs:enumeration value="treatment" />
+                    <xs:enumeration value="opleiding" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element type="xs:double" name="Duration" minOccurs="1"/> <!-- Decimal floating-points are allowed, but only with the use of komma's--> 
+              <xs:element name="DurationUnit" minOccurs="1">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:enumeration value="minutes" />
+                    <xs:enumeration value="hours" />
+                    <xs:enumeration value="days" />
+                    <xs:enumeration value="weeks" />
+                    <xs:enumeration value="months" />
+                    <xs:enumeration value="years" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="DurationAgreement" minOccurs="0"> <!-- only relevant when you have producttype 'incompany' in your feed. Then set to yes to make sure we always show that the duration can be is open for discussion -->
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:enumeration value="true"/>
+                    <xs:enumeration value="false"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="Runtime" minOccurs="0"> <!-- this is the total study load, when you offer producttype:'e-learning' we recommend you fill this field -->
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="250"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element type="xs:integer" name="StudyLoad" minOccurs="1"/> 
+              <xs:element name="StudyLoadUnit" minOccurs="1">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:enumeration value="hours" />
+                    <xs:enumeration value="days" />
+                    <xs:enumeration value="weeks" />
+                    <xs:enumeration value="months" />
+                    <xs:enumeration value="years" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="Completion" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="250"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="ExtraInstructionsAfterBooking" minOccurs="0">  <!-- any text here will be shown to the user in the booking mails-->
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="1000"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element type="xs:integer" name="MaxParticipants" minOccurs="1"/>
+              <xs:element name="ParticipantsAgreement" minOccurs="0"> <!-- only relevant when you have producttype 'incompany' in your feed. Then set to yes to make sure we always show that the number of participants can be is open for discussion -->
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:enumeration value="true"/>
+                    <xs:enumeration value="false"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element type="xs:anyURI" name="WebAddress" minOccurs="1"/>
+              <xs:element type="xs:anyURI" name="PdfBrochure" minOccurs="0"/> <!-- a pdf we will sent to users that request more information on training. If not provided Springest auto generates one -->
+              <xs:element name="ProductType" minOccurs="1">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                   
+                    <xs:enumeration value="open" /><xs:enumeration value="classroom" /> <!-- 'open' = 'classroom'. This is our default and most common productType and we prefer that you add <startingdateplaces> for this type. As of 2020 we use the value 'classroom' although'open' is still supported-->
+                    <xs:enumeration value="in-company" />
+                    <xs:enumeration value="elearning" /> <!-- products that can start anytime, startdates are optional but not preferred--> 
+                     <xs:enumeration value="home" />
+                    <xs:enumeration value="book" />
+                    <xs:enumeration value="group" /> <!-- dont use unless explicitely discussed with Springest -->
+                    <xs:enumeration value="event" />
+                    <xs:enumeration value="learning_bite" />
+                    <xs:enumeration value="test" />
+                    <xs:enumeration value="individual" />
+                    <xs:enumeration value="coaching" /> 
+                    <xs:enumeration value="treatment" />
+                    <xs:enumeration value="exam" /> 
+                    <!--examination can include <startingdateplaces>. Exam and Coaching can also be added as additional costs instead of being a prodcucttype, examinations are always ment for 1 domain only which you have to specify in the AllowedSites -->
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="AllowedSites">   <!--only use when you want products to be exclusively set to 1 Go/Domain. This is usually not needed, except for some 'Exam' and 'Group' producttypes -->
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Go" minOccurs="0" maxOccurs="unbounded"> <!--This list is not all inclusivae since there are over 250 domains. For missing domains please contact datasupport@springest.com -->
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:enumeration value="aegon" />
+                          <xs:enumeration value="alliander" />
+                          <xs:enumeration value="bavaria" />
+                          <xs:enumeration value="carglass" />
+                          <xs:enumeration value="hetcak" />
+                          <xs:enumeration value="hu" />
+                          <!-- hoge school utrecht -->
+                          <xs:enumeration value="menzis" />
+                          <xs:enumeration value="nn" />
+                          <!-- nationale nederlanden -->
+                          <xs:enumeration value="postnl" />
+                          <xs:enumeration value="siemens" />
+                          <xs:enumeration value="stork" />
+                          <xs:enumeration value="vvaa" />
+                          <xs:enumeration value="vattenfall_nl" />
+                          <xs:enumeration value="unie" />
+                          <xs:enumeration value="tvm" />
+                          <xs:enumeration value="ing" />
+                          <xs:enumeration value="sns" />
+                          <xs:enumeration value="ns" />
+                          <xs:enumeration value="essent" />
+                          <!-- for innogy nl/essent -->
+                          <xs:enumeration value="innogy" />
+                          <!-- for innogy SE -->
+                          <xs:enumeration value="rwe" />
+                          <xs:enumeration value="bam" />
+                          <xs:enumeration value="t_mobile" />
+                          <xs:enumeration value="onvz" />
+                          <xs:enumeration value="vanlanschotkempen"/>
+                          <xs:enumeration value="athora" />
+                          <xs:enumeration value="hollandcasino"/>
+                          <xs:enumeration value="weiterbildung" />
+                          <xs:enumeration value="sweco" />
+                          <xs:enumeration value="setarnv" />
+                          <xs:enumeration value="ns" />
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="Regions" minOccurs="0">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Region" maxOccurs="unbounded" minOccurs="0">
+                      <xs:complexType>
+                        <xs:all>
+                          <xs:element type="xs:string" name="Country"/>
+                          <xs:element type="xs:string" name="Name"/>
+                        </xs:all>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="Level" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:enumeration value="MBO" />
+                    <xs:enumeration value="HBO" />
+                    <xs:enumeration value="VMBO+" />
+                    <xs:enumeration value="MBO+" />
+                    <xs:enumeration value="VMBO" />
+                    <xs:enumeration value="HBO+" />
+                    <xs:enumeration value="WO" />
+                    <xs:enumeration value="Master" />
+                    <xs:enumeration value="Bachelor" />
+                    <xs:enumeration value="MBA" />
+                    <xs:enumeration value="Universität / Master" />
+                    <xs:enumeration value="Freizeit" />
+                    <xs:enumeration value="Fachhochschule / Master" />
+                    <xs:enumeration value="Fachhochschule / Bachelor" />
+                    <xs:enumeration value="Universität / Bachelor" />
+                    <xs:enumeration value="Weiterbildungen" />
+                    <xs:enumeration value="Meister" />
+                    <xs:enumeration value="MBA" />
+                    <xs:enumeration value="Undergraduate / Bachelor" />
+                    <xs:enumeration value="Postgraduate / Master" />
+                    <xs:enumeration value="Vocational" />
+                    <xs:enumeration value="Vocational: Level 1" />
+                    <xs:enumeration value="Vocational: Level 2" />
+                    <xs:enumeration value="Vocational: Level 3" />
+                    <xs:enumeration value="Vocational: Level 4" />
+                    <xs:enumeration value="Vocational: Level 5" />
+                    <xs:enumeration value="A/AS Level" />
+                    <xs:enumeration value="Secundair" />
+                    <xs:enumeration value="Hogeschool" />
+                    <xs:enumeration value="Universitair" />
+                    <xs:enumeration value="MBO" />
+                    <xs:enumeration value="HBO" />
+                    <xs:enumeration value="VMBO+" />
+                    <xs:enumeration value="MBO+" />
+                    <xs:enumeration value="VMBO" />
+                    <xs:enumeration value="HBO+" />
+                    <xs:enumeration value="WO" />
+                    <xs:enumeration value="Master" />
+                    <xs:enumeration value="Bachelor" />
+                    <xs:enumeration value="MBA" />
+                    <xs:enumeration value="Für Fortgeschrittene" />
+                    <xs:enumeration value="Für Anfänger" />
+                    <xs:enumeration value="Umschulungen" />
+                    <xs:enumeration value="Beginner" />
+                    <xs:enumeration value="Intermediate" />
+                    <xs:enumeration value="Advanced" />
+                    <xs:enumeration value="Master" />
+                    <xs:enumeration value="Unknown" />
+                    <xs:enumeration value="Associate Degree" />
+                    <xs:enumeration value="MBA" />
+                    <xs:enumeration value="PhD" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element type="xs:string" name="CrohoID" minOccurs="0"> <!--These ID's can be set by Dutch learning providers that are registered at https://www.duo.nl/zakelijk/hoger-onderwijs/studentenadministratie -->
+              </xs:element>
+              <xs:element type="xs:string" name="CreboID" minOccurs="0">
+              </xs:element>
+              <xs:element name="Purpose" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:enumeration value="optimally_fit"/>
+                    <xs:enumeration value="preventive"/>
+                    <xs:enumeration value="back_to_work"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="CostPlacements" minOccurs="0">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="CostPlacement" minOccurs="0" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:all>
+                          <xs:element name="Go" minOccurs="1">
+                            <xs:simpleType>
+                              <xs:restriction base="xs:string">
+                                <xs:enumeration value="klm_vitality" />
+                              </xs:restriction>
+                            </xs:simpleType>
+                          </xs:element>
+                          <xs:element name="Placement">
+                            <xs:simpleType>
+                              <xs:restriction base="xs:string">
+                                <xs:enumeration value="employer_pays"/>
+                                <xs:enumeration value="employer_pays_after_approval"/>
+                                <xs:enumeration value="basic_health_insurance"/>
+                                <xs:enumeration value="additional_health_insurance"/>
+                                <xs:enumeration value="employee_pays"/>
+                              </xs:restriction>
+                            </xs:simpleType>
+                          </xs:element>
+                        </xs:all>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="PriceDiscounts">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Discount" minOccurs="0" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:all>
+                          <xs:element name="Go" minOccurs="1">   <!--This list is not all inclusivae since there are over 250 domains. For missing domains please contact datasupport@springest.com -->
+                            <xs:simpleType>
+                              <xs:restriction base="xs:string">
+                                <xs:enumeration value="aegon" />
+                                <xs:enumeration value="alliander" />
+                                <xs:enumeration value="bavaria" />
+                                <xs:enumeration value="carglass" />
+                                <xs:enumeration value="hetcak" />
+                                <xs:enumeration value="hu" />
+                                <xs:enumeration value="menzis" />
+                                <xs:enumeration value="nn" />
+                                <xs:enumeration value="postnl" />
+                                <xs:enumeration value="siemens" />
+                                <xs:enumeration value="stork" />
+                                <xs:enumeration value="vvaa" />
+                                <xs:enumeration value="vattenfall_nl" />
+                                <xs:enumeration value="unie" />
+                                <xs:enumeration value="tvm" />
+                                <xs:enumeration value="ing" />
+                                <xs:enumeration value="volksbank" />
+                                <xs:enumeration value="innogy" />
+                                <xs:enumeration value="rwe" />
+                                <xs:enumeration value="bam" />
+                                <xs:enumeration value="t_mobile" />
+                                <xs:enumeration value="onvz" />
+                                <xs:enumeration value="vanlanschotkempen" />
+                                <xs:enumeration value="athora" />
+                                <xs:enumeration value="hollandcasino" />
+                                <xs:enumeration value="sweco" />
+                                <xs:enumeration value="setarnv" />
+                                <xs:enumeration value="ns" />
+                              </xs:restriction>
+                            </xs:simpleType>
+                          </xs:element>
+                          <xs:element name="Percentage" type="xs:double"/>
+                        </xs:all>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="Moments">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Moment" minOccurs="0" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="Name" minOccurs="1">
+                            <xs:simpleType>
+                              <xs:restriction base="xs:string">
+                                <xs:enumeration value="sunday" />
+                                <xs:enumeration value="saturday" />
+                                <xs:enumeration value="daytime" />
+                                <xs:enumeration value="evening" />
+                                <xs:enumeration value="morning" />
+                              </xs:restriction>
+                            </xs:simpleType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="StartingDatePlaces"> <!-- for producttype 'classroom','event, 'exam' it is possible to sent us <startingdateplaces> -->
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="StartingDatePlace" minOccurs="0" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:all>
+                          <xs:element type="xs:string" name="ID" minOccurs="0"/>
+                          <xs:element name="Startdate" type="xs:date"/>
+                          <xs:element name="Place" type="xs:string"/>
+                          <xs:element name="StartdateIsMonthOnly"> <!-- when true we distill month and year and ignore date from Startdate tag-->
+                            <xs:simpleType>
+                              <xs:restriction base="xs:string">
+                                <xs:enumeration value="true"/>
+                                <xs:enumeration value="false"/>
+                              </xs:restriction>
+                            </xs:simpleType>
+                          </xs:element>
+                          <xs:element name="Enddate" type="xs:date"/>
+                          <xs:element name="EnddateIsMonthOnly">
+                            <xs:simpleType>
+                              <xs:restriction base="xs:string">
+                                <xs:enumeration value="true"/>
+                                <xs:enumeration value="false"/>
+                              </xs:restriction>
+                            </xs:simpleType>
+                          </xs:element>
+                          <xs:element type="xs:integer" name="MinNumberOfSeats" minOccurs="0"/> <!-- only useful when you have automatic cancelling enabled -->
+                          <xs:element type="xs:integer" name="MaxNumberOfSeats" minOccurs="0"/>
+                          <xs:element type="xs:integer" name="AvailableSeats" minOccurs="0"/>  <!--When AvailableSeats/MinNumberOfSeats has value 0, we close the startdate, availableSeats uses the values presented in MaxNumberOfSeats to start counting each sign up till 0 availableSeats left -->
+                          <xs:element name="StartGuaranteed" minOccurs="0"> 
+                            <xs:simpleType>
+                              <xs:restriction base="xs:string">
+                                <xs:enumeration value="true"/>
+                                <xs:enumeration value="false"/>
+                              </xs:restriction>
+                            </xs:simpleType>
+                          </xs:element>
+                          <xs:element name="Online" minOccurs="0"> 
+                            <xs:simpleType>
+                              <xs:restriction base="xs:string">
+                                <xs:enumeration value="true"/>
+                                <xs:enumeration value="false"/> <!-- Online = 'true' means that the location/place for the participants is not on a physical location -->
+                              </xs:restriction>
+                            </xs:simpleType>
+                          </xs:element>
+                          <xs:element name="Schedule" minOccurs="0">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="Courseday" minOccurs="0" maxOccurs="unbounded">
+                                  <xs:complexType>
+                                    <xs:all>
+                                      <xs:element name="Date" type="xs:date"/>  <!-- if data is sent under the Schedule Node we always expect a value in the 'Place' tag. Always set a default -->
+                                      <xs:element name="Place" type="xs:string"/> <!-- if data is sent under the Schedule Node we always expect a value in the 'Place' tag. Always set a default -->
+                                      <xs:element name="Name" type="xs:string"/>
+                                      <xs:element name="StartTime" type="xs:string"/>
+                                      <xs:element name="EndTime" type="xs:string"/>
+                                    </xs:all>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:all>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="customLtiParams">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="customLtiParam" minOccurs="0" maxOccurs="1">
+                      <xs:complexType>
+                        <xs:all>
+                          <xs:element type="xs:string" name="key"/>
+                          <xs:element type="xs:string" name="value"/>
+                        </xs:all>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+                <xs:element type="xs:anyURI" name="LtiLaunchUrl" minOccurs="0" maxOccurs="1"/> <!-- please note: providing multiple LtiLaunchUrl's (per domain) is not possible atm via xml.  In that case don't provide any LaunchUrls/keys via xml and solely provide the CustomLtiParams data. LaunchUrl + keys can be provided via email-->
+                <xs:element type="xs:string" name="LtiConsumerKey" minOccurs="0" maxOccurs="1"/> 
+                <xs:element type="xs:string" name="LtiConsumerSecret" minOccurs="0" maxOccurs="1"/>
+            </xs:all>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element> 
+</xs:schema>

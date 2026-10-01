@@ -99,8 +99,8 @@ legend{font-family:var(--serif);font-size:22px;color:var(--groen);margin-bottom:
 .check{display:flex;gap:10px;align-items:flex-start;cursor:pointer}
 .check input{margin-top:4px;accent-color:var(--groen-2);width:18px;height:18px}
 .inline-choices{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
-.pill{cursor:pointer}
-.pill input{position:absolute;opacity:0}
+.pill{cursor:pointer;position:relative}
+.pill input{position:absolute;opacity:0;left:0;top:0;width:1px;height:1px}
 .pill span{display:inline-block;padding:10px 16px;border:1px solid #cfc3ad;border-radius:999px;font-size:15px}
 .pill input:checked + span{background:var(--groen);border-color:var(--groen);color:var(--perzik)}
 .pill input:focus-visible + span{outline:3px solid var(--goud);outline-offset:2px}

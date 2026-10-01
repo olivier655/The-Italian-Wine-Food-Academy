@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}{{ e.naam }} · {{ e.datum|datum }} · The Italian Wine & Food Academy{% endblock %}
+{% block description %}Proefworkshops keuken en wijn op zaterdag {{ e.datum|datum }}, Science Park Amsterdam. Eén workshop €39, ochtend én middag €69.{% endblock %}
+{% block head %}<script type="application/ld+json">{{ schema|tojson }}</script>{% endblock %}
+{% block content %}
+<section class="hero hero--slim hero--image" style="--hero:url('{{ img('image00169.jpeg') }}')">
+  <div class="hero-inner">
+    <p class="eyebrow">Zaterdag {{ e.datum|datum }} · {{ e.plaats }}</p>
+    <h1>Proefworkshops keuken en wijn</h1>
+    <p class="hero-lead">Een halve dag Italiaanse keuken of Italiaanse wijn, met onze docenten. Kom één ronde, of blijf de hele dag en doe ze allebei.</p>
+    <div class="hero-actions"><a class="btn btn--solid" href="{{ url_for('bestellen', slug=e.slug) }}">Bestel je ticket</a></div>
+  </div>
+</section>
+<section class="section prose-section">
+  <h2>Hoe de dag eruitziet</h2>
+  <p class="lead">Er zijn twee rondes, in de ochtend en in de middag. In elke ronde lopen een keukenworkshop en een wijnworkshop naast elkaar; je kiest er één per ronde.</p>
+  <ul class="checks">
+    <li><strong>Keukenworkshop:</strong> je kookt zelf, met een Italiaanse kok naast je.</li>
+    <li><strong>Wijnworkshop:</strong> je proeft Italiaanse wijnen naast elkaar en leert benoemen wat je proeft.</li>
+    <li>Kleine groepen, zodat de docent iedereen ziet.</li>
+    <li>Er is geen lunch inbegrepen. Doe je beide rondes, dan heb je tussendoor tijd om zelf iets te eten.</li>
+  </ul>
+  <h2>Tickets</h2>
+  <div class="cards cards--catalog">
+    {% for t in e.tickets %}
+    <a class="card" href="{{ url_for('bestellen', slug=e.slug, ticket=t.key) }}">
+      <p class="card-kicker">{{ t.prijs|euro }} per persoon</p>
+      <h3>{{ t.naam }}</h3>
+      <p class="card-text">{% if t.rondes == 1 %}Kies de ochtend of de middag, en keuken of wijn.{% else %}Beide rondes: kies per ronde keuken of wijn.{% endif %}</p>
+      <span class="card-link">Bestel ›</span>
+    </a>
+    {% endfor %}
+  </div>
+  <p class="muted">De precieze tijden en het adres op Science Park sturen we je een week van tevoren, samen met het programma.</p>
+</section>
+<section class="cta">
+  <h2>Smaakt het naar meer?</h2>
+  <p>De workshops geven je een voorproef van de Opleiding Italiaanse Gastronomie: keuken en wijn als één geheel, met elke maand een praktijkdag in de kookstudio.</p>
+  <a class="btn btn--solid" href="{{ url_for('product', slug='opleiding-italiaanse-gastronomie') }}">Bekijk de opleiding</a>
+  <a class="btn btn--ghost-dark" href="{{ STUDIEADVIES }}">Gratis studieadvies</a>
+</section>
+{% endblock %}

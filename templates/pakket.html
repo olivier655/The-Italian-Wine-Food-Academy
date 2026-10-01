@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% set foto = streek_foto(p.streken[0]) if p.streken else img('image00163.jpeg') %}
+{% block title %}{{ p.naam }} · The Italian Wine & Food Academy{% endblock %}
+{% block description %}{{ p.naam }}: {{ p.kort }} {{ p.prijs|euro }}.{% endblock %}
+{% block og_image %}{{ abs_url(foto) }}{% endblock %}
+{% block head %}<script type="application/ld+json">{{ {"@context": "https://schema.org", "@type": "Product", "name": p.naam, "description": p.kort, "sku": p.sku, "image": abs_url(foto), "brand": {"@type": "Organization", "name": "The Italian Wine & Food Academy"}, "offers": {"@type": "Offer", "price": p.prijs, "priceCurrency": "EUR", "availability": "https://schema.org/InStock", "url": canonical}}|tojson }}</script>{% endblock %}
+{% block content %}
+<section class="hero hero--split">
+  <div class="hero-inner">
+   <div class="hero-text">
+    <p class="eyebrow">Wijnproefpakket{% if p.blok %} · blok {{ p.blok }} van de opleiding{% endif %}</p>
+    <h1>{{ p.naam }}</h1>
+    <p class="hero-lead">{{ p.kort }}</p>
+    <ul class="facts">
+      <li><span>Flessen</span>{{ p.flessen }}</li>
+      <li><span>Proefkaarten</span>Eén per wijn</li>
+      <li><span>Prijs</span>{{ p.prijs|euro }}</li>
+    </ul>
+    <div class="hero-actions">
+      <a class="btn btn--solid" href="{{ url_for('bestellen', slug=slug) }}">Bestel dit pakket</a>
+      <a class="btn btn--ghost" href="{{ url_for('wijnproefpakketten') }}">Alle pakketten</a>
+    </div>
+   </div>
+   <img class="hero-photo" src="{{ foto }}" alt="{{ p.naam }}" fetchpriority="high">
+  </div>
+</section>
+
+<section class="section prose-section">
+  {% if p.wijnen %}
+  <h2>Wat er in de doos zit</h2>
+  <p class="lead">Dit zijn dezelfde wijnen die op de praktijkdag van blok {{ p.blok }} geschonken worden. Zo proef je thuis rustig door wat je op de lesdag naast elkaar in je glas had.</p>
+  <ul class="checks">
+    {% for w in p.wijnen %}<li>{% if w.slug %}<a href="/{{ w.slug }}/">{{ w.naam }}</a>{% else %}{{ w.naam }}{% endif %}</li>{% endfor %}
+  </ul>
+  <p>De streken in dit pakket: {% for s in p.streken %}<a href="/{{ s }}/">{{ STREKEN[s].naam }}</a>{% if not loop.last %}{% if loop.revindex == 2 %} en {% else %}, {% endif %}{% endif %}{% endfor %}.</p>
+  {% else %}
+  <h2>Wat er in de doos zit</h2>
+  <p class="lead">Dertig flessen: zes per blok, twee per lesweek. Dezelfde wijnen proef je thuis en op de praktijkdag.</p>
+  <p>De vijf blokken lopen van het noordwesten naar het zuiden. Je krijgt de flessen per blok thuisbezorgd, zodat ze niet maanden staan te wachten.</p>
+  <ul class="checks">
+    {% for k, q in pakketten.items() if q.blok %}<li><a href="{{ url_for('product', slug=k) }}">Blok {{ q.blok }}</a>: {% for w in q.wijnen %}{{ w.naam }}{% if not loop.last %}, {% endif %}{% endfor %}</li>{% endfor %}
+  </ul>
+  {% endif %}
+  <h2>Proeven met een kaart</h2>
+  <p>Bij elke fles hoort een proefkaart uit de leeromgeving. Je vult hem in terwijl je proeft: kleur, geur, smaak en wat je erbij zou eten. Volg je de opleiding, dan leest je docent mee en krijg je feedback op wat je hebt waargenomen.</p>
+  <h2>Waar de wijnen vandaan komen</h2>
+  <p>Geen supermarktwijn. Een deel van de flessen komt bij wijnimporteur Slurpini vandaan, de rest rechtstreeks bij producenten waarmee we werken.</p>
+  <p class="muted">Wijn verkopen we alleen aan mensen van 18 jaar of ouder.</p>
+</section>
+
+<section class="cta">
+  <h2>Proeven met een docent erbij?</h2>
+  <p>In de Opleiding Italiaanse Gastronomie proef je deze wijnen op de praktijkdag, naast de gerechten uit dezelfde streek.</p>
+  <a class="btn btn--solid" href="{{ url_for('bestellen', slug=slug) }}">Bestel dit pakket</a>
+  <a class="btn btn--ghost-dark" href="{{ url_for('product', slug='opleiding-italiaanse-gastronomie') }}">Bekijk de opleiding</a>
+</section>
+{% endblock %}

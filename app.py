@@ -2,17 +2,18 @@ import json
 import os
 import re
 import secrets
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from pathlib import Path
 
 import requests
 
 import leads
 from dotenv import load_dotenv
-from flask import Flask, abort, redirect, render_template, request, session, url_for
+from flask import Flask, Response, abort, redirect, render_template, request, session, url_for
 
 import airtable
 import inschrijving
+from catalog import datum_lang as catalog_datum
 from catalog import (LOCATIES, NLQF_STATUS, calculate, cohort_dates, euro, get_option,
                      grouped, products, vanaf)
 
@@ -21,6 +22,15 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY") or secrets.token_hex(32)
 app.jinja_env.filters["euro"] = euro
+
+
+def _datum(iso):
+    from catalog import MAANDEN
+    d = date.fromisoformat(iso)
+    return f"{d.day} {MAANDEN[d.month - 1]} {d.year}"
+
+
+app.jinja_env.filters["datum"] = _datum
 
 MAKE_WEBHOOK_URL = os.environ.get("MAKE_WEBHOOK_URL", "")
 MAKE_FOLLOWUP_URL = os.environ.get("MAKE_FOLLOWUP_URL", "")
@@ -32,6 +42,9 @@ CONTENT = Path(__file__).parent / "content"
 STREKEN = json.loads((CONTENT / "streken.json").read_text(encoding="utf-8"))
 JURIDISCH = json.loads((CONTENT / "juridisch.json").read_text(encoding="utf-8"))
 FAQ = json.loads((CONTENT / "faq.json").read_text(encoding="utf-8"))
+WINKEL = json.loads((CONTENT / "winkel.json").read_text(encoding="utf-8"))
+PAKKETTEN = WINKEL["pakketten"]
+EVENT = WINKEL["event"]
 SITE = os.environ.get("SITE_URL", "https://italianwineandfoodacademy.com").rstrip("/")
 GTM_ID = os.environ.get("GTM_ID", "GTM-NZ5XSCC")
 GA_ID = os.environ.get("GA_ID", "G-N1JD18XQ5T")  # alleen gebruikt als GTM_ID leeg is
@@ -222,10 +235,17 @@ OUD_NAAR_NIEUW = {
     "inschrijf-voorwaarden": "/algemene-voorwaarden/",
     "algemene-voorwaarden-consumenten-voor-particulier-onderwijs-en-opleidingen": "/algemene-voorwaarden/",
     "faqs": "/faq/",
+    "the-wine-food-academy-event": "/%s/" % EVENT["slug"],
+    "bestel-kaarten-event": "/%s/" % EVENT["slug"],
+    "cart": "/wijnproefpakketten/",
+    "checkout": "/wijnproefpakketten/",
+    "my-account": "/",
+    "shop": "/wijnproefpakketten/",
+    "edu-dex-xml-files": "/springest.xml",
 }
 
 
-@app.route('/<any("inschrijf-voorwaarden", "algemene-voorwaarden-consumenten-voor-particulier-onderwijs-en-opleidingen", "faqs"):oud>/')
+@app.route("/<any(%s):oud>/" % ", ".join(f'"{k}"' for k in OUD_NAAR_NIEUW))
 def oud_adres(oud):
     return redirect(OUD_NAAR_NIEUW[oud], code=301)
 
@@ -337,6 +357,13 @@ def contact():
     return render_template("contact.html", values=values, errors=errors, verstuurd=None), 422
 
 
+@app.route("/springest.xml")
+def springest_feed():
+    import springest
+    xml = springest.feed(products(), SITE, lambda slug: abs_url(product_foto(slug)))
+    return Response(xml, mimetype="application/xml")
+
+
 @app.route("/robots.txt")
 def robots():
     body = f"User-agent: *\nDisallow: /aanmelden/\nDisallow: /static/downloads/\nSitemap: {SITE}/sitemap.xml\n"
@@ -346,6 +373,7 @@ def robots():
 @app.route("/sitemap.xml")
 def sitemap():
     paden = ["/", "/opleidingen/", "/streken/", "/leermethode/", "/kookstudio/", "/docenten/", "/studieadvies/", "/faq/", "/contact/"]
+    paden += ["/wijnproefpakketten/", f"/{EVENT['slug']}/"] + [f"/product/{k}/" for k in PAKKETTEN]
     paden += ["/nieuwsbrief/"] + [f"/download/{k}/" for k in DOWNLOADS] + [f"/{s}/" for s in STREKEN] + [f"/product/{s}/" for s in products()]
     paden += [f"/{s}/" for s in JURIDISCH]
     urls = "".join(f"<url><loc>{SITE}{p}</loc></url>" for p in paden)
@@ -360,6 +388,8 @@ def oude_regiocursus():
 
 @app.route("/product/<slug>/")
 def product(slug):
+    if slug in PAKKETTEN:
+        return render_template("pakket.html", slug=slug, p=PAKKETTEN[slug], pakketten=PAKKETTEN)
     prods = products()
     product = prods.get(slug) or abort(404)
     team = {d["naam"]: d for d in docenten()}
@@ -373,6 +403,175 @@ def product(slug):
 def healthz():
     prods = products()
     return {"ok": True, "bron": airtable.bron(), "producten": len(prods)}
+
+
+# ---------- feedback ----------
+
+SCHAAL = ["1 · slecht", "2", "3", "4", "5 · uitstekend"]
+FEEDBACK_VRAGEN = [
+    ("verwachting", "Voldeed de cursus aan je verwachting?", "schaal"),
+    ("toelichting", "Wil je dat toelichten?", "tekst"),
+    ("lesmateriaal", "Wat vond je van het lesmateriaal en de leeromgeving?", "schaal"),
+    ("kwaliteit", "Wat vond je van de wijnen en ingrediënten?", "schaal"),
+    ("locatie", "Wat vond je van de locatie van de praktijkdag?", "schaal"),
+    ("docent_kennis", "De docent had voldoende kennis", "schaal"),
+    ("docent_uitleg", "De docent wist het goed over te brengen", "schaal"),
+    ("docent_sfeer", "De docent was vriendelijk en enthousiast", "schaal"),
+    ("docent_bereikbaar", "De docent was goed bereikbaar bij vragen", "schaal"),
+    ("niveau_voor", "Je niveau vóór de cursus", "niveau"),
+    ("niveau_na", "Je niveau na de cursus", "niveau"),
+    ("nps", "Hoe waarschijnlijk is het dat je ons aanraadt? (0 = zeker niet, 10 = zeker wel)", "nps"),
+    ("aanbevelingen", "Wat kunnen we beter doen?", "tekst"),
+]
+NIVEAUS = ["Beginner", "Enige kennis", "Gevorderd", "Professional"]
+
+
+@app.route("/feedback/", methods=["GET", "POST"])
+def feedback():
+    cursussen = [p["naam"] for p in products().values()] + ["Een andere cursus of workshop"]
+    ctx = dict(vragen=FEEDBACK_VRAGEN, schaal=SCHAAL, niveaus=NIVEAUS, cursussen=cursussen)
+    if request.method == "GET":
+        return render_template("feedback.html", values={"cursus": request.args.get("cursus", "")}, errors={},
+                               verstuurd=request.args.get("verstuurd"), **ctx)
+    f = request.form
+    values, errors = f.to_dict(), {}
+    if f.get("csrf") != session.get("csrf"):
+        abort(400)
+    if f.get("website"):
+        return redirect(url_for("feedback", verstuurd=1))
+    if f.get("cursus") not in cursussen:
+        errors["cursus"] = "Kies de cursus die je hebt gevolgd."
+    for key, _, soort in FEEDBACK_VRAGEN:
+        if soort != "tekst" and not f.get(key):
+            errors[key] = "Kies een antwoord."
+    if not errors:
+        antwoorden = [(vraag, f.get(key, "").strip() or "–") for key, vraag, _ in FEEDBACK_VRAGEN]
+        antwoorden += [("Naam", f.get("naam", "").strip() or "–"), ("E-mailadres", f.get("email", "").strip() or "–")]
+        try:
+            inschrijving.verstuur_feedback(f["cursus"], antwoorden, reply_to=f.get("email", "").strip() or None)
+            return redirect(url_for("feedback", verstuurd=1))
+        except Exception:
+            app.logger.exception("Feedback niet verstuurd")
+            errors["algemeen"] = f"Je antwoorden zijn niet verstuurd door een storing. Probeer het later opnieuw of mail {CONTACT['email']}."
+    return render_template("feedback.html", values=values, errors=errors, verstuurd=None, **ctx), 422
+
+
+# ---------- winkel: wijnproefpakketten en proefworkshops ----------
+
+@app.route("/wijnproefpakketten/")
+def wijnproefpakketten():
+    return render_template("winkel.html", pakketten=PAKKETTEN, event=EVENT)
+
+
+@app.route("/%s/" % EVENT["slug"])
+def event_pagina():
+    e = EVENT
+    schema = {"@context": "https://schema.org", "@type": "Event", "name": e["naam"], "startDate": e["datum"],
+              "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+              "eventStatus": "https://schema.org/EventScheduled",
+              "location": {"@type": "Place", "name": "Science Park",
+                           "address": {"@type": "PostalAddress", "addressLocality": "Amsterdam", "addressCountry": "NL"}},
+              "organizer": {"@type": "Organization", "name": "The Italian Wine & Food Academy", "url": SITE + "/"},
+              "offers": [{"@type": "Offer", "name": t["naam"], "price": t["prijs"], "priceCurrency": "EUR",
+                          "url": abs_url(url_for("bestellen", slug=e["slug"]))} for t in e["tickets"]]}
+    return render_template("event.html", e=e, schema=schema)
+
+
+def _bestelbaar(slug):
+    if slug in PAKKETTEN:
+        p = PAKKETTEN[slug]
+        return {"soort": "pakket", "slug": slug, "sku": p["sku"], "naam": p["naam"], "prijs": p["prijs"], "p": p}
+    if slug == EVENT["slug"]:
+        return {"soort": "event", "slug": slug, "sku": EVENT["sku"], "naam": EVENT["naam"], "e": EVENT}
+    abort(404)
+
+
+@app.route("/bestellen/<slug>/", methods=["GET", "POST"])
+def bestellen(slug):
+    item = _bestelbaar(slug)
+    if request.method == "GET":
+        values = {"aantal": "1", "ticket": request.args.get("ticket", "een")}
+        return render_template("bestellen.html", item=item, values=values, errors={})
+    f = request.form
+    values, errors = f.to_dict(), {}
+    if f.get("csrf") != session.get("csrf"):
+        abort(400)
+    if f.get("website"):
+        return redirect(url_for("bedankt"))
+    try:
+        aantal = int(f.get("aantal", "1"))
+        assert 1 <= aantal <= 6
+    except (ValueError, AssertionError):
+        errors["aantal"] = "Kies een aantal tussen 1 en 6."
+        aantal = 1
+    regels, details = [], ""
+    if item["soort"] == "pakket":
+        regels = [(f"{item['naam']} × {aantal}", item["prijs"] * aantal)]
+        details = "Thuisbezorgd" + (" per blok" if item["p"]["flessen"] == 30 else "")
+        if not f.get("leeftijd"):
+            errors["leeftijd"] = "Wijn verkopen we alleen aan mensen van 18 jaar of ouder."
+    else:
+        e = item["e"]
+        ticket = next((t for t in e["tickets"] if t["key"] == f.get("ticket")), None)
+        namen = {w["key"]: w["naam"] for w in e["workshops"]}
+        if ticket is None:
+            errors["ticket"] = "Kies een ticket."
+        elif ticket["rondes"] == 1:
+            ronde = {r["key"]: r["naam"] for r in e["rondes"]}.get(f.get("ronde"))
+            ws = namen.get(f.get("workshop"))
+            if not ronde or not ws:
+                errors["workshop"] = "Kies een ronde en een workshop."
+            else:
+                details = f"{ronde}: {ws}"
+        else:
+            o, m = namen.get(f.get("workshop_ochtend")), namen.get(f.get("workshop_middag"))
+            if not o or not m:
+                errors["workshop"] = "Kies een workshop voor de ochtend en voor de middag."
+            else:
+                details = f"Ochtend: {o} · Middag: {m}"
+        if ticket:
+            regels = [(f"{ticket['naam']} × {aantal}", ticket["prijs"] * aantal)]
+        details = f"{catalog_datum(e['datum'])} · {e['plaats']} · {details}"
+    for field, message in [("voornaam", "Vul je voornaam in."), ("achternaam", "Vul je achternaam in."),
+                           ("email", "Vul je e-mailadres in."), ("telefoon", "Vul je telefoonnummer in."),
+                           ("straat", "Vul je straat en huisnummer in."), ("postcode", "Vul je postcode in."),
+                           ("plaats", "Vul je woonplaats in.")]:
+        if not f.get(field, "").strip():
+            errors[field] = message
+    if f.get("email") and "@" not in f.get("email", ""):
+        errors["email"] = "Dit e-mailadres klopt niet."
+    if f.get("factuur") == "zakelijk" and not f.get("bedrijfsnaam", "").strip():
+        errors["bedrijfsnaam"] = "Vul de bedrijfsnaam voor de factuur in."
+    if not f.get("voorwaarden"):
+        errors["voorwaarden"] = "Ga akkoord met de algemene voorwaarden."
+    if errors:
+        return render_template("bestellen.html", item=item, values=values, errors=errors), 422
+
+    total = sum(b for _, b in regels)
+    payload = {
+        "bron": "twfa-flask", "soort": "bestelling",
+        "aangemeld_op": datetime.now(timezone.utc).isoformat(),
+        "product_slug": slug, "product_sku": item["sku"], "product": item["naam"],
+        "optie_nr": None, "optie": None, "examen": False, "examen_bijgeboekt": False, "examenroute": None,
+        "variant_sku": None, "startmoment": details,
+        "startdatum": item["e"]["datum"] if item["soort"] == "event" else None,
+        "locatie": None,
+        "voornaam": f.get("voornaam", "").strip(), "achternaam": f.get("achternaam", "").strip(),
+        "email": f.get("email", "").strip().lower(), "telefoon": f.get("telefoon", "").strip(),
+        "factuur": f.get("factuur", "particulier"), "bedrijfsnaam": f.get("bedrijfsnaam", "").strip() or None,
+        "straat": f.get("straat", "").strip(), "postcode": f.get("postcode", "").strip().upper(),
+        "plaats": f.get("plaats", "").strip(), "betaling": "ineens",
+        "opmerking": f.get("opmerking", "").strip() or None,
+        "prijsregels": [{"omschrijving": d, "bedrag": b} for d, b in regels], "totaal": total,
+        "vervolg": ("We sturen je de factuur. Na betaling bezorgen we het pakket thuis." if item["soort"] == "pakket"
+                    else "We sturen je de factuur. Na betaling staat je plek vast; een week van tevoren krijg je het programma."),
+    }
+    if not verwerk(payload):
+        errors["algemeen"] = f"Je bestelling is niet verstuurd door een storing. Probeer het later opnieuw of mail {CONTACT['email']}."
+        return render_template("bestellen.html", item=item, values=values, errors=errors), 502
+    session["laatste_aanmelding"] = {"voornaam": payload["voornaam"], "regels": payload["prijsregels"], "product": payload["product"],
+                                     "totaal": total, "startmoment": details, "soort": "bestelling"}
+    return redirect(url_for("bedankt"))
 
 
 # ---------- aanmelden ----------
@@ -391,7 +590,23 @@ def _naar_make(url, payload):
         return False
 
 
+def _lead(payload):
+    try:
+        leads.lead(payload["email"], f"{payload['voornaam']} {payload['achternaam']}", payload["product"],
+                   tag="bestelling-website" if payload.get("soort") == "bestelling" else "aanmelding-website",
+                   telefoon=payload.get("telefoon", ""), notitie=f"{payload['startmoment']} · totaal {euro(payload['totaal'])}")
+    except Exception:
+        app.logger.exception("Aanmelding niet naar ActiveCampaign/Pipedrive")
+
+
 def verwerk(payload):
+    ok = _verwerk(payload)
+    if ok:
+        _lead(payload)
+    return ok
+
+
+def _verwerk(payload):
     """Aanmelding vastleggen. Geeft False als hij nergens terechtkwam.
 
     1. Direct: inschrijving in Airtable + mails vanuit de site (zonder Make).

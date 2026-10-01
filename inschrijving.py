@@ -64,6 +64,17 @@ def cohort(p):
 
 
 def notities(p):
+    if p.get("soort") == "bestelling":
+        regels = " + ".join(f"{r['omschrijving']} ({_eur(r['bedrag'])})" for r in p["prijsregels"])
+        return "\n".join([
+            "Bestelling via de nieuwe site.",
+            f"Product: {p['product']}",
+            f"Details: {p['startmoment']}",
+            f"Factuur: {p['factuur']} {p.get('bedrijfsnaam') or ''}".rstrip(),
+            f"Adres: {p['straat']}, {p['postcode']} {p['plaats']}",
+            f"Regels: {regels}",
+            f"Opmerking: {p.get('opmerking') or ''}",
+        ])
     examen = "ja" if p["examen"] else "nee"
     if p.get("examen_bijgeboekt"):
         examen += f" (bijgeboekt, route: {p.get('examenroute') or '–'})"
@@ -87,7 +98,7 @@ def airtable_fields(p):
         F["naam"]: f"{p['voornaam']} {p['achternaam']} – {p['product']}",
         F["voornaam"]: p["voornaam"], F["achternaam"]: p["achternaam"],
         F["email"]: p["email"], F["telefoon"]: p["telefoon"],
-        F["opleiding"]: [p["product"]],
+        F["opleiding"]: None if p.get("soort") == "bestelling" else [p["product"]],
         F["locatie"]: p.get("locatie"), F["startdatum"]: p.get("startdatum"),
         F["cohort"]: cohort(p),
         F["status"]: "Aangemeld", F["betaalstatus"]: "Open", F["bron"]: "Website / WooCommerce",
@@ -129,7 +140,27 @@ HANDTEKENING = (
 )
 
 
+def bestelling_html(p):
+    rij = '<tr><td style="color:#5d5d5d;width:40%">{}</td><td>{}</td></tr>'
+    rijen = rij.format("Bestelling", f"<strong>{_e(p['product'])}</strong>") + rij.format("Details", _e(p["startmoment"]))
+    rijen += "".join(rij.format(_e(r["omschrijving"]), _eur(r["bedrag"])) for r in p["prijsregels"])
+    totaal = (f'<tr><td style="border-top:2px solid #1F3F2A"><strong>Totaal</strong></td>'
+              f'<td style="border-top:2px solid #1F3F2A"><strong>{_eur(p["totaal"])}</strong></td></tr>')
+    vervolg = p.get("vervolg") or "We sturen je de factuur. Zodra die betaald is, is je bestelling definitief."
+    return (
+        '<div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.6;color:#1A1A1A;max-width:600px">'
+        f"<p>Beste {_e(p['voornaam'])},</p>"
+        f"<p>Grazie voor je bestelling. We hebben hem goed ontvangen; hieronder staat wat je hebt besteld.</p>"
+        f'<table cellpadding="8" cellspacing="0" style="border-collapse:collapse;width:100%;background:#F9F2E5">{rijen}{totaal}</table>'
+        f"<p>{_e(vervolg)}</p>"
+        "<p>Heb je een vraag, of klopt er iets niet? Beantwoord deze mail, dan kijk ik ernaar.</p>"
+        f"<p>Tot snel,</p>{HANDTEKENING}</div>"
+    )
+
+
 def bevestiging_html(p):
+    if p.get("soort") == "bestelling":
+        return bestelling_html(p)
     rij = '<tr><td style="color:#5d5d5d;width:40%">{}</td><td>{}</td></tr>'
     opleiding = bool(p.get("optie"))  # lange opleiding met leeropties, anders een losse cursus
     regels = [rij.format("Opleiding" if opleiding else "Cursus", f"<strong>{_e(p['product'])}</strong>")]
@@ -184,8 +215,9 @@ def verstuur_mails(p, record_id):
     port = int(os.environ.get("SMTP_PORT", "587"))
     notify = os.environ.get("MAIL_NOTIFY") or os.environ["SMTP_USER"]
     berichten = [
-        _bericht(p["email"], f"Je aanmelding voor de {p['product']}", bevestiging_html(p)),
-        _bericht(notify, f"Nieuwe aanmelding: {p['voornaam']} {p['achternaam']} – {p['product']} ({_eur(p['totaal'])})",
+        _bericht(p["email"], (f"Je bestelling: {p['product']}" if p.get("soort") == "bestelling"
+                              else f"Je aanmelding voor de {p['product']}"), bevestiging_html(p)),
+        _bericht(notify, f"Nieuwe {'bestelling' if p.get('soort') == 'bestelling' else 'aanmelding'}: {p['voornaam']} {p['achternaam']} – {p['product']} ({_eur(p['totaal'])})",
                  melding_html(p, record_id), reply_to=p["email"]),
     ]
     with smtplib.SMTP(os.environ["SMTP_HOST"], port, timeout=15) as s:
@@ -204,6 +236,22 @@ def verstuur_contact(naam, email, telefoon, vraag):
     )
     notify = os.environ.get("MAIL_NOTIFY") or os.environ["SMTP_USER"]
     m = _bericht(notify, f"Vraag via de site: {naam}", body, reply_to=email)
+    port = int(os.environ.get("SMTP_PORT", "587"))
+    with smtplib.SMTP(os.environ["SMTP_HOST"], port, timeout=15) as s:
+        s.starttls()
+        s.login(os.environ["SMTP_USER"], os.environ["SMTP_PASSWORD"].replace(" ", ""))
+        s.send_message(m)
+
+
+def verstuur_feedback(cursus, antwoorden, reply_to=None):
+    """Ingevulde evaluatie als tabel naar MAIL_NOTIFY."""
+    rijen = "".join(f'<tr><td style="color:#5d5d5d;width:55%;vertical-align:top">{_e(v)}</td><td>{_e(a)}</td></tr>'
+                    for v, a in antwoorden)
+    body = ('<div style="font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.6">'
+            f"<p>Nieuwe evaluatie via de site voor <strong>{_e(cursus)}</strong>.</p>"
+            f'<table cellpadding="6" cellspacing="0" style="border-collapse:collapse;width:100%">{rijen}</table></div>')
+    notify = os.environ.get("MAIL_NOTIFY") or os.environ["SMTP_USER"]
+    m = _bericht(notify, f"Evaluatie: {cursus}", body, reply_to=reply_to)
     port = int(os.environ.get("SMTP_PORT", "587"))
     with smtplib.SMTP(os.environ["SMTP_HOST"], port, timeout=15) as s:
         s.starttls()

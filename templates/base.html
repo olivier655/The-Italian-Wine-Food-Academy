@@ -85,6 +85,7 @@
         <p><a href="{{ url_for('overzicht') }}">Alle opleidingen</a></p>
         <p><a href="{{ url_for('leermethode') }}">Leermethode</a> · <a href="{{ url_for('kookstudio') }}">Kookstudio</a> · <a href="{{ url_for('docenten_pagina') }}">Docenten</a></p>
         <p><a href="{{ url_for('faq') }}">Veelgestelde vragen</a> · <a href="{{ url_for('contact') }}">Contact</a></p>
+        <p><a href="{{ url_for('wijnproefpakketten') }}">Wijnproefpakketten</a> · <a href="{{ url_for('event_pagina') }}">Proefworkshops 16 januari</a></p>
         <p><a href="/streken/">De streken van Italië</a>: <a href="/piemonte/">Piemonte</a> · <a href="/veneto/">Veneto</a> · <a href="/toscane/">Toscane</a> · <a href="/lazio/">Lazio</a> · <a href="/sicilie/">Sicilië</a></p>
       </div>
       {% if request.endpoint != 'nieuwsbrief' %}<form class="footer-news" method="post" action="{{ url_for('nieuwsbrief') }}">
@@ -95,7 +96,7 @@
         <div class="footer-news-row"><input id="footer-email" type="email" name="email" placeholder="je@email.nl" autocomplete="email" required><button class="btn btn--solid" type="submit">Aanmelden</button></div>
       </form>{% endif %}
     </div>
-    <p class="footer-small">Alle bedragen zijn btw-vrij, want we zijn CRKBO-geregistreerd. We zijn lid van de NRTO. Gespreid betalen is mogelijk.<br>
+    <p class="footer-small">Onze opleidingen en cursussen zijn btw-vrij, want we zijn CRKBO-geregistreerd. We zijn lid van de NRTO. Gespreid betalen is mogelijk.<br>
     © The Wine &amp; Food Academy B.V. · <a href="/algemene-voorwaarden/">Algemene voorwaarden</a> · <a href="/privacy-policy/">Privacy</a> · <a href="/klachtenprocedure/">Klachtenprocedure</a> · <a href="/gedragscode-nrto/">Gedragscode NRTO</a> · <button type="button" class="linkbutton" data-cookie-open>Cookie-instellingen</button></p>
   </footer>
 

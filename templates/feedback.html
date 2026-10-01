@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Evaluatie · The Italian Wine & Food Academy{% endblock %}
+{% block robots %}<meta name="robots" content="noindex">{% endblock %}
+{% macro err(name) %}{% if errors.get(name) %}<p class="field-error">{{ errors[name] }}</p>{% endif %}{% endmacro %}
+{% block content %}
+<section class="form-wrap">
+  {% if verstuurd %}
+  <h1>Grazie voor je antwoorden</h1>
+  <p class="hero-lead">We lezen elke evaluatie en gebruiken hem om de cursussen beter te maken.</p>
+  <a class="btn btn--line" href="{{ url_for('overzicht') }}">Bekijk ons aanbod</a>
+  {% else %}
+  <h1>Hoe was je cursus?</h1>
+  <p class="hero-lead">We maken onze cursussen graag beter, en daarvoor hebben we jouw mening nodig. Het invullen kost ongeveer vijf minuten.</p>
+  {% if errors.get('algemeen') %}<p class="form-alert">{{ errors['algemeen'] }}</p>{% endif %}
+  {% if errors %}<p class="form-alert">Niet alle vragen zijn beantwoord; kijk de rood gemarkeerde vragen even na.</p>{% endif %}
+  <form method="post" class="signup" novalidate>
+    <input type="hidden" name="csrf" value="{{ csrf_token() }}">
+    <div class="hp" aria-hidden="true"><label>Website <input name="website" tabindex="-1" autocomplete="off"></label></div>
+    <fieldset>
+      <legend>Welke cursus heb je gevolgd?</legend>
+      <label class="field{% if errors.get('cursus') %} field--error{% endif %}">
+        <select name="cursus"><option value="">Kies een cursus</option>
+          {% for c in cursussen %}<option {% if values.get('cursus') == c %}selected{% endif %}>{{ c }}</option>{% endfor %}
+        </select>{{ err('cursus') }}
+      </label>
+    </fieldset>
+    <fieldset>
+      <legend>Je ervaring</legend>
+      {% for key, vraag, soort in vragen %}
+      <div class="field{% if errors.get(key) %} field--error{% endif %}">
+        <span>{{ vraag }}</span>
+        {% if soort == 'tekst' %}<textarea name="{{ key }}" rows="3">{{ values.get(key, '') }}</textarea>
+        {% else %}
+        <div class="inline-choices">
+          {% set opties = schaal if soort == 'schaal' else (niveaus if soort == 'niveau' else range(0, 11)|map('string')|list) %}
+          {% for o in opties %}<label class="pill"><input type="radio" name="{{ key }}" value="{{ o }}" {% if values.get(key) == o %}checked{% endif %}><span>{{ o }}</span></label>{% endfor %}
+        </div>
+        {% endif %}
+        {{ err(key) }}
+      </div>
+      {% endfor %}
+    </fieldset>
+    <fieldset>
+      <legend>Wie ben je? (optioneel)</legend>
+      <div class="row">
+        <label class="field"><span>Naam</span><input name="naam" autocomplete="name" value="{{ values.get('naam', '') }}"></label>
+        <label class="field"><span>E-mailadres</span><input type="email" name="email" autocomplete="email" value="{{ values.get('email', '') }}"></label>
+      </div>
+    </fieldset>
+    <div class="summary"><button type="submit" class="btn btn--solid">Verstuur je evaluatie</button></div>
+  </form>
+  {% endif %}
+</section>
+{% endblock %}

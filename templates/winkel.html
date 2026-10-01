@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Wijnproefpakketten · The Italian Wine & Food Academy{% endblock %}
+{% block description %}Italiaanse wijn thuis proeven zoals in de opleiding: zes flessen per blok of alle dertig, met per wijn een proefkaart.{% endblock %}
+{% block content %}
+<section class="hero hero--slim hero--image" style="--hero:url('{{ img('image00163.jpeg') }}')">
+  <div class="hero-inner">
+    <p class="eyebrow">Wijnproefpakketten</p>
+    <h1>De wijnen van de opleiding, thuis in je glas</h1>
+    <p class="hero-lead">Per blok zes flessen, twee per streek, met bij elke wijn een proefkaart. Of alle dertig in één keer, per blok thuisbezorgd.</p>
+  </div>
+</section>
+<section class="section">
+  <div class="cards cards--catalog">
+    {% for k, p in pakketten.items() %}
+    <a class="card" href="{{ url_for('product', slug=k) }}">
+      <img class="card-img" src="{{ streek_foto(p.streken[0]) if p.streken else img('image00163.jpeg') }}" alt="{{ p.naam }}" loading="lazy">
+      <p class="card-kicker">{{ p.flessen }} flessen · {{ p.prijs|euro }}</p>
+      <h3>{{ p.naam }}</h3>
+      <p class="card-text">{{ p.kort }}</p>
+      <span class="card-link">Bekijk en bestel ›</span>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+<section class="cta">
+  <h2>Liever samen proeven?</h2>
+  <p>Op zaterdag {{ event.datum|datum }} geven we proefworkshops op Science Park in Amsterdam: keuken en wijn, in de ochtend en de middag.</p>
+  <a class="btn btn--solid" href="{{ url_for('event_pagina') }}">Bekijk de proefworkshops</a>
+</section>
+{% endblock %}

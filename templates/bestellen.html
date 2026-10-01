@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% block title %}Bestellen · {{ item.naam }}{% endblock %}
+{% block robots %}<meta name="robots" content="noindex">{% endblock %}
+{% macro err(name) %}{% if errors.get(name) %}<p class="field-error">{{ errors[name] }}</p>{% endif %}{% endmacro %}
+{% macro text(name, label, type="text", autocomplete="") %}
+<label class="field{% if errors.get(name) %} field--error{% endif %}">
+  <span>{{ label }}</span>
+  <input type="{{ type }}" name="{{ name }}" value="{{ values.get(name, '') }}"{% if autocomplete %} autocomplete="{{ autocomplete }}"{% endif %}>
+  {{ err(name) }}
+</label>
+{% endmacro %}
+{% macro workshopkeuze(name) %}
+<div class="inline-choices">
+  {% for w in item.e.workshops %}<label class="pill"><input type="radio" name="{{ name }}" value="{{ w.key }}" {% if values.get(name) == w.key %}checked{% endif %}><span>{{ w.naam }}</span></label>{% endfor %}
+</div>
+{% endmacro %}
+{% block content %}
+<section class="form-wrap">
+  <h1>{% if item.soort == 'event' %}Tickets: {{ item.naam }}{% else %}Bestellen: {{ item.naam }}{% endif %}</h1>
+  <p class="hero-lead">{% if item.soort == 'event' %}Zaterdag {{ item.e.datum|datum }}, {{ item.e.plaats }}.{% endif %} Na je bestelling krijg je meteen een bevestiging per mail; de factuur volgt.</p>
+  {% if errors.get('algemeen') %}<p class="form-alert">{{ errors['algemeen'] }}</p>{% endif %}
+
+  <form method="post" class="signup order" novalidate>
+    <input type="hidden" name="csrf" value="{{ csrf_token() }}">
+    <div class="hp" aria-hidden="true"><label>Website <input name="website" tabindex="-1" autocomplete="off"></label></div>
+
+    {% if item.soort == 'event' %}
+    <fieldset>
+      <legend>Kies je ticket</legend>
+      {% for t in item.e.tickets %}
+      <label class="choice">
+        <input type="radio" name="ticket" value="{{ t.key }}" data-price="{{ t.prijs }}" data-rondes="{{ t.rondes }}" {% if values.get('ticket') == t.key %}checked{% endif %}>
+        <span class="choice-body"><strong>{{ t.naam }}</strong><span>{{ t.prijs|euro }} per persoon</span></span>
+      </label>
+      {% endfor %}
+      {{ err('ticket') }}
+      <div data-rondes="1">
+        <p class="field-help">Welke ronde?</p>
+        <div class="inline-choices">
+          {% for r in item.e.rondes %}<label class="pill"><input type="radio" name="ronde" value="{{ r.key }}" {% if values.get('ronde') == r.key %}checked{% endif %}><span>{{ r.naam }}</span></label>{% endfor %}
+        </div>
+        <p class="field-help">Welke workshop?</p>
+        {{ workshopkeuze('workshop') }}
+      </div>
+      <div data-rondes="2">
+        <p class="field-help">Ochtendronde</p>
+        {{ workshopkeuze('workshop_ochtend') }}
+        <p class="field-help">Middagronde</p>
+        {{ workshopkeuze('workshop_middag') }}
+      </div>
+      {{ err('workshop') }}
+    </fieldset>
+    {% endif %}
+
+    <fieldset>
+      <legend>Aantal</legend>
+      <label class="field{% if errors.get('aantal') %} field--error{% endif %}">
+        <span>{% if item.soort == 'event' %}Aantal personen{% else %}Aantal pakketten{% endif %}</span>
+        <select name="aantal" {% if item.soort == 'pakket' %}data-price="{{ item.prijs }}"{% endif %}>
+          {% for n in range(1, 7) %}<option value="{{ n }}" {% if values.get('aantal', '1') == n|string %}selected{% endif %}>{{ n }}</option>{% endfor %}
+        </select>
+        {{ err('aantal') }}
+      </label>
+    </fieldset>
+
+    <fieldset>
+      <legend>Je gegevens</legend>
+      <div class="row">{{ text('voornaam', 'Voornaam', autocomplete='given-name') }}{{ text('achternaam', 'Achternaam', autocomplete='family-name') }}</div>
+      <div class="row">{{ text('email', 'E-mailadres', 'email', 'email') }}{{ text('telefoon', 'Telefoonnummer', 'tel', 'tel') }}</div>
+      {{ text('straat', 'Straat en huisnummer' ~ (' (bezorgadres)' if item.soort == 'pakket' else ''), autocomplete='street-address') }}
+      <div class="row">{{ text('postcode', 'Postcode', autocomplete='postal-code') }}{{ text('plaats', 'Woonplaats', autocomplete='address-level2') }}</div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Factuur</legend>
+      <div class="inline-choices">
+        <label class="pill"><input type="radio" name="factuur" value="particulier" {% if values.get('factuur', 'particulier') == 'particulier' %}checked{% endif %}><span>Ik betaal zelf</span></label>
+        <label class="pill"><input type="radio" name="factuur" value="zakelijk" {% if values.get('factuur') == 'zakelijk' %}checked{% endif %}><span>Op naam van een bedrijf</span></label>
+      </div>
+      <div data-show-if="zakelijk">{{ text('bedrijfsnaam', 'Bedrijfsnaam op de factuur', autocomplete='organization') }}</div>
+      <label class="field"><span>Opmerking (optioneel)</span><textarea name="opmerking" rows="3">{{ values.get('opmerking', '') }}</textarea></label>
+    </fieldset>
+
+    <div class="summary">
+      <div><span>Totaal</span><strong class="js-total">–</strong></div>
+      {% if item.soort == 'pakket' %}
+      <label class="check{% if errors.get('leeftijd') %} field--error{% endif %}">
+        <input type="checkbox" name="leeftijd" value="ja" {% if values.get('leeftijd') %}checked{% endif %}>
+        <span>Ik ben 18 jaar of ouder.</span>
+      </label>
+      {{ err('leeftijd') }}
+      {% endif %}
+      <label class="check{% if errors.get('voorwaarden') %} field--error{% endif %}">
+        <input type="checkbox" name="voorwaarden" value="ja" {% if values.get('voorwaarden') %}checked{% endif %}>
+        <span>Ik ga akkoord met de <a href="/algemene-voorwaarden/" target="_blank" rel="noopener">algemene voorwaarden</a>.</span>
+      </label>
+      {{ err('voorwaarden') }}
+      <button type="submit" class="btn btn--solid">Bestelling versturen</button>
+    </div>
+  </form>
+</section>
+{% endblock %}
+{% block scripts %}
+<script>
+(function () {
+  const form = document.querySelector('.order');
+  const eur = n => '€' + n.toLocaleString('nl-NL');
+  function update() {
+    const aantal = +form.aantal.value || 1;
+    const t = form.querySelector('input[name=ticket]:checked');
+    const prijs = t ? +t.dataset.price : +(form.aantal.dataset.price || 0);
+    form.querySelector('.js-total').textContent = prijs ? eur(prijs * aantal) : '–';
+    const rondes = t ? t.dataset.rondes : null;
+    form.querySelectorAll('[data-rondes]').forEach(el => { if (el.tagName === 'DIV') el.hidden = el.dataset.rondes !== rondes; });
+    const zak = form.querySelector('input[name=factuur]:checked');
+    form.querySelectorAll('[data-show-if=zakelijk]').forEach(el => el.hidden = !(zak && zak.value === 'zakelijk'));
+  }
+  form.addEventListener('change', update);
+  update();
+})();
+</script>
+{% endblock %}
