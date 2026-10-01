@@ -386,3 +386,5 @@ legend{font-family:var(--serif);font-size:22px;color:var(--groen);margin-bottom:
 .footer-news-row .btn{padding:11px 16px}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .cta-small{margin:18px 0 0 !important;font-size:15px}.cta-small a{color:var(--goud)}
+
+.article .kaart-download{margin:-14px 0 30px}
